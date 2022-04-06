@@ -171,7 +171,7 @@
 			say("Not enough reagents to complete prototype[print_quantity > 1? "s" : ""].")
 			return FALSE
 
-	if(is_station_level(z) && isliving(usr)) //We don't block purchases off station Z.
+	if(is_station_level(z) && isliving(usr) && !(obj_flags & EMAGGED)) //We don't block purchases off station Z.
 		var/total_cost = (LATHE_TAX * print_quantity)
 		var/mob/living/user = usr
 		var/obj/item/card/id/card = user.get_idcard(TRUE)
