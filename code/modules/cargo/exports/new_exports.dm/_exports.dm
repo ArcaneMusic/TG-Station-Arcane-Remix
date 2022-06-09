@@ -19,10 +19,7 @@
 	var/amount = get_amount(object)
 		if(!is_type_in_list(object, applicable_exports))
 			return 0
-	for(var/iterator in applicable_exports as anything)
-		if(istype(object, applicable_exports[iterator]))
-			return(amount * applicable_exports[iterator])
-
+	return is_type_in_list(object, applicable_exports, zebra = TRUE)
 
 
 /**
