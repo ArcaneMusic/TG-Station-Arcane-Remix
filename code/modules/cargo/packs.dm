@@ -1,5 +1,6 @@
 /datum/supply_pack
 	var/name = "Crate"
+	var/desc = ""//no desc by default
 	var/group = ""
 	var/hidden = FALSE
 	var/contraband = FALSE
@@ -11,7 +12,6 @@
 	var/list/contains = null
 	var/crate_name = "crate"
 	var/id
-	var/desc = ""//no desc by default
 	var/crate_type = /obj/structure/closet/crate
 	var/dangerous = FALSE // Should we message admins?
 	var/special = FALSE //Event/Station Goals/Admin enabled packs
