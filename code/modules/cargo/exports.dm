@@ -77,6 +77,8 @@ Then the player gets the profit from selling his own wasted time.
 	var/include_subtypes = TRUE
 	/// Types excluded from export
 	var/list/exclude_types = list()
+	/// this thing
+	var/assigned_cargo_market = /datum/stock_market
 
 	/// cost includes elasticity, this does not.
 	var/init_cost
