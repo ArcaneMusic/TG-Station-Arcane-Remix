@@ -40,17 +40,16 @@
 	processing_quirk = TRUE
 
 /datum/quirk/drunkhealing/process(delta_time)
-	var/mob/living/carbon/carbon_holder = quirk_holder
-	switch(carbon_holder.drunkenness)
+	switch(quirk_holder.get_drunk_amount())
 		if (6 to 40)
-			carbon_holder.adjustBruteLoss(-0.1*delta_time, FALSE)
-			carbon_holder.adjustFireLoss(-0.05*delta_time, FALSE)
+			quirk_holder.adjustBruteLoss(-0.1 * delta_time, FALSE)
+			quirk_holder.adjustFireLoss(-0.05 * delta_time)
 		if (41 to 60)
-			carbon_holder.adjustBruteLoss(-0.4*delta_time, FALSE)
-			carbon_holder.adjustFireLoss(-0.2*delta_time, FALSE)
+			quirk_holder.adjustBruteLoss(-0.4 * delta_time, FALSE)
+			quirk_holder.adjustFireLoss(-0.2 * delta_time)
 		if (61 to INFINITY)
-			carbon_holder.adjustBruteLoss(-0.8*delta_time, FALSE)
-			carbon_holder.adjustFireLoss(-0.4*delta_time, FALSE)
+			quirk_holder.adjustBruteLoss(-0.8 * delta_time, FALSE)
+			quirk_holder.adjustFireLoss(-0.4 * delta_time)
 
 /datum/quirk/empath
 	name = "Empath"
@@ -62,39 +61,39 @@
 	lose_text = "<span class='danger'>You feel isolated from others.</span>"
 	medical_record_text = "Patient is highly perceptive of and sensitive to social cues, or may possibly have ESP. Further testing needed."
 
-/datum/quirk/item_quirk/fan_clown
-	name = "Clown Fan"
+/datum/quirk/item_quirk/clown_enjoyer
+	name = "Clown Enjoyer"
 	desc = "You enjoy clown antics and get a mood boost from wearing your clown pin."
 	icon = "map-pin"
 	value = 2
-	mob_trait = TRAIT_FAN_CLOWN
-	gain_text = "<span class='notice'>You are a big fan of clowns.</span>"
+	mob_trait = TRAIT_CLOWN_ENJOYER
+	gain_text = "<span class='notice'>You are a big enjoyer of clowns.</span>"
 	lose_text = "<span class='danger'>The clown doesn't seem so great.</span>"
-	medical_record_text = "Patient reports being a big fan of clowns."
+	medical_record_text = "Patient reports being a big enjoyer of clowns."
 
-/datum/quirk/item_quirk/fan_clown/add_unique()
-	give_item_to_holder(/obj/item/clothing/accessory/fan_clown_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
+/datum/quirk/item_quirk/clown_enjoyer/add_unique()
+	give_item_to_holder(/obj/item/clothing/accessory/clown_enjoyer_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
 
-/datum/quirk/item_quirk/fan_clown/add()
+/datum/quirk/item_quirk/clown_enjoyer/add()
 	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.add_hud_to(quirk_holder)
+	fan.show_to(quirk_holder)
 
-/datum/quirk/item_quirk/fan_mime
+/datum/quirk/item_quirk/mime_fan
 	name = "Mime Fan"
-	desc = "You enjoy mime antics and get a mood boost from wearing your mime pin."
+	desc = "You're a fan of mime antics and get a mood boost from wearing your mime pin."
 	icon = "thumbtack"
 	value = 2
-	mob_trait = TRAIT_FAN_MIME
+	mob_trait = TRAIT_MIME_FAN
 	gain_text = "<span class='notice'>You are a big fan of the Mime.</span>"
 	lose_text = "<span class='danger'>The mime doesn't seem so great.</span>"
 	medical_record_text = "Patient reports being a big fan of mimes."
 
-/datum/quirk/item_quirk/fan_mime/add_unique()
-	give_item_to_holder(/obj/item/clothing/accessory/fan_mime_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
+/datum/quirk/item_quirk/mime_fan/add_unique()
+	give_item_to_holder(/obj/item/clothing/accessory/mime_fan_pin, list(LOCATION_BACKPACK = ITEM_SLOT_BACKPACK, LOCATION_HANDS = ITEM_SLOT_HANDS))
 
-/datum/quirk/item_quirk/fan_mime/add()
+/datum/quirk/item_quirk/mime_fan/add()
 	var/datum/atom_hud/fan = GLOB.huds[DATA_HUD_FAN]
-	fan.add_hud_to(quirk_holder)
+	fan.show_to(quirk_holder)
 
 /datum/quirk/freerunning
 	name = "Freerunning"
@@ -167,7 +166,7 @@
 
 /datum/quirk/night_vision/proc/refresh_quirk_holder_eyes()
 	var/mob/living/carbon/human/human_quirk_holder = quirk_holder
-	var/obj/item/organ/eyes/eyes = human_quirk_holder.getorgan(/obj/item/organ/eyes)
+	var/obj/item/organ/internal/eyes/eyes = human_quirk_holder.getorgan(/obj/item/organ/internal/eyes)
 	if(!eyes || eyes.lighting_alpha)
 		return
 	// We've either added or removed TRAIT_NIGHT_VISION before calling this proc. Just refresh the eyes.

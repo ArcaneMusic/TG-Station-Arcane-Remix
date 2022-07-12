@@ -56,7 +56,7 @@
 			force_proj_busy = FALSE
 			return
 		force_proj_busy = FALSE
-	
+
 	playsound(src,'sound/weapons/resonator_fire.ogg',50,TRUE)
 	user.visible_message(span_warning("[user] projects a forcefield!"),span_notice("You project a forcefield."))
 	var/obj/structure/projected_forcefield/F = new(T, src)
@@ -97,13 +97,14 @@
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "forcefield"
 	layer = ABOVE_ALL_MOB_LAYER
+	plane = ABOVE_GAME_PLANE
 	anchored = TRUE
 	pass_flags_self = PASSGLASS
 	density = TRUE
 	mouse_opacity = MOUSE_OPACITY_OPAQUE
 	resistance_flags = INDESTRUCTIBLE
-	CanAtmosPass = ATMOS_PASS_DENSITY
-	armor = list(MELEE = 0, BULLET = 25, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 100, RAD = 100, FIRE = 100, ACID = 100)
+	can_atmos_pass = ATMOS_PASS_DENSITY
+	armor = list(MELEE = 0, BULLET = 25, LASER = 50, ENERGY = 50, BOMB = 25, BIO = 0, FIRE = 100, ACID = 100)
 	var/obj/item/forcefield_projector/generator
 
 /obj/structure/projected_forcefield/Initialize(mapload, obj/item/forcefield_projector/origin)

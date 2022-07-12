@@ -39,6 +39,7 @@
 	return power_station
 
 /obj/machinery/computer/teleporter/ui_interact(mob/user, datum/tgui/ui)
+	. = ..()
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
 		ui = new(user, src, "Teleporter", name)
@@ -183,16 +184,20 @@
 	var/list/targets = get_targets()
 
 	if (regime_set == "Teleporter")
-		var/desc = input("Please select a location to lock in.", "Locking Computer") as null|anything in sortList(targets)
+		var/desc = tgui_input_list(usr, "Select a location to lock in", "Locking Computer", sort_list(targets))
+		if(isnull(desc))
+			return
 		set_teleport_target(targets[desc])
 		var/turf/target_turf = get_turf(targets[desc])
 		log_game("[key_name(user)] has set the teleporter target to [targets[desc]] at [AREACOORD(target_turf)]")
 	else
-		if (targets.len == 0)
+		if (!length(targets))
 			to_chat(user, span_alert("No active connected stations located."))
 			return
 
-		var/desc = input("Please select a station to lock in.", "Locking Computer") as null|anything in sortList(targets)
+		var/desc = tgui_input_list(usr, "Select a station to lock in", "Locking Computer", sort_list(targets))
+		if(isnull(desc))
+			return
 		var/obj/machinery/teleport/station/target_station = targets[desc]
 		if(!target_station || !target_station.teleporter_hub)
 			return
@@ -234,7 +239,7 @@
 	update_trigger = add_input_port("Update Targets", PORT_TYPE_SIGNAL)
 
 	current_target = add_output_port("Current Target", PORT_TYPE_STRING)
-	possible_targets = add_output_port("Possible Targets", PORT_TYPE_LIST)
+	possible_targets = add_output_port("Possible Targets", PORT_TYPE_LIST(PORT_TYPE_ANY))
 	on_fail = add_output_port("Failed", PORT_TYPE_SIGNAL)
 
 /obj/item/circuit_component/teleporter_control_console/register_usb_parent(atom/movable/shell)

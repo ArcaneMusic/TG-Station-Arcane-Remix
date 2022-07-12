@@ -18,7 +18,7 @@
 		/datum/component/shell, \
 		unremovable_circuit_components = list(new /obj/item/circuit_component/airlock, new /obj/item/circuit_component/airlock_access_event), \
 		capacity = SHELL_CAPACITY_LARGE, \
-		shell_flags = SHELL_FLAG_ALLOW_FAILURE_ACTION \
+		shell_flags = SHELL_FLAG_ALLOW_FAILURE_ACTION|SHELL_FLAG_REQUIRE_ANCHOR \
 	)
 
 /obj/machinery/door/airlock/shell/check_access(obj/item/I)
@@ -29,6 +29,11 @@
 
 /obj/machinery/door/airlock/shell/canAIHack(mob/user)
 	return FALSE
+
+/obj/machinery/door/airlock/shell/allowed(mob/user)
+	if(SEND_SIGNAL(src, COMSIG_AIRLOCK_SHELL_ALLOWED, user) & COMPONENT_AIRLOCK_SHELL_ALLOW)
+		return TRUE
+	return isAdminGhostAI(user)
 
 /obj/machinery/door/airlock/shell/set_wires()
 	return new /datum/wires/airlock/shell(src)
@@ -151,20 +156,20 @@
 	. = ..()
 	if(istype(shell, /obj/machinery/door/airlock))
 		attached_airlock = shell
-		RegisterSignal(shell, COMSIG_OBJ_ALLOWED, .proc/handle_allowed)
+		RegisterSignal(shell, COMSIG_AIRLOCK_SHELL_ALLOWED , .proc/handle_allowed)
 
 /obj/item/circuit_component/airlock_access_event/unregister_shell(atom/movable/shell)
 	attached_airlock = null
 	UnregisterSignal(shell, list(
-		COMSIG_OBJ_ALLOWED,
+		COMSIG_AIRLOCK_SHELL_ALLOWED ,
 	))
 	return ..()
 
 
 /obj/item/circuit_component/airlock_access_event/populate_ports()
-	open_airlock = add_input_port("Should Open Airlock", PORT_TYPE_SIGNAL, trigger = .proc/should_open_airlock)
+	open_airlock = add_input_port("Should Open Airlock", PORT_TYPE_RESPONSE_SIGNAL, trigger = .proc/should_open_airlock)
 	accessing_entity = add_output_port("Accessing Entity", PORT_TYPE_ATOM)
-	event_triggered = add_output_port("Event Triggered", PORT_TYPE_SIGNAL)
+	event_triggered = add_output_port("Event Triggered", PORT_TYPE_INSTANT_SIGNAL)
 
 
 /obj/item/circuit_component/airlock_access_event/proc/should_open_airlock(datum/port/input/port, list/return_values)
@@ -188,4 +193,4 @@
 		return
 
 	if(result["should_open"])
-		return COMPONENT_OBJ_ALLOW
+		return COMPONENT_AIRLOCK_SHELL_ALLOW 

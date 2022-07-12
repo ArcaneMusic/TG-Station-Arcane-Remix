@@ -1,10 +1,10 @@
-import { Component, createRef, InfernoNode, RefObject } from "inferno";
-import { Button, Section, Stack } from "../../components";
-import { FlexProps } from "../../components/Flex";
+import { Component, createRef, InfernoNode, RefObject } from 'inferno';
+import { Button, Section, Stack } from '../../components';
+import { FlexProps } from '../../components/Flex';
 
 type TabbedMenuProps = {
-  categoryEntries: [string, InfernoNode][],
-  contentProps?: FlexProps,
+  categoryEntries: [string, InfernoNode][];
+  contentProps?: FlexProps;
 };
 
 export class TabbedMenu extends Component<TabbedMenuProps> {
@@ -26,14 +26,14 @@ export class TabbedMenu extends Component<TabbedMenuProps> {
           <Stack fill px={5}>
             {this.props.categoryEntries.map(([category]) => {
               return (
-                <Stack.Item key={category} grow>
+                <Stack.Item key={category} grow basis="content">
                   <Button
                     align="center"
                     fontSize="1.2em"
                     fluid
                     onClick={() => {
-                      const offsetTop = this.categoryRefs[category]
-                        .current?.offsetTop;
+                      const offsetTop =
+                        this.categoryRefs[category].current?.offsetTop;
 
                       if (offsetTop === undefined) {
                         return;
@@ -46,8 +46,7 @@ export class TabbedMenu extends Component<TabbedMenuProps> {
                       }
 
                       currentSection.scrollTop = offsetTop;
-                    }}
-                  >
+                    }}>
                     {category}
                   </Button>
                 </Stack.Item>
@@ -66,26 +65,19 @@ export class TabbedMenu extends Component<TabbedMenuProps> {
 
             // Otherwise, TypeScript complains about invalid prop
             className: undefined,
-          }}
-        >
+          }}>
           <Stack vertical fill px={2}>
-            {this.props.categoryEntries.map(
-              ([category, children]) => {
-                return (
-                  <Stack.Item
-                    key={category}
-                    innerRef={this.getCategoryRef(category)}
-                  >
-                    <Section
-                      fill
-                      title={category}
-                    >
-                      {children}
-                    </Section>
-                  </Stack.Item>
-                );
-              }
-            )}
+            {this.props.categoryEntries.map(([category, children]) => {
+              return (
+                <Stack.Item
+                  key={category}
+                  innerRef={this.getCategoryRef(category)}>
+                  <Section fill title={category}>
+                    {children}
+                  </Section>
+                </Stack.Item>
+              );
+            })}
           </Stack>
         </Stack.Item>
       </Stack>

@@ -1,11 +1,11 @@
 /datum/antagonist/brother
-	name = "Brother"
+	name = "\improper Brother"
 	antagpanel_category = "Brother"
 	job_rank = ROLE_BROTHER
 	var/special_role = ROLE_BROTHER
-	antag_hud_type = ANTAG_HUD_BROTHER
 	antag_hud_name = "brother"
 	hijack_speed = 0.5
+	ui_name = "AntagInfoBrother"
 	suicide_cry = "FOR MY BROTHER!!"
 	var/datum/team/brother_team/team
 	antag_moodlet = /datum/mood_event/focused
@@ -27,18 +27,8 @@
 	return ..()
 
 /datum/antagonist/brother/on_removal()
-	if(owner.current)
-		to_chat(owner.current,span_userdanger("You are no longer the [special_role]!"))
 	owner.special_role = null
 	return ..()
-
-/datum/antagonist/brother/apply_innate_effects(mob/living/mob_override)
-	var/mob/living/M = mob_override || owner.current
-	add_antag_hud(antag_hud_type, antag_hud_name, M)
-
-/datum/antagonist/brother/remove_innate_effects(mob/living/mob_override)
-	var/mob/living/M = mob_override || owner.current
-	remove_antag_hud(antag_hud_type, M)
 
 /datum/antagonist/brother/antag_panel_data()
 	return "Conspirators : [get_brother_names()]"
@@ -60,8 +50,8 @@
 	blood1_icon.Blend(COLOR_BLOOD, ICON_MULTIPLY)
 	brother1_icon.Blend(blood1_icon, ICON_OVERLAY)
 	brother1_icon.Shift(WEST, 8)
-	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist, brother2)
-	var/icon/blood2_icon = icon('icons/effects/blood.dmi', "uniformblood")
+	var/icon/brother2_icon = render_preview_outfit(/datum/outfit/job/scientist/consistent, brother2)
+	var/icon/blood2_icon = icon('icons/effects/blood.dmi', "uniformblood", ICON_OVERLAY)
 	blood2_icon.Blend(COLOR_BLOOD, ICON_MULTIPLY)
 	brother2_icon.Blend(blood2_icon, ICON_OVERLAY)
 	brother2_icon.Shift(EAST, 8)
@@ -110,7 +100,7 @@
 			continue
 		candidates[L.mind.name] = L.mind
 
-	var/choice = input(admin,"Choose the blood brother.", "Brother") as null|anything in sortNames(candidates)
+	var/choice = input(admin,"Choose the blood brother.", "Brother") as null|anything in sort_names(candidates)
 	if(!choice)
 		return
 	var/datum/mind/bro = candidates[choice]
@@ -124,6 +114,13 @@
 	T.update_name()
 	message_admins("[key_name_admin(admin)] made [key_name_admin(new_owner)] and [key_name_admin(bro)] into blood brothers.")
 	log_admin("[key_name(admin)] made [key_name(new_owner)] and [key_name(bro)] into blood brothers.")
+
+/datum/antagonist/brother/ui_static_data(mob/user)
+	var/list/data = list()
+	data["antag_name"] = name
+	data["objectives"] = get_objectives()
+	data["brothers"] = get_brother_names()
+	return data
 
 /datum/team/brother_team
 	name = "brotherhood"

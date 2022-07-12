@@ -33,7 +33,7 @@
 	name = "Lizard tail kebab"
 	reqs = list(
 		/obj/item/stack/rods = 1,
-		/obj/item/organ/tail/lizard = 1
+		/obj/item/organ/external/tail/lizard = 1
 	)
 	result = /obj/item/food/kebab/tail
 	subcategory = CAT_MEAT
@@ -118,7 +118,7 @@
 		/obj/item/food/grown/garlic = 1,
 		/obj/item/food/meatball = 1
 	)
-	result =  /obj/item/food/rawkhinkali
+	result = /obj/item/food/rawkhinkali
 	subcategory = CAT_MEAT
 
 /datum/crafting_recipe/food/meatbun
@@ -193,7 +193,7 @@
 	reqs = list(
 		/obj/item/food/meat/cutlet = 2,
 		/obj/item/food/grown/tomato = 1,
-		/obj/item/food/cheese = 2,
+		/obj/item/food/cheese/wedge = 2,
 		/obj/item/food/spaghetti/raw = 1
 	)
 	result = /obj/item/food/lasagna
@@ -263,4 +263,13 @@
 		/obj/item/food/butteredtoast = 1
 	)
 	result = /obj/item/food/full_english
+	subcategory = CAT_MEAT
+
+/datum/crafting_recipe/food/envirochow
+	name = "Envirochow"
+	reqs = list(
+		/obj/item/food/meat/slab/corgi = 2,
+		/datum/reagent/consumable/nutriment/vitamin = 5,
+	)
+	result = /obj/item/food/canned/envirochow
 	subcategory = CAT_MEAT

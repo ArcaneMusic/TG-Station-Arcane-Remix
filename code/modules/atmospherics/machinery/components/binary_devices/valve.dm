@@ -15,6 +15,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	construction_type = /obj/item/pipe/binary
 	pipe_state = "mvalve"
 	custom_reconcilation = TRUE
+	use_power = NO_POWER_USE
 	///Type of valve (manual or digital), used to set the icon of the component in update_icon_nopipes()
 	var/valve_type = MANUAL_VALVE
 	///Bool to stop interactions while the opening/closing animation is going
@@ -50,12 +51,12 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 
 // This is what handles the actual functionality of combining 2 pipenets when the valve is open
 // Basically when a pipenet updates it will consider both sides to be the same for the purpose of the gas update
-/obj/machinery/atmospherics/components/binary/valve/returnPipenetsForReconcilation(datum/pipeline/requester)
+/obj/machinery/atmospherics/components/binary/valve/return_pipenets_for_reconcilation(datum/pipeline/requester)
 	. = ..()
 	if(!on)
 		return
-	. += parents[1]
-	. += parents[2]
+	. |= parents[1]
+	. |= parents[2]
 
 /obj/machinery/atmospherics/components/binary/valve/interact(mob/user)
 	add_fingerprint(usr)
@@ -124,6 +125,7 @@ It's like a regular ol' straight pipe, but you can turn it on and off.
 	return ..()
 
 /obj/item/circuit_component/digital_valve/proc/handle_valve_toggled(datum/source, on)
+	SIGNAL_HANDLER
 	is_open.set_output(on)
 	if(on)
 		opened.set_output(COMPONENT_SIGNAL)

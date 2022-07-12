@@ -11,7 +11,7 @@
 	use_power = NO_POWER_USE
 	interaction_flags_atom = NONE
 	interaction_flags_machine = NONE
-	CanAtmosPass = ATMOS_PASS_NO
+	can_atmos_pass = ATMOS_PASS_NO
 	light_range = 4
 	layer = ABOVE_OBJ_LAYER
 	///First of the generators producing the containment field
@@ -35,7 +35,7 @@
 	if(field_gen_2)
 		field_gen_2.fields -= src
 		field_gen_2 = null
-	CanAtmosPass = ATMOS_PASS_YES
+	can_atmos_pass = ATMOS_PASS_YES
 	air_update_turf(TRUE, FALSE)
 	return ..()
 
@@ -135,7 +135,7 @@
 	var/shock_damage = min(rand(30,40),rand(30,40))
 
 	if(iscarbon(user))
-		user.Paralyze(300)
+		user.Paralyze(10 SECONDS)
 		user.electrocute_act(shock_damage, src, 1)
 
 	else if(issilicon(user))
@@ -158,5 +158,8 @@
 	has_shocked = TRUE
 	do_sparks(5, TRUE, considered_atom.loc)
 	var/atom/target = get_edge_target_turf(considered_atom, get_dir(src, get_step_away(considered_atom, src)))
+	if(isliving(considered_atom))
+		to_chat(considered_atom, span_userdanger("The field repels you with tremendous force!"))
+	playsound(src, 'sound/effects/gravhit.ogg', 50, TRUE)
 	considered_atom.throw_at(target, 200, 4)
 	addtimer(CALLBACK(src, .proc/clear_shock), 5)

@@ -21,13 +21,13 @@
 
 /area/vv_edit_var(var_name, var_value)
 	switch(var_name)
-		if("base_lighting_color")
+		if(NAMEOF(src, base_lighting_color))
 			set_base_lighting(new_base_lighting_color = var_value)
 			return TRUE
-		if("base_lighting_alpha")
+		if(NAMEOF(src, base_lighting_alpha))
 			set_base_lighting(new_alpha = var_value)
 			return TRUE
-		if("static_lighting")
+		if(NAMEOF(src, static_lighting))
 			if(!static_lighting)
 				create_area_lighting_objects()
 			else
@@ -59,6 +59,7 @@
 	lighting_effect.blend_mode = BLEND_ADD
 	lighting_effect.alpha = base_lighting_alpha
 	lighting_effect.color = base_lighting_color
+	lighting_effect.appearance_flags = RESET_TRANSFORM | RESET_ALPHA | RESET_COLOR
 	for(var/turf/T in src)
 		T.add_overlay(lighting_effect)
 		T.luminosity = 1

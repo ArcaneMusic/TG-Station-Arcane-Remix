@@ -6,6 +6,7 @@ SUBSYSTEM_DEF(server_maint)
 	flags = SS_POST_FIRE_TIMING
 	priority = FIRE_PRIORITY_SERVER_MAINT
 	init_order = INIT_ORDER_SERVER_MAINT
+	init_stage = INITSTAGE_EARLY
 	runlevels = RUNLEVEL_LOBBY | RUNLEVELS_DEFAULT
 	var/list/currentrun
 	///Associated list of list names to lists to clear of nulls
@@ -34,7 +35,7 @@ SUBSYSTEM_DEF(server_maint)
 
 /datum/controller/subsystem/server_maint/fire(resumed = FALSE)
 	if(!resumed)
-		if(listclearnulls(GLOB.clients))
+		if(list_clear_nulls(GLOB.clients))
 			log_world("Found a null in clients list!")
 		src.currentrun = GLOB.clients.Copy()
 
@@ -42,7 +43,7 @@ SUBSYSTEM_DEF(server_maint)
 
 		if(!(position_in_loop % 1)) //If it's a whole number
 			var/listname = lists_to_clear[position_in_loop]
-			if(listclearnulls(lists_to_clear[listname]))
+			if(list_clear_nulls(lists_to_clear[listname]))
 				log_world("Found a null in [listname]!")
 
 		cleanup_ticker++

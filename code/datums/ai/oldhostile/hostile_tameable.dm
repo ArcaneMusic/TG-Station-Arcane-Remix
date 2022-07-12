@@ -44,6 +44,7 @@
 	return ..() //Run parent at end
 
 /datum/ai_controller/hostile_friend/proc/on_prebuckle(mob/source, mob/living/buckler, force, buckle_mob_flags)
+	SIGNAL_HANDLER
 	if(force || ai_status == AI_STATUS_OFF)
 		return
 	if(WEAKREF(buckler) != blackboard[BB_HOSTILE_FRIEND])
@@ -173,7 +174,7 @@
 			pawn.visible_message(span_notice("[pawn] [blackboard[BB_HOSTILE_ATTACK_WORD]] at [commander]'s command, and [pawn.p_they()] stop[pawn.p_s()] obediently, awaiting further orders."))
 			blackboard[BB_HOSTILE_ORDER_MODE] = HOSTILE_COMMAND_NONE
 			CancelActions()
-		// fetch: whatever the commander points to, try and bring it back
+		// follow: whatever the commander points to, try and bring it back
 		if(COMMAND_FOLLOW)
 			pawn.visible_message(span_notice("[pawn] [blackboard[BB_HOSTILE_ATTACK_WORD]] at [commander]'s command, and [pawn.p_they()] follow[pawn.p_s()] slightly in anticipation."))
 			CancelActions()

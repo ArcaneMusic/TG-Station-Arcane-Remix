@@ -92,7 +92,7 @@
 /turf/open/floor/iron/freezer,
 /area/shuttle/transport)
 "o" = (
-/obj/effect/spawner/structure/window/shuttle,
+/obj/effect/spawner/structure/window/reinforced/shuttle,
 /turf/open/floor/plating,
 /area/shuttle/transport)
 "p" = (
@@ -122,9 +122,9 @@
 /area/shuttle/transport)
 "v" = (
 /obj/machinery/door/airlock/freezer{
-	name = "Meat Tradeship Backroom";
-	req_access_txt = "28"
+	name = "Meat Tradeship Backroom"
 	},
+/obj/effect/mapping_helpers/airlock/access/all/service/kitchen,
 /turf/open/floor/iron/freezer,
 /area/shuttle/transport)
 "w" = (

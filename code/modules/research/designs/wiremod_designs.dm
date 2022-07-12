@@ -6,7 +6,7 @@
 	build_type = IMPRINTER | COMPONENT_PRINTER
 	category = list("Circuitry", "Core")
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
 /datum/design/circuit_multitool
 	name = "Circuit Multitool"
@@ -16,7 +16,7 @@
 	build_type = PROTOLATHE | COMPONENT_PRINTER
 	category = list("Circuitry", "Core")
 	materials = list(/datum/material/glass = 1000, /datum/material/iron = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
 /datum/design/usb_cable
 	name = "USB Cable"
@@ -27,14 +27,14 @@
 	category = list("Circuitry", "Core")
 	// Yes, it would make sense to make them take plastic, but then less people would make them, and I think they're cool
 	materials = list(/datum/material/iron = 2500)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 
 /datum/design/component
 	name = "Component ( NULL ENTRY )"
 	desc = "A component that goes into an integrated circuit."
 	build_type = IMPRINTER | COMPONENT_PRINTER
 	materials = list(/datum/material/glass = 1000)
-	departmental_flags = DEPARTMENTAL_FLAG_SCIENCE
+	departmental_flags = DEPARTMENT_BITFLAG_SCIENCE
 	category = list("Circuitry", "Components")
 
 /datum/design/component/New()
@@ -47,6 +47,11 @@
 	name = "Arithmetic Component"
 	id = "comp_arithmetic"
 	build_path = /obj/item/circuit_component/arithmetic
+
+/datum/design/component/trigonometry
+	name = "Trigonometry Component"
+	id = "comp_trigonometry"
+	build_path = /obj/item/circuit_component/trigonometry
 
 /datum/design/component/clock
 	name = "Clock Component"
@@ -68,10 +73,25 @@
 	id = "comp_delay"
 	build_path = /obj/item/circuit_component/delay
 
+/datum/design/component/format
+	name = "Format List Component"
+	id = "comp_format"
+	build_path = /obj/item/circuit_component/format
+
+/datum/design/component/format_assoc
+	name = "Format Associative List Component"
+	id = "comp_format_assoc"
+	build_path = /obj/item/circuit_component/format/assoc
+
 /datum/design/component/index
 	name = "Index Component"
 	id = "comp_index"
 	build_path = /obj/item/circuit_component/index
+
+/datum/design/component/index_assoc
+	name = "Index Associative List Component"
+	id = "comp_index_assoc"
+	build_path = /obj/item/circuit_component/index/assoc_string
 
 /datum/design/component/length
 	name = "Length Component"
@@ -93,6 +113,16 @@
 	id = "comp_random"
 	build_path = /obj/item/circuit_component/random
 
+/datum/design/component/binary_conversion
+	name = "Binary Conversion Component"
+	id = "comp_binary_convert"
+	build_path = /obj/item/circuit_component/binary_decimal/binary_conversion
+
+/datum/design/component/decimal_conversion
+	name = "Decimal Conversion Component"
+	id = "comp_decimal_convert"
+	build_path = /obj/item/circuit_component/binary_decimal/decimal_conversion
+
 /datum/design/component/species
 	name = "Get Species Component"
 	id = "comp_species"
@@ -102,6 +132,16 @@
 	name = "Speech Component"
 	id = "comp_speech"
 	build_path = /obj/item/circuit_component/speech
+
+/datum/design/component/laserpointer
+	name = "Laser Pointer Component"
+	id = "comp_laserpointer"
+	build_path = /obj/item/circuit_component/laserpointer
+
+/datum/design/component/timepiece
+	name = "Timepiece Component"
+	id = "comp_timepiece"
+	build_path = /obj/item/circuit_component/timepiece
 
 /datum/design/component/tostring
 	name = "To String Component"
@@ -158,10 +198,20 @@
 	id = "comp_direction"
 	build_path = /obj/item/circuit_component/direction
 
+/datum/design/component/reagentscanner
+	name = "Reagents Scanner"
+	id = "comp_reagents"
+	build_path = /obj/item/circuit_component/reagentscanner
+
 /datum/design/component/health
 	name = "Health Component"
 	id = "comp_health"
 	build_path = /obj/item/circuit_component/health
+
+/datum/design/component/matscanner
+	name = "Material Scanner"
+	id = "comp_matscanner"
+	build_path = /obj/item/circuit_component/matscanner
 
 /datum/design/component/split
 	name = "Split Component"
@@ -208,6 +258,26 @@
 	id = "comp_concat_list"
 	build_path = /obj/item/circuit_component/concat_list
 
+/datum/design/component/list_add
+	name = "List Add"
+	id = "comp_list_add"
+	build_path = /obj/item/circuit_component/variable/list/listadd
+
+/datum/design/component/list_remove
+	name = "List Remove"
+	id = "comp_list_remove"
+	build_path = /obj/item/circuit_component/variable/list/listremove
+
+/datum/design/component/list_clear
+	name = "List Clear"
+	id = "comp_list_clear"
+	build_path = /obj/item/circuit_component/variable/list/listclear
+
+/datum/design/component/element_find
+	name = "Element Find"
+	id = "comp_element_find"
+	build_path = /obj/item/circuit_component/listin
+
 /datum/design/component/select_query
 	name = "Select Query Component"
 	id = "comp_select_query"
@@ -248,10 +318,20 @@
 	id = "comp_list_literal"
 	build_path = /obj/item/circuit_component/list_literal
 
+/datum/design/component/list_assoc_literal
+	name = "Associative List Literal"
+	id = "comp_list_assoc_literal"
+	build_path = /obj/item/circuit_component/list_literal/assoc_literal
+
 /datum/design/component/typecast
 	name = "Typecast Component"
 	id = "comp_typecast"
 	build_path = /obj/item/circuit_component/typecast
+
+/datum/design/component/printer
+	name = "Printer Component"
+	id = "comp_printer"
+	build_path = /obj/item/circuit_component/printer
 
 /datum/design/component/pinpointer
 	name = "Proximity Pinpointer Component"
@@ -264,7 +344,7 @@
 /datum/design/component/bci/bci_action
 	name = "BCI Action Component"
 	id = "comp_bci_action"
-	build_path = /obj/item/circuit_component/bci_action
+	build_path = /obj/item/circuit_component/equipment_action/bci
 
 /datum/design/component/bci/object_overlay
 	name = "Object Overlay Component"
@@ -276,6 +356,16 @@
 	id = "comp_bar_overlay"
 	build_path = /obj/item/circuit_component/object_overlay/bar
 
+/datum/design/component/bci/vox
+	name = "VOX Announcement Component"
+	id = "comp_vox"
+	build_path = /obj/item/circuit_component/vox
+
+/datum/design/component/bci/thought_listener
+	name = "Thought Listener Component"
+	id = "comp_thought_listener"
+	build_path = /obj/item/circuit_component/thought_listener
+
 /datum/design/component/bci/target_intercept
 	name = "BCI Target Interceptor"
 	id = "comp_target_intercept"
@@ -285,6 +375,51 @@
 	name = "Counter Overlay Component"
 	id = "comp_counter_overlay"
 	build_path = /obj/item/circuit_component/counter_overlay
+
+/datum/design/component/foreach
+	name = "For Each Component"
+	id = "comp_foreach"
+	build_path = /obj/item/circuit_component/foreach
+
+/datum/design/component/filter_list
+	name = "Filter List Component"
+	id = "comp_filter_list"
+	build_path = /obj/item/circuit_component/filter_list
+
+/datum/design/component/mod_action
+	name = "MOD Action Component"
+	id = "comp_mod_action"
+	build_path = /obj/item/circuit_component/equipment_action/mod
+
+/datum/design/component/id_getter
+	name = "ID Getter Component"
+	id = "comp_id_getter"
+	build_path = /obj/item/circuit_component/id_getter
+
+/datum/design/component/id_info_reader
+	name = "ID Info Reader Component"
+	id = "comp_id_info_reader"
+	build_path = /obj/item/circuit_component/id_info_reader
+
+/datum/design/component/id_access_reader
+	name = "ID Access Reader Component"
+	id = "comp_id_access_reader"
+	build_path = /obj/item/circuit_component/id_access_reader
+
+/datum/design/component/setter_trigger
+	name = "Set Variable Trigger"
+	id = "comp_set_variable_trigger"
+	build_path = /obj/item/circuit_component/variable/setter/trigger
+
+/datum/design/component/view_sensor
+	name = "View Sensor Component"
+	id = "comp_view_sensor"
+	build_path = /obj/item/circuit_component/view_sensor
+
+/datum/design/component/access_checker
+	name = "Access Checker Component"
+	id = "comp_access_checker"
+	build_path = /obj/item/circuit_component/compare/access
 
 /datum/design/compact_remote_shell
 	name = "Compact Remote Shell"
@@ -378,6 +513,18 @@
 	build_type = PROTOLATHE | COMPONENT_PRINTER
 	category = list("Circuitry", "Shells")
 
+/datum/design/dispenser_shell
+	name = "Dispenser Shell"
+	desc = "A dispenser shell that can dispense items."
+	id = "dispenser_shell"
+	materials = list(
+		/datum/material/glass = 5000,
+		/datum/material/iron = 15000,
+	)
+	build_path = /obj/item/shell/dispenser
+	build_type = PROTOLATHE | COMPONENT_PRINTER
+	category = list("Circuitry", "Shells")
+
 /datum/design/bci_shell
 	name = "Brain-Computer Interface Shell"
 	desc = "An implant that can be placed in a user's head to control circuits using their brain."
@@ -409,3 +556,21 @@
 	build_path = /obj/item/circuitboard/machine/bci_implanter
 	build_type = IMPRINTER | COMPONENT_PRINTER
 	category = list("Circuitry", "Core")
+
+/datum/design/assembly_shell
+	name = "Assembly Shell"
+	desc = "An assembly shell that can be attached to wires and other assemblies."
+	id = "assembly_shell"
+	materials = list(/datum/material/glass = 2000, /datum/material/iron = 5000)
+	build_path = /obj/item/assembly/wiremod
+	build_type = PROTOLATHE | COMPONENT_PRINTER
+	category = list("Circuitry", "Shells")
+
+/datum/design/mod_module_shell
+	name = "MOD Module Shell"
+	desc = "A module shell that allows a circuit to be inserted into, and interface with, a MODsuit."
+	id = "module_shell"
+	materials = list(/datum/material/glass = 2000)
+	build_path = /obj/item/mod/module/circuit
+	build_type = MECHFAB | COMPONENT_PRINTER
+	category = list("MOD Modules", "Shells")

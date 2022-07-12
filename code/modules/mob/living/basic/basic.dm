@@ -33,7 +33,7 @@
 	/// Override for the visual attack effect shown on 'do_attack_animation()'.
 	var/attack_vis_effect
 	///Played when someone punches the creature.
-	var/attacked_sound = "punch" //This should be an element
+	var/attacked_sound = SFX_PUNCH //This should be an element
 
 	///What kind of objects this mob can smash.
 	var/environment_smash = ENVIRONMENT_SMASH_NONE
@@ -131,7 +131,9 @@
 	return result
 
 /mob/living/basic/vv_edit_var(vname, vval)
+	. = ..()
 	if(vname == NAMEOF(src, speed))
+		datum_flags |= DF_VAR_EDITED
 		set_varspeed(vval)
 
 /mob/living/basic/proc/set_varspeed(var_value)
@@ -144,3 +146,7 @@
 	add_or_update_variable_movespeed_modifier(/datum/movespeed_modifier/simplemob_varspeed, multiplicative_slowdown = speed)
 	SEND_SIGNAL(src, POST_BASIC_MOB_UPDATE_VARSPEED)
 
+/mob/living/basic/relaymove(mob/living/user, direction)
+	if(user.incapacitated())
+		return
+	return relaydrive(user, direction)

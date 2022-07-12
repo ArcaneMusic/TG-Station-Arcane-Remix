@@ -81,10 +81,9 @@ GLOBAL_LIST_EMPTY(bodycontainers) //Let them act as spawnpoints for revenants an
 /obj/structure/bodycontainer/attackby(obj/P, mob/user, params)
 	add_fingerprint(user)
 	if(istype(P, /obj/item/pen))
-		if(!user.is_literate())
-			to_chat(user, span_notice("You scribble illegibly on the side of [src]!"))
+		if(!user.can_write(P))
 			return
-		var/t = stripped_input(user, "What would you like the label to be?", text("[]", name), null)
+		var/t = tgui_input_text(user, "What would you like the label to be?", text("[]", name), null)
 		if (user.get_active_held_item() != P)
 			return
 		if(!user.canUseTopic(src, BE_CLOSE))
@@ -248,7 +247,7 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	if(locked)
 		return //don't let you cremate something twice or w/e
 	// Make sure we don't delete the actual morgue and its tray
-	var/list/conts = GetAllContents() - src - connected
+	var/list/conts = get_all_contents() - src - connected
 
 	if(!conts.len)
 		audible_message(span_hear("You hear a hollow crackle."))
@@ -324,6 +323,9 @@ GLOBAL_LIST_EMPTY(crematoriums)
 	qdel(src)
 
 /obj/structure/tray/attack_paw(mob/user, list/modifiers)
+	return attack_hand(user, modifiers)
+
+/obj/structure/tray/attack_robot(mob/user, list/modifiers)
 	return attack_hand(user, modifiers)
 
 /obj/structure/tray/attack_hand(mob/user, list/modifiers)

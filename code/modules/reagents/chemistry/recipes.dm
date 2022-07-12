@@ -195,7 +195,7 @@
 		var/datum/reagent/reagent = holder.get_reagent(id)
 		if(!reagent)
 			return
-		reagent.volume =  round((reagent.volume*0.98), 0.01) //Slowly lower yield per tick
+		reagent.volume = round((reagent.volume*0.98), 0.01) //Slowly lower yield per tick
 
 /**
  * Occurs when a reation is too impure (i.e. it's below purity_min)
@@ -258,7 +258,7 @@
 				spawned_mob = new mob_class(get_turf(holder.my_atom))//Spawn our specific mob_class
 			spawned_mob.faction |= mob_faction
 			if(prob(50))
-				for(var/j = 1, j <= rand(1, 3), j++)
+				for(var/j in 1 to rand(1, 3))
 					step(spawned_mob, pick(NORTH,SOUTH,EAST,WEST))
 
 /**
@@ -359,7 +359,7 @@
 //Spews out the inverse of the chems in the beaker of the products/reactants only
 /datum/chemical_reaction/proc/explode_invert_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE, accept_impure = TRUE)
 	var/datum/reagents/invert_reagents = new (2100, NO_REACT)//I think the biggest size we can get is 2100?
-	var/datum/effect_system/smoke_spread/chem/smoke = new()
+	var/datum/effect_system/fluid_spread/smoke/chem/smoke = new()
 	var/sum_volume = 0
 	invert_reagents.my_atom = holder.my_atom //Give the gas a fingerprint
 	for(var/datum/reagent/reagent as anything in holder.reagent_list) //make gas for reagents, has to be done this way, otherwise it never stops Exploding
@@ -379,8 +379,8 @@
 	if(!force_range)
 		force_range = (sum_volume/6) + 3
 	if(invert_reagents.reagent_list)
-		smoke.set_up(invert_reagents, force_range, holder.my_atom)
-		smoke.start()
+		smoke.set_up(force_range, holder = holder.my_atom, location = holder.my_atom, carry = invert_reagents)
+		smoke.start(log = TRUE)
 	holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, launching the aerosolized reagents into the air!")
 	if(clear_reactants)
 		clear_reactants(holder)
@@ -390,7 +390,7 @@
 //Spews out the corrisponding reactions reagents  (products/required) of the beaker in a smokecloud. Doesn't spew catalysts
 /datum/chemical_reaction/proc/explode_smoke(datum/reagents/holder, datum/equilibrium/equilibrium, force_range = 0, clear_products = TRUE, clear_reactants = TRUE)
 	var/datum/reagents/reagents = new/datum/reagents(2100, NO_REACT)//Lets be safe first
-	var/datum/effect_system/smoke_spread/chem/smoke = new()
+	var/datum/effect_system/fluid_spread/smoke/chem/smoke = new()
 	reagents.my_atom = holder.my_atom //fingerprint
 	var/sum_volume = 0
 	for (var/datum/reagent/reagent as anything in holder.reagent_list)
@@ -400,8 +400,8 @@
 	if(!force_range)
 		force_range = (sum_volume/6) + 3
 	if(reagents.reagent_list)
-		smoke.set_up(reagents, force_range, holder.my_atom)
-		smoke.start()
+		smoke.set_up(force_range, holder = holder.my_atom, location = holder.my_atom, carry = reagents)
+		smoke.start(log = TRUE)
 	holder.my_atom.audible_message("The [holder.my_atom] suddenly explodes, launching the aerosolized reagents into the air!")
 	if(clear_reactants)
 		clear_reactants(holder)
@@ -503,7 +503,7 @@
 * * snowball_chance - the chance to spawn a snowball on a turf
 */
 /datum/chemical_reaction/proc/freeze_radius(datum/reagents/holder, datum/equilibrium/equilibrium, temp, radius = 2, freeze_duration = 50 SECONDS, snowball_chance = 0)
-	for(var/any_turf in circlerangeturfs(center = get_turf(holder.my_atom), radius = radius))
+	for(var/any_turf in circle_range_turfs(center = get_turf(holder.my_atom), radius = radius))
 		if(!istype(any_turf, /turf/open))
 			continue
 		var/turf/open/open_turf = any_turf

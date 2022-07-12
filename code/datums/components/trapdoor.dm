@@ -50,7 +50,8 @@
 /datum/component/trapdoor/UnregisterFromParent()
 	. = ..()
 	UnregisterSignal(SSdcs, COMSIG_GLOB_TRAPDOOR_LINK)
-	UnregisterSignal(assembly, COMSIG_ASSEMBLY_PULSED)
+	if(assembly)
+		UnregisterSignal(assembly, COMSIG_ASSEMBLY_PULSED)
 	UnregisterSignal(parent, COMSIG_TURF_CHANGE)
 
 /datum/component/trapdoor/proc/decal_detached(datum/source, description, cleanable, directional, pic)
@@ -74,6 +75,7 @@
 
 ///called by linking remotes to tie an assembly to the trapdoor
 /datum/component/trapdoor/proc/on_link_requested(datum/source, obj/item/assembly/trapdoor/assembly)
+	SIGNAL_HANDLER
 	if(get_dist(parent, assembly) > TRAPDOOR_LINKING_SEARCH_RANGE)
 		return
 	. = LINKED_UP

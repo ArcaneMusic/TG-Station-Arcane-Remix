@@ -115,3 +115,12 @@ GLOBAL_LIST_INIT(blood_types, generate_blood_types())
 				.[E.key_third_person] = list(E)
 			else
 				.[E.key_third_person] |= E
+
+/proc/get_crewmember_minds()
+	var/list/minds = list()
+	for(var/data in GLOB.data_core.locked)
+		var/datum/data/record/record = data
+		var/datum/mind/mind = record.fields["mindref"]
+		if(mind)
+			minds += mind
+	return minds

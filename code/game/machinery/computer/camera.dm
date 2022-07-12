@@ -21,7 +21,7 @@
 	var/list/cam_plane_masters
 	var/atom/movable/screen/background/cam_background
 
-	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_SET_MACHINE | INTERACT_MACHINE_REQUIRES_SIGHT
+	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON|INTERACT_MACHINE_SET_MACHINE|INTERACT_MACHINE_REQUIRES_SIGHT
 
 /obj/machinery/computer/security/Initialize(mapload)
 	. = ..()
@@ -40,8 +40,10 @@
 	cam_screen.del_on_map_removal = FALSE
 	cam_screen.screen_loc = "[map_name]:1,1"
 	cam_plane_masters = list()
-	for(var/plane in subtypesof(/atom/movable/screen/plane_master))
-		var/atom/movable/screen/instance = new plane()
+	for(var/plane in subtypesof(/atom/movable/screen/plane_master) - /atom/movable/screen/plane_master/blackness)
+		var/atom/movable/screen/plane_master/instance = new plane()
+		if(instance.blend_mode_override)
+			instance.blend_mode = instance.blend_mode_override
 		instance.assigned_map = map_name
 		instance.del_on_map_removal = FALSE
 		instance.screen_loc = "[map_name]:CENTER"
@@ -62,6 +64,7 @@
 		network += "[port.id]_[i]"
 
 /obj/machinery/computer/security/ui_interact(mob/user, datum/tgui/ui)
+	. = ..()
 	// Update UI
 	ui = SStgui.try_update_ui(user, src, ui)
 
@@ -87,6 +90,12 @@
 		// Open UI
 		ui = new(user, src, "CameraConsole", name)
 		ui.open()
+
+/obj/machinery/computer/security/ui_status(mob/user)
+	. = ..()
+	if(. == UI_DISABLED)
+		return UI_CLOSE
+	return .
 
 /obj/machinery/computer/security/ui_data()
 	var/list/data = list()
@@ -118,11 +127,11 @@
 		return
 
 	if(action == "switch_camera")
-		var/c_tag = params["name"]
+		var/c_tag = format_text(params["name"])
 		var/list/cameras = get_available_cameras()
 		var/obj/machinery/camera/selected_camera = cameras[c_tag]
 		active_camera = selected_camera
-		playsound(src, get_sfx("terminal_type"), 25, FALSE)
+		playsound(src, get_sfx(SFX_TERMINAL_TYPE), 25, FALSE)
 
 		if(!selected_camera)
 			return TRUE
@@ -166,6 +175,7 @@
 	cam_background.fill_rect(1, 1, size_x, size_y)
 
 /obj/machinery/computer/security/ui_close(mob/user)
+	. = ..()
 	var/user_ref = REF(user)
 	var/is_living = isliving(user)
 	// Living creature or not, we remove you anyway.
@@ -277,21 +287,7 @@
 	var/icon_state_off = "entertainment_blank"
 	var/icon_state_on = "entertainment"
 
-/obj/machinery/computer/security/telescreen/entertainment/directional/north
-	dir = SOUTH
-	pixel_y = 32
-
-/obj/machinery/computer/security/telescreen/entertainment/directional/south
-	dir = NORTH
-	pixel_y = -32
-
-/obj/machinery/computer/security/telescreen/entertainment/directional/east
-	dir = WEST
-	pixel_x = 32
-
-/obj/machinery/computer/security/telescreen/entertainment/directional/west
-	dir = EAST
-	pixel_x = -32
+MAPPING_DIRECTIONAL_HELPERS(/obj/machinery/computer/security/telescreen/entertainment, 32)
 
 /obj/machinery/computer/security/telescreen/entertainment/Initialize(mapload)
 	. = ..()

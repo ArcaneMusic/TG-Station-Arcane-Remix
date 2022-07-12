@@ -5,6 +5,7 @@
 	desc = "It's watching you closely."
 	icon_state = "necrocrate"
 	resistance_flags = LAVA_PROOF | FIRE_PROOF | ACID_PROOF
+	can_install_electronics = FALSE
 
 /obj/structure/closet/crate/necropolis/tendril
 	desc = "It's watching you suspiciously. You need a skeleton key to open it."
@@ -28,7 +29,7 @@
 		if(2)
 			new /obj/item/soulstone/anybody/mining(src)
 		if(3)
-			new /obj/item/organ/cyberimp/arm/katana(src)
+			new /obj/item/organ/internal/cyberimp/arm/katana(src)
 		if(4)
 			new /obj/item/clothing/glasses/godeye(src)
 		if(5)
@@ -49,11 +50,11 @@
 		if(8)
 			new /obj/item/rod_of_asclepius(src)
 		if(9)
-			new /obj/item/organ/heart/cursed/wizard(src)
+			new /obj/item/organ/internal/heart/cursed/wizard(src)
 		if(10)
 			new /obj/item/ship_in_a_bottle(src)
 		if(11)
-			new /obj/item/clothing/suit/space/hardsuit/berserker(src)
+			new /obj/item/clothing/suit/hooded/berserker(src)
 		if(12)
 			new /obj/item/jacobs_ladder(src)
 		if(13)
@@ -65,7 +66,7 @@
 		if(16)
 			new /obj/item/immortality_talisman(src)
 		if(17)
-			new /obj/item/book/granter/spell/summonitem(src)
+			new /obj/item/book/granter/action/spell/summonitem(src)
 		if(18)
 			new /obj/item/book_of_babel(src)
 		if(19)
@@ -96,7 +97,7 @@
 		if(2)
 			new /obj/item/lava_staff(src)
 		if(3)
-			new /obj/item/book/granter/spell/sacredflame(src)
+			new /obj/item/book/granter/action/spell/sacredflame(src)
 		if(4)
 			new /obj/item/dragons_blood(src)
 
@@ -111,7 +112,7 @@
 	name = "bubblegum chest"
 
 /obj/structure/closet/crate/necropolis/bubblegum/PopulateContents()
-	new /obj/item/clothing/suit/space/hardsuit/hostile_environment(src)
+	new /obj/item/clothing/suit/hooded/hostile_environment(src)
 	var/loot = rand(1,2)
 	switch(loot)
 		if(1)
@@ -138,7 +139,7 @@
 	var/list/choices = subtypesof(/obj/machinery/anomalous_crystal)
 	var/random_crystal = pick(choices)
 	new random_crystal(src)
-	new /obj/item/organ/vocal_cords/colossus(src)
+	new /obj/item/organ/internal/vocal_cords/colossus(src)
 
 /obj/structure/closet/crate/necropolis/colossus/crusher
 	name = "angelic colossus chest"

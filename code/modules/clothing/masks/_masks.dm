@@ -50,10 +50,15 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
+<<<<<<< HEAD
 		if(HAS_BLOOD_DNA(src))
 			var/mutable_appearance/bloody_mask = mutable_appearance('icons/effects/blood.dmi', "maskblood")
 			bloody_mask.color = get_blood_dna_color(return_blood_DNA())
 			. += bloody_mask
+=======
+		if(GET_ATOM_BLOOD_DNA_LENGTH(src))
+			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
+>>>>>>> upstream/master
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()
@@ -68,7 +73,6 @@
 	mask_adjusted = !mask_adjusted
 	if(!mask_adjusted)
 		src.icon_state = initial(icon_state)
-		permeability_coefficient = initial(permeability_coefficient)
 		clothing_flags |= visor_flags
 		flags_inv |= visor_flags_inv
 		flags_cover |= visor_flags_cover
@@ -77,7 +81,6 @@
 	else
 		icon_state += "_up"
 		to_chat(user, span_notice("You push \the [src] out of the way."))
-		permeability_coefficient = 1
 		clothing_flags &= ~visor_flags
 		flags_inv &= ~visor_flags_inv
 		flags_cover &= ~visor_flags_cover
