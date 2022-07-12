@@ -92,7 +92,6 @@
 	var/damage_color = ""
 	/// Should we even use a color?
 	var/use_damage_color = FALSE
-	var/no_update = 0
 
 	///for nonhuman bodypart (e.g. monkey)
 	var/animal_origin
@@ -650,34 +649,13 @@
 	else
 		draw_color = null
 
-	if(HAS_TRAIT(owner, TRAIT_HUSK) && is_organic_limb())
-		species_id = "husk" //overrides species_id
-		dmg_overlay_type = "" //no damage overlay shown when husked
-		should_draw_gender = FALSE
-		should_draw_greyscale = FALSE
-		no_update = TRUE
-
-	if(HAS_TRAIT(src, TRAIT_PLASMABURNT) && is_organic_limb())
-		species_id = SPECIES_PLASMAMAN
-		dmg_overlay_type = ""
-		should_draw_gender = FALSE
-		should_draw_greyscale = FALSE
-		no_update = TRUE
-
-	if(HAS_TRAIT(owner, TRAIT_INVISIBLE_MAN) && is_organic_limb())
-		species_id = "invisible" //overrides species_id
-		dmg_overlay_type = "" //no damage overlay shown when invisible since the wounds themselves are invisible.
-		should_draw_gender = FALSE
-		should_draw_greyscale = FALSE
-		no_update = TRUE
+	if(!is_creating)
+		return
 
 	if(owner?.dna.blood_type?.color)
 		damage_color = owner.dna.blood_type.color
 	else
 		damage_color = COLOR_BLOOD
-
-	if(no_update || !is_creating)
-		return
 
 	if(!animal_origin && ishuman(owner))
 		var/mob/living/carbon/human/human_owner = owner
@@ -690,10 +668,8 @@
 			skin_tone = human_owner.skin_tone
 		else
 			skin_tone = ""
-
-		body_gender = human_owner.body_type
-		should_draw_gender = owner_species.sexes
 		use_damage_color = owner_species.use_damage_color
+
 		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits)) && uses_mutcolor) //Ethereal code. Motherfuckers.
 			if(owner_species.fixed_mut_color)
 				species_color = owner_species.fixed_mut_color
