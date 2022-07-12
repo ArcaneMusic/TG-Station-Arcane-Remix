@@ -256,8 +256,8 @@
 
 	if(!bloody_feet)
 		bloody_feet = mutable_appearance('icons/effects/blood.dmi', "shoeblood", SHOES_LAYER)
-	if(HAS_BLOOD_DNA(parent_atom))
-		bloody_feet.color = get_blood_dna_color(parent_atom.return_blood_DNA())
+	if(GET_ATOM_BLOOD_DNA_LENGTH(parent_atom))
+		bloody_feet.color = get_blood_dna_color(GET_ATOM_BLOOD_DNA(parent_atom))
 	RegisterSignal(parent, COMSIG_COMPONENT_CLEAN_ACT, .proc/on_clean)
 	RegisterSignal(parent, COMSIG_STEP_ON_BLOOD, .proc/on_step_blood)
 	RegisterSignal(parent, COMSIG_CARBON_UNEQUIP_SHOECOVER, .proc/unequip_shoecover)

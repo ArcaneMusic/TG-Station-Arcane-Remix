@@ -50,15 +50,10 @@
 	if(body_parts_covered & HEAD)
 		if(damaged_clothes)
 			. += mutable_appearance('icons/effects/item_damage.dmi', "damagedmask")
-<<<<<<< HEAD
-		if(HAS_BLOOD_DNA(src))
-			var/mutable_appearance/bloody_mask = mutable_appearance('icons/effects/blood.dmi', "maskblood")
-			bloody_mask.color = get_blood_dna_color(return_blood_DNA())
-			. += bloody_mask
-=======
 		if(GET_ATOM_BLOOD_DNA_LENGTH(src))
-			. += mutable_appearance('icons/effects/blood.dmi', "maskblood")
->>>>>>> upstream/master
+			var/mutable_appearance/bloody_mask = mutable_appearance('icons/effects/blood.dmi', "maskblood")
+			bloody_mask.color = get_blood_dna_color(GET_ATOM_BLOOD_DNA(src))
+			. += bloody_mask
 
 /obj/item/clothing/mask/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
 	..()

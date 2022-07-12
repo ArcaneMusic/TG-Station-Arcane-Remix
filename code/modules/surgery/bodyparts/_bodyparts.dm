@@ -691,14 +691,10 @@
 		else
 			skin_tone = ""
 
-<<<<<<< HEAD
 		body_gender = human_owner.body_type
 		should_draw_gender = owner_species.sexes
 		use_damage_color = owner_species.use_damage_color
-		if((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits))
-=======
 		if(((MUTCOLORS in owner_species.species_traits) || (DYNCOLORS in owner_species.species_traits)) && uses_mutcolor) //Ethereal code. Motherfuckers.
->>>>>>> upstream/master
 			if(owner_species.fixed_mut_color)
 				species_color = owner_species.fixed_mut_color
 			else

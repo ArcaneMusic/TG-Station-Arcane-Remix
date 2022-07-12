@@ -53,7 +53,7 @@
 			bloody_shoes = mutable_appearance('icons/effects/64x64.dmi', "shoeblood_large")
 		else
 			bloody_shoes = mutable_appearance('icons/effects/blood.dmi', "shoeblood")
-		bloody_shoes.color = get_blood_dna_color(return_blood_DNA())
+		bloody_shoes.color = get_blood_dna_color(GET_ATOM_BLOOD_DNA(src))
 		. += bloody_shoes
 
 /obj/item/clothing/shoes/examine(mob/user)

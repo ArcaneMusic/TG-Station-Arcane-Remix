@@ -322,16 +322,11 @@
 	)
 
 	if(blood)
-<<<<<<< HEAD
-		target_types += /obj/effect/decal/cleanable/xenoblood
-		target_types += /obj/effect/decal/cleanable/blood
-=======
 		target_types += list(
 			/obj/effect/decal/cleanable/xenoblood,
 			/obj/effect/decal/cleanable/blood,
-			/obj/effect/decal/cleanable/trail_holder,
+			/obj/effect/decal/cleanable/blood/trail_holder,
 		)
->>>>>>> upstream/master
 
 	if(pests)
 		target_types += list(

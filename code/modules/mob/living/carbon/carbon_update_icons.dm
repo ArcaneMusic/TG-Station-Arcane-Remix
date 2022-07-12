@@ -109,7 +109,7 @@
 		if(iter_part.dmg_overlay_type)
 			if(iter_part.brutestate)
 				if(iter_part.use_damage_color)
-					brute_overlay.color = BP.damage_color // This is likely not working! Check before merge.
+					damage_overlay.color = iter_part.damage_color // This is likely not working! Check before merge.
 				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_[iter_part.brutestate]0") //we're adding icon_states of the base image as overlays
 			if(iter_part.burnstate)
 				damage_overlay.add_overlay("[iter_part.dmg_overlay_type]_[iter_part.body_zone]_0[iter_part.burnstate]")

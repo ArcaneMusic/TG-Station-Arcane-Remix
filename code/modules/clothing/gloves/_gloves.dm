@@ -34,7 +34,7 @@
 		. += mutable_appearance('icons/effects/item_damage.dmi', "damagedgloves")
 	if(GET_ATOM_BLOOD_DNA_LENGTH(src))
 		var/mutable_appearance/bloody_hands = mutable_appearance('icons/effects/blood.dmi', "bloodyhands")
-		bloody_hands.color = get_blood_dna_color(return_blood_DNA())
+		bloody_hands.color = get_blood_dna_color(GET_ATOM_BLOOD_DNA(src))
 		. += bloody_hands
 
 /obj/item/clothing/gloves/update_clothes_damaged_state(damaged_state = CLOTHING_DAMAGED)
