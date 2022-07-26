@@ -13,6 +13,9 @@
 	area_flags = BLOBS_ALLOWED | UNIQUE_AREA | CULT_PERMITTED | PERSISTENT_ENGRAVINGS
 	airlock_wires = /datum/wires/airlock/maint
 	sound_environment = SOUND_AREA_TUNNEL_ENCLOSED
+	forced_ambience = TRUE
+	ambient_buzz = 'sound/ambience/source_corridor2.ogg'
+	ambient_buzz_vol = 20
 
 //Maintenance - Departmental
 
@@ -400,6 +403,10 @@
 	name = "\improper Research Director's Office"
 	icon_state = "rd_office"
 
+/area/station/command/heads_quarters/qm
+	name = "\improper Quartermaster's Office"
+	icon_state = "qm_office"
+
 //Command - Teleporters
 
 /area/station/command/teleporter
@@ -577,6 +584,10 @@
 	name = "\improper Atrium"
 	icon_state = "bar"
 	sound_environment = SOUND_AREA_WOODFLOOR
+
+/area/station/service/bar/backroom
+	name = "\improper Bar Backroom"
+	icon_state = "bar_backroom"
 
 /area/station/service/electronic_marketing_den
 	name = "\improper Electronic Marketing Den"
@@ -1244,10 +1255,6 @@
 /area/station/cargo/lobby
 	name = "\improper Cargo Lobby"
 	icon_state = "cargo_lobby"
-
-/area/station/cargo/qm
-	name = "\improper Quartermaster's Office"
-	icon_state = "quart_office"
 
 /area/station/cargo/miningdock
 	name = "\improper Mining Dock"
