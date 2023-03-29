@@ -2922,6 +2922,7 @@
 #include "code\modules\cargo\markets\market_items\misc.dm"
 #include "code\modules\cargo\markets\market_items\tools.dm"
 #include "code\modules\cargo\markets\market_items\weapons.dm"
+#include "code\modules\cargo\markets\new_markets\slots.dm"
 #include "code\modules\cargo\packs\_packs.dm"
 #include "code\modules\cargo\packs\costumes_toys.dm"
 #include "code\modules\cargo\packs\emergency.dm"
