@@ -15,13 +15,18 @@
 	full_w_class = WEIGHT_CLASS_BULKY
 	singular_name = "ore chunk"
 	material_flags = MATERIAL_EFFECTS
-	var/points = 0 //How many points this ore gets you from the ore redemption machine
-	var/refined_type = null //What this ore defaults to being refined into
-	var/mine_experience = 5 //How much experience do you get for mining this ore?
+	///How many points this ore gets you from the ore redemption machine
+	var/points = 0
+	///What this ore defaults to being refined into
+	var/refined_type = null
+	//How much experience do you get for mining this ore?
+	var/mine_experience = 5
 	novariants = TRUE // Ore stacks handle their icon updates themselves to keep the illusion that there's more going
 	var/list/stack_overlays
-	var/scan_state = "" //Used by mineral turfs for their scan overlay.
-	var/spreadChance = 0 //Also used by mineral turfs for spreading veins
+	///Used by mineral turfs for their scan overlay.
+	var/scan_state = ""
+	///Also used by mineral turfs for spreading veins
+	var/spreadChance = 0
 
 /obj/item/stack/ore/update_overlays()
 	. = ..()
