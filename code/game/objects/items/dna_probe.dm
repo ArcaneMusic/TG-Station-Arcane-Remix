@@ -146,3 +146,29 @@
 #undef DNA_PROBE_SCAN_PLANTS
 #undef DNA_PROBE_SCAN_ANIMALS
 #undef DNA_PROBE_SCAN_HUMANS
+
+
+/obj/item/appearance_modifier
+	name = "Appearance Modifier"
+	desc = "Can be used to change your appearance."
+	icon = 'icons/obj/tools.dmi'
+	icon_state = "crowbar"
+
+/obj/item/appearance_modifier/ui_interact(mob/user, datum/tgui/ui)
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "AppearanceModifier", "Genetic Appearance")
+		ui.open()
+
+/obj/item/appearance_modifier/ui_static_data(mob/user)
+	return return_atmos_handbooks()
+
+/obj/item/appearance_modifier/ui_data(mob/user)
+	var/list/data = list()
+	return data
+
+/obj/item/appearance_modifier/ui_act(mob/user)
+	. = ..()
+	if(.)
+		return
+	. = TRUE
