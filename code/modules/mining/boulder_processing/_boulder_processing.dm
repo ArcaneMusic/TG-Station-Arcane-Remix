@@ -49,8 +49,8 @@
 	input_beaker = new (src)
 	output_beaker = new (src)
 
-	AddComponent(/datum/component/plumbing/simple_demand, input_beaker.reagents, extend_pipe_to_edge = TRUE)
-	AddComponent(/datum/component/plumbing/simple_supply, output_beaker.reagents, extend_pipe_to_edge = TRUE)
+	AddComponent(/datum/component/plumbing/simple_demand, custom_receiver = input_beaker.reagents, extend_pipe_to_edge = TRUE)
+	AddComponent(/datum/component/plumbing/simple_supply, custom_receiver = output_beaker.reagents, extend_pipe_to_edge = TRUE)
 
 	register_context()
 
@@ -249,7 +249,7 @@
 	if(!input_beaker || !output_beaker)
 		CRASH("No input or output beaker found within boulder processing machinery!")
 	// input_beaker.reagents.remove_all(10, FALSE)
-	if(input_beaker.reagents.total_amount < CHEMICAL_COST_PER_BOOST)
+	if(input_beaker.reagents.total_volume < CHEMICAL_COST_PER_BOOST)
 		return //Not enough chemicals to boost the machine.
 	var/total_chems = 0
 	for(var/chem as anything in allowed_reagents)
@@ -264,8 +264,15 @@
 		if(total_chems >= CHEMICAL_COST_PER_BOOST)
 			refining_efficiency = allowed_reagents[booster_fuel] //Only take the boost of the lowest boost that it was able to take it from.
 			playsound(src, 'sound/items/robofafafoggy.ogg', 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
-			return
-
+			var/leftovers = output_beaker.reagents.add_reagent(/datum/reagent/toxin/acid/industrial_waste, CHEMICAL_COST_PER_BOOST)
+			if(leftovers < CHEMICAL_COST_PER_BOOST)
+				var/datum/effect_system/fluid_spread/smoke/chem/spew_waste = new
+				spew_waste.attach(src)
+				playsound(src, 'sound/effects/smoke.ogg', 50, TRUE, -3)
+				if(spew_waste)
+					spew_waste.set_up(range = 2, amount = (CHEMICAL_COST_PER_BOOST - leftovers), holder = src, location = drop_location(), carry = output_beaker.reagents, silent = FALSE)
+					spew_waste.start(log = TRUE)
+				return
 
 /**
  * Checks if this machine can process this material

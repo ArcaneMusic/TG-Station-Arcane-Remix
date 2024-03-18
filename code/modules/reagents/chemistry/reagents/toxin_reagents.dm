@@ -1137,16 +1137,6 @@
 	acidpwr = 30.0
 	ph = 0.0
 
-/datum/reagent/toxin/acid/industrial_waste/intercept_reagents_transfer(datum/reagents/target)
-	. = ..()
-	if(target.total_volume == target.maximum_volume)
-		spew_waste(round(volume / 15))
-		return TRUE
-
-/datum/reagent/toxin/acid/industrial_waste/burn(datum/reagents/holder)
-	. = ..()
-	spew_waste(spew_range = 2)
-
 /datum/reagent/toxin/acid/industrial_waste/expose_obj(obj/exposed_obj, reac_volume)
 	. = ..()
 	if(reac_volume < 5)
@@ -1168,21 +1158,6 @@
 	if(!QDELETED(goo))
 		goo.reagents.add_reagent(type, reac_volume)
 
-/**
- * Pick a random turf in the spew range and split our waste there.
- */
-/datum/reagent/toxin/acid/industrial_waste/proc/spew_waste(spew_range = 1)
-	var/turf/dropturf = get_turf(holder.my_atom) //default to our own turf if we can't find a better one.
-	var/list/turfs = TURF_NEIGHBORS(dropturf)
-	while(length(turfs))
-		var/turf/possible_turf = pick_n_take(turfs)
-		if(possible_turf.is_blocked_turf(TRUE))
-			continue
-		else
-			dropturf = possible_turf
-			break
-	expose_turf(dropturf, volume/2)
-	volume = volume/2
 
 /datum/reagent/toxin/delayed
 	name = "Toxin Microcapsules"

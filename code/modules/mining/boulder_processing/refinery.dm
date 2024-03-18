@@ -58,6 +58,12 @@
 	circuit = /obj/item/circuitboard/machine/smelter
 	usage_sound = 'sound/machines/mining/smelter.ogg'
 	action = "smelting"
+	allowed_reagents = list(
+		/datum/reagent/medicine/c2/penthrite = 2.0,
+		/datum/reagent/gunpowder = 1.5,
+		/datum/reagent/pyrosium = 1.2,
+		/datum/reagent/toxin/acid/industrial_waste = 0.1,
+	)
 
 /obj/machinery/bouldertech/refinery/smelter/Initialize(mapload)
 	. = ..()
