@@ -10,6 +10,12 @@
 	circuit = /obj/item/circuitboard/machine/refinery
 	usage_sound = 'sound/machines/mining/refinery.ogg'
 	action = "crushing"
+	allowed_reagents = list(
+		/datum/reagent/toxin/acid/nitracid = 2.0,
+		/datum/reagent/sorium = 1.5,
+		/datum/reagent/lube = 1.2,
+		/datum/reagent/toxin/acid/industrial_waste = 0.1,
+	)
 
 /obj/machinery/bouldertech/refinery/can_process_material(datum/material/possible_mat)
 	var/static/list/processable_materials

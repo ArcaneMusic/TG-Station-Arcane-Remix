@@ -1,3 +1,5 @@
+#define CHEMICAL_COST_PER_BOOST 10
+
 /obj/machinery/bouldertech
 	name = "bouldertech brand refining machine"
 	desc = "You shouldn't be seeing this! And bouldertech isn't even a real company!"
@@ -21,6 +23,11 @@
 	var/points_held = 0
 	///The action verb to display to players
 	var/action = "processing"
+
+	// Variables related to chemical boosting, and waste management.
+
+	/// The reagents that are allowed to be used as boosters for the machine. Associated value multiplies the ore yield.
+	var/list/allowed_reagents = list()
 	/// Beaker object serving as our input storage. Nothing much happens if this gets overly full.
 	var/obj/item/reagent_containers/cup/beaker/input_beaker
 	/// Beacker object serving as our output storage. Bad things happen if this backs up and keeps processing!
@@ -238,8 +245,27 @@
  */
 /obj/machinery/bouldertech/proc/check_for_boosts()
 	PROTECTED_PROC(TRUE)
-
 	refining_efficiency = initial(refining_efficiency) //Reset refining efficiency to 100%.
+	if(!input_beaker || !output_beaker)
+		CRASH("No input or output beaker found within boulder processing machinery!")
+	// input_beaker.reagents.remove_all(10, FALSE)
+	if(input_beaker.reagents.total_amount < CHEMICAL_COST_PER_BOOST)
+		return //Not enough chemicals to boost the machine.
+	var/total_chems = 0
+	for(var/chem as anything in allowed_reagents)
+
+		if(!allowed_reagents[chem])
+			output_beaker.reagents.add_reagent(/datum/reagent/toxin/acid/industrial_waste, input_beaker.reagents.reagent_list[chem])
+			input_beaker.reagents.del_reagent(chem) //Remove any unwanted chemicals from the beaker, and flush it into the waste.
+			continue
+
+		var/datum/reagent/booster_fuel = chem
+		total_chems += input_beaker.reagents.remove_reagent(booster_fuel, CHEMICAL_COST_PER_BOOST - total_chems, FALSE, TRUE)
+		if(total_chems >= CHEMICAL_COST_PER_BOOST)
+			refining_efficiency = allowed_reagents[booster_fuel] //Only take the boost of the lowest boost that it was able to take it from.
+			playsound(src, 'sound/items/robofafafoggy.ogg', 50, FALSE, SHORT_RANGE_SOUND_EXTRARANGE)
+			return
+
 
 /**
  * Checks if this machine can process this material
@@ -427,3 +453,5 @@
 	playsound(loc, 'sound/machines/ping.ogg', 50, FALSE)
 
 	return TRUE
+
+#undef CHEMICAL_COST_PER_BOOST
