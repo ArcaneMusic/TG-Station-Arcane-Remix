@@ -1126,6 +1126,64 @@
 	if(affected_mob.adjustFireLoss((volume/10) * REM * normalise_creation_purity() * seconds_per_tick, updating_health = FALSE, required_bodytype = affected_bodytype)) //here you go nervar
 		return UPDATE_MOB_HEALTH
 
+/datum/reagent/toxin/acid/industrial_waste
+	name = "Industrial Waste"
+	description = "Industrial Waste produced as a side effect of efficient boulder refining. Highly toxic, corrosive, and hard to get rid of."
+	color = "#1eff00"
+	penetrates_skin = TOUCH|VAPOR
+	creation_purity = REAGENT_STANDARD_PURITY
+	purity = REAGENT_STANDARD_PURITY
+	toxpwr = 2
+	acidpwr = 30.0
+	ph = 0.0
+
+/datum/reagent/toxin/acid/industrial_waste/intercept_reagents_transfer(datum/reagents/target)
+	. = ..()
+	if(target.total_volume == target.maximum_volume)
+		spew_waste(round(volume / 15))
+		return TRUE
+
+/datum/reagent/toxin/acid/industrial_waste/burn(datum/reagents/holder)
+	. = ..()
+	spew_waste(spew_range = 2)
+
+/datum/reagent/toxin/acid/industrial_waste/expose_obj(obj/exposed_obj, reac_volume)
+	. = ..()
+	if(reac_volume < 5)
+		return // The waste is too small to do anything.
+	if(istype(exposed_obj, /obj/effect/decal/cleanable/greenglow/waste))
+		var/obj/effect/decal/cleanable/greenglow/waste/goo = exposed_obj
+		goo.visible_message(span_warning("\The new waste reactivates \the [goo]!"))
+		goo.pre_eat(FALSE)
+		if(prob(25))
+			goo.balloon_alert_to_viewers("Hisss!")
+	else
+
+/datum/reagent/toxin/acid/industrial_waste/expose_turf(turf/exposed_turf, reac_volume)
+	. = ..()
+	if(volume < 5)
+		return // The waste is too small to do anything.
+	var/obj/effect/decal/cleanable/greenglow/waste/goo
+	goo = exposed_turf.spawn_unique_cleanable(/obj/effect/decal/cleanable/greenglow/waste)
+	if(!QDELETED(goo))
+		goo.reagents.add_reagent(type, reac_volume)
+
+/**
+ * Pick a random turf in the spew range and split our waste there.
+ */
+/datum/reagent/toxin/acid/industrial_waste/proc/spew_waste(spew_range = 1)
+	var/turf/dropturf = get_turf(holder.my_atom) //default to our own turf if we can't find a better one.
+	var/list/turfs = TURF_NEIGHBORS(dropturf)
+	while(length(turfs))
+		var/turf/possible_turf = pick_n_take(turfs)
+		if(possible_turf.is_blocked_turf(TRUE))
+			continue
+		else
+			dropturf = possible_turf
+			break
+	expose_turf(dropturf, volume/2)
+	volume = volume/2
+
 /datum/reagent/toxin/delayed
 	name = "Toxin Microcapsules"
 	description = "Causes heavy toxin damage after a brief time of inactivity."

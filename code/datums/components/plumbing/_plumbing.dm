@@ -27,7 +27,7 @@
 	///Extend the pipe to the edge for wall-mounted plumbed devices, like sinks and showers
 	var/extend_pipe_to_edge = FALSE
 
-///turn_connects is for wheter or not we spin with the object to change our pipes
+///turn_connects is for whether or not we spin with the object to change our pipes
 /datum/component/plumbing/Initialize(start=TRUE, ducting_layer, turn_connects=TRUE, datum/reagents/custom_receiver, extend_pipe_to_edge = FALSE)
 	if(!ismovable(parent))
 		return COMPONENT_INCOMPATIBLE

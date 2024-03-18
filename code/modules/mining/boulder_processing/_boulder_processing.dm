@@ -21,7 +21,10 @@
 	var/points_held = 0
 	///The action verb to display to players
 	var/action = "processing"
-
+	/// Beaker object serving as our input storage. Nothing much happens if this gets overly full.
+	var/obj/item/reagent_containers/cup/beaker/input_beaker
+	/// Beacker object serving as our output storage. Bad things happen if this backs up and keeps processing!
+	var/obj/item/reagent_containers/cup/beaker/output_beaker
 	/// Cooldown associated with the sound played for collecting mining points.
 	COOLDOWN_DECLARE(sound_cooldown)
 	/// Cooldown associated with taking in boulds.
@@ -36,6 +39,12 @@
 		mat_container_flags = MATCONTAINER_NO_INSERT \
 	)
 
+	input_beaker = new (src)
+	output_beaker = new (src)
+
+	AddComponent(/datum/component/plumbing/simple_demand, input_beaker.reagents, extend_pipe_to_edge = TRUE)
+	AddComponent(/datum/component/plumbing/simple_supply, output_beaker.reagents, extend_pipe_to_edge = TRUE)
+
 	register_context()
 
 /obj/machinery/bouldertech/LateInitialize()
@@ -47,6 +56,8 @@
 
 /obj/machinery/bouldertech/Destroy()
 	silo_materials = null
+	input_beaker = null
+	output_beaker = null
 	return ..()
 
 /obj/machinery/bouldertech/on_deconstruction(disassembled)

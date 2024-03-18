@@ -9,6 +9,7 @@
 ///Special case when we are trying to teleport a boulder but there is already another boulder in our loc
 #define TURF_BLOCKED_BY_BOULDER -1
 
+// No longer a boulder_processing machine, but still highly relevant for this folder.
 /obj/machinery/brm
 	name = "boulder retrieval matrix"
 	desc = "A teleportation matrix used to retrieve boulders excavated by mining NODEs from ore vents."
