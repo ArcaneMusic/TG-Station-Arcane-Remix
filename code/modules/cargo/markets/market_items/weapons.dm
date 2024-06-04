@@ -10,7 +10,7 @@
 	price_min = CARGO_CRATE_VALUE * 1.5
 	price_max = CARGO_CRATE_VALUE * 2.75
 	stock_max = 3
-	availability_prob = 40
+	availability_prob = list(/datum/market/blackmarket = 40)
 
 /datum/market_item/weapon/shotgun_dart
 	name = "Shotgun Dart"
@@ -23,7 +23,10 @@
 	price_max = CARGO_CRATE_VALUE * 0.25
 	stock_min = 10
 	stock_max = 60
-	availability_prob = 40
+	availability_prob = list(
+		/datum/market/blackmarket = 40,
+		/datum/market/auction = 2,
+	)
 
 /datum/market_item/weapon/bone_spear
 	name = "Bone Spear"
@@ -33,7 +36,7 @@
 	price_min = CARGO_CRATE_VALUE
 	price_max = CARGO_CRATE_VALUE * 1.5
 	stock_max = 3
-	availability_prob = 60
+	availability_prob = list(/datum/market/blackmarket = 60)
 
 /datum/market_item/weapon/chainsaw
 	name = "Chainsaw"
@@ -43,7 +46,10 @@
 	price_min = CARGO_CRATE_VALUE * 1.75
 	price_max = CARGO_CRATE_VALUE * 3
 	stock_max = 1
-	availability_prob = 35
+	availability_prob = list(
+		/datum/market/blackmarket = 35,
+		/datum/market/auction = 1,
+	)
 
 /datum/market_item/weapon/switchblade
 	name = "Switchblade"
@@ -53,7 +59,7 @@
 	price_min = CARGO_CRATE_VALUE * 1.25
 	price_max = CARGO_CRATE_VALUE * 1.75
 	stock_max = 3
-	availability_prob = 45
+	availability_prob = list(/datum/market/blackmarket = 45)
 
 /datum/market_item/weapon/emp_grenade
 	name = "EMP Grenade"
@@ -63,7 +69,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.5
 	price_max = CARGO_CRATE_VALUE * 2
 	stock_max = 2
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/weapon/fisher
 	name = "SC/FISHER Saboteur Handgun"
@@ -73,7 +79,10 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
 	stock_max = 1
-	availability_prob = 75
+	availability_prob = list(
+		/datum/market/blackmarket = 75,
+		/datum/market/auction = 1,
+	)
 
 /datum/market_item/weapon/dimensional_bomb
 	name = "Multi-Dimensional Bomb Core"
@@ -82,4 +91,4 @@
 	price_min = CARGO_CRATE_VALUE * 40
 	price_max = CARGO_CRATE_VALUE * 50
 	stock_max = 1
-	availability_prob = 15
+	availability_prob = list(/datum/market/blackmarket = 15)

@@ -12,7 +12,7 @@
 	stock_max = 4
 	price_min = CARGO_CRATE_VALUE * 2.5
 	price_max = CARGO_CRATE_VALUE * 3.75
-	availability_prob = 100
+	availability_prob = list(/datum/market/blackmarket = 100)
 
 /datum/market_item/tool/caravan_wrench
 	name = "Experimental Wrench"
@@ -22,7 +22,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = 20
+	availability_prob = list(/datum/market/blackmarket = 20)
 
 /datum/market_item/tool/caravan_wirecutters
 	name = "Experimental Wirecutters"
@@ -32,7 +32,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = 20
+	availability_prob = list(/datum/market/blackmarket = 20)
 
 /datum/market_item/tool/caravan_screwdriver
 	name = "Experimental Screwdriver"
@@ -42,7 +42,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = 20
+	availability_prob = list(/datum/market/blackmarket = 20)
 
 /datum/market_item/tool/caravan_crowbar
 	name = "Experimental Crowbar"
@@ -52,7 +52,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = 20
+	availability_prob = list(/datum/market/blackmarket = 20)
 
 /datum/market_item/tool/binoculars
 	name = "Binoculars"
@@ -62,7 +62,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4.8
-	availability_prob = 30
+	availability_prob = list(/datum/market/blackmarket = 30)
 
 /datum/market_item/tool/riot_shield
 	name = "Riot Shield"
@@ -72,7 +72,7 @@
 	price_min = CARGO_CRATE_VALUE * 2.25
 	price_max = CARGO_CRATE_VALUE * 3.25
 	stock_max = 2
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/tool/thermite_bottle
 	name = "Thermite Bottle"
@@ -82,7 +82,7 @@
 	price_min = CARGO_CRATE_VALUE * 2.5
 	price_max = CARGO_CRATE_VALUE * 7.5
 	stock_max = 3
-	availability_prob = 30
+	availability_prob = list(/datum/market/blackmarket = 30)
 
 /datum/market_item/tool/science_goggles
 	name = "Science Goggles"
@@ -92,7 +92,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.75
 	price_max = CARGO_CRATE_VALUE
 	stock_max = 3
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /**
  * # Fake N-spect scanner black market entry
@@ -108,7 +108,10 @@
 	price_min = CARGO_CRATE_VALUE * 1.15
 	price_max = CARGO_CRATE_VALUE * 1.615
 	stock_max = 2
-	availability_prob = 50
+	availability_prob = list(
+		/datum/market/blackmarket = 50,
+		/datum/market/auction = 2,
+	)
 
 /datum/market_item/tool/program_disk
 	name = "Bootleg Data Disk"
@@ -117,4 +120,4 @@
 	price_min = CARGO_CRATE_VALUE * 0.75
 	price_max = CARGO_CRATE_VALUE * 2
 	stock_max = 3
-	availability_prob = 40
+	availability_prob = list(/datum/market/blackmarket = 40)

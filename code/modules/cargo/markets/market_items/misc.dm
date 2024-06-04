@@ -10,7 +10,7 @@
 	price_min = CARGO_CRATE_VALUE * 1.25
 	price_max = CARGO_CRATE_VALUE *3
 	stock_max = 2
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/misc/jade_Lantern
 	name = "Jade Lantern"
@@ -20,7 +20,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.75
 	price_max = CARGO_CRATE_VALUE * 2.5
 	stock_max = 2
-	availability_prob = 45
+	availability_prob = list(/datum/market/blackmarket = 45)
 
 /datum/market_item/misc/cap_gun
 	name = "Cap Gun"
@@ -30,7 +30,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.25
 	price_max = CARGO_CRATE_VALUE
 	stock_max = 6
-	availability_prob = 80
+	availability_prob = list(/datum/market/blackmarket = 80)
 
 /datum/market_item/misc/shoulder_holster
 	name = "Shoulder holster"
@@ -40,7 +40,7 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
 	stock_max = 8
-	availability_prob = 60
+	availability_prob = list(/datum/market/blackmarket = 60)
 
 /datum/market_item/misc/donk_recycler
 	name = "MOD Riot Foam Dart Recycler Module"
@@ -49,7 +49,7 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4.5
 	stock_max = 2
-	availability_prob = 30
+	availability_prob = list(/datum/market/blackmarket = 30)
 
 /datum/market_item/misc/shove_blocker
 	name = "MOD Bulwark Module"
@@ -58,7 +58,7 @@
 	price_min = CARGO_CRATE_VALUE * 4
 	price_max = CARGO_CRATE_VALUE * 5.75
 	stock_max = 1
-	availability_prob = 25
+	availability_prob = list(/datum/market/blackmarket = 25)
 
 /datum/market_item/misc/holywater
 	name = "Flask of holy water"
@@ -68,7 +68,7 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 3
 	stock_max = 3
-	availability_prob = 40
+	availability_prob = list(/datum/market/blackmarket = 40)
 
 /datum/market_item/misc/holywater/spawn_item(loc, datum/market_purchase/purchase)
 	if (prob(6.66))
@@ -86,7 +86,7 @@
 	price_max = CARGO_CRATE_VALUE * 1.8
 	stock_min = 2
 	stock_max = 5
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/misc/smugglers_satchel
 	name = "Smuggler's Satchel"
@@ -96,7 +96,7 @@
 	price_min = CARGO_CRATE_VALUE * 3.75
 	price_max = CARGO_CRATE_VALUE * 5
 	stock_max = 2
-	availability_prob = 30
+	availability_prob = list(/datum/market/blackmarket = 30)
 
 /datum/market_item/misc/roulette
 	name = "Roulette Beacon"
@@ -105,7 +105,7 @@
 	price_min = CARGO_CRATE_VALUE * 1
 	price_max = CARGO_CRATE_VALUE * 2.5
 	stock_max = 3
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/misc/jawed_hook
 	name = "Jawed Fishing Hook"
@@ -114,7 +114,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.75
 	price_max = CARGO_CRATE_VALUE * 2
 	stock_max = 3
-	availability_prob = 70
+	availability_prob = list(/datum/market/blackmarket = 70)
 
 /datum/market_item/misc/v8_engine
 	name = "Genuine V8 Engine (Perserved)"
@@ -123,7 +123,7 @@
 	price_min = CARGO_CRATE_VALUE * 4
 	price_max = CARGO_CRATE_VALUE * 6
 	stock_max = 1
-	availability_prob = 15
+	availability_prob = list(/datum/market/blackmarket = 15)
 
 /datum/market_item/misc/fish
 	name = "Fish"
@@ -133,7 +133,7 @@
 	item = /obj/item/storage/fish_case/blackmarket
 	stock_min = 3
 	stock_max = 8
-	availability_prob = 90
+	availability_prob = list(/datum/market/blackmarket = 90)
 
 /datum/market_item/misc/giant_wrench_parts
 	name = "Big Slappy parts"
@@ -142,4 +142,4 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 5
 	stock_max = 1
-	availability_prob = 25
+	availability_prob = list(/datum/market/blackmarket = 25)

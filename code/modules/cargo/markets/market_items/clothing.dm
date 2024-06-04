@@ -10,7 +10,7 @@
 	price_min = CARGO_CRATE_VALUE
 	price_max = CARGO_CRATE_VALUE * 2.5
 	stock_max = 3
-	availability_prob = 40
+	availability_prob = list(/datum/market/blackmarket = 40)
 
 /datum/market_item/clothing/durathread_vest
 	name = "Durathread Vest"
@@ -20,7 +20,7 @@
 	price_min = CARGO_CRATE_VALUE
 	price_max = CARGO_CRATE_VALUE * 2
 	stock_max = 4
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/clothing/durathread_helmet
 	name = "Durathread Helmet"
@@ -30,7 +30,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.5
 	price_max = CARGO_CRATE_VALUE
 	stock_max = 4
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/clothing/full_spacesuit_set
 	name = "\improper Nanotrasen Branded Spacesuit Box"
@@ -40,7 +40,7 @@
 	price_min = CARGO_CRATE_VALUE * 7.5
 	price_max = CARGO_CRATE_VALUE * 20
 	stock_max = 3
-	availability_prob = 30
+	availability_prob = list(/datum/market/blackmarket = 30)
 
 /datum/market_item/clothing/full_spacesuit_set/spawn_item(loc)
 	var/obj/item/storage/box/B = ..()
@@ -58,7 +58,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.5
 	price_max = CARGO_CRATE_VALUE
 	stock_max = 2
-	availability_prob = 70
+	availability_prob = list(/datum/market/blackmarket = 70)
 
 /datum/market_item/clothing/rocket_boots
 	name = "Rocket Boots"
@@ -68,7 +68,10 @@
 	price_min = CARGO_CRATE_VALUE * 5
 	price_max = CARGO_CRATE_VALUE * 15
 	stock_max = 1
-	availability_prob = 40
+	availability_prob = list(
+		/datum/market/blackmarket = 40,
+		/datum/market/auction = 4,
+	)
 
 /datum/market_item/clothing/anti_sec_pin
 	name = "Subversive Pin"
@@ -79,7 +82,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.5
 	price_max = CARGO_CRATE_VALUE * 1.5
 	stock_max = 5
-	availability_prob = 70
+	availability_prob = list(/datum/market/blackmarket = 70)
 
 /datum/market_item/clothing/floortileset
 	name = "Floor-tile Camouflage Uniform"
@@ -92,7 +95,7 @@
 	price_min = CARGO_CRATE_VALUE * 0.5
 	price_max = CARGO_CRATE_VALUE
 	stock_max = 3
-	availability_prob = 40
+	availability_prob = list(/datum/market/blackmarket = 40)
 
 /datum/market_item/clothing/collar_bomb
 	name = "Collar Bomb Kit"
@@ -101,4 +104,4 @@
 	price_min = CARGO_CRATE_VALUE * 3.5
 	price_max = CARGO_CRATE_VALUE * 4.5
 	stock_max = 3
-	availability_prob = 60
+	availability_prob = list(/datum/market/blackmarket = 60)

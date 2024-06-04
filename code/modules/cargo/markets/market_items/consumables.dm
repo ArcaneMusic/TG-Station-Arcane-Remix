@@ -10,7 +10,7 @@
 
 	price_min = CARGO_CRATE_VALUE * 2.6
 	price_max = CARGO_CRATE_VALUE * 3
-	availability_prob = 10
+	availability_prob = list(/datum/market/blackmarket = 10)
 
 /datum/market_item/consumable/donk_pocket_box
 	name = "Box of Donk Pockets"
@@ -21,7 +21,7 @@
 	stock_max = 5
 	price_min = CARGO_CRATE_VALUE * 1.625
 	price_max = CARGO_CRATE_VALUE * 2
-	availability_prob = 80
+	availability_prob = list(/datum/market/blackmarket = 80)
 
 /datum/market_item/consumable/suspicious_pills
 	name = "Bottle of Suspicious Pills"
@@ -32,7 +32,7 @@
 	stock_max = 3
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 3.5
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/consumable/suspicious_pills/spawn_item(loc)
 	var/pillbottle = pick(list(/obj/item/storage/pill_bottle/zoom,
@@ -52,7 +52,7 @@
 	stock_max = 35
 	price_min = CARGO_CRATE_VALUE * 0.05
 	price_max = CARGO_CRATE_VALUE * 0.3
-	availability_prob = 50
+	availability_prob = list(/datum/market/blackmarket = 50)
 
 /datum/market_item/consumable/pumpup
 	name = "Maintenance Pump-Up"
@@ -62,4 +62,4 @@
 	stock_max = 3
 	price_min = CARGO_CRATE_VALUE * 0.25
 	price_max = CARGO_CRATE_VALUE * 0.75
-	availability_prob = 90
+	availability_prob = list(/datum/market/blackmarket = 90)

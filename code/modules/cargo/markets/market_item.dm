@@ -5,8 +5,6 @@
 	var/desc
 	/// The category this item belongs to, should be already declared in the market that this item is accessible in.
 	var/category
-	/// "/datum/market"s that this item should be in, used by SSblackmarket on init.
-	var/list/markets = list(/datum/market/blackmarket)
 
 	/// Price for the item, if not set creates a price according to the *_min and *_max vars.
 	var/price
@@ -27,8 +25,8 @@
 	var/stock_min = 1
 	/// Maximum amount that there should be of this item in the market if generated randomly.
 	var/stock_max = 0
-	/// Probability for this item to be available. Used by SSblackmarket on init.
-	var/availability_prob
+	/// Probability for this item to be available, used as an associated list of market = [probability or weight to appear]. Used by SSblackmarket on init.
+	var/list/availability_prob = list()
 
 	///The identifier for the market item, generated on runtime and used to access them in the market categories.
 	var/identifier

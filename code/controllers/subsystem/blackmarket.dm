@@ -17,6 +17,8 @@ SUBSYSTEM_DEF(blackmarket)
 	var/list/obj/machinery/ltsrbt/telepads = list()
 	/// Currently queued purchases.
 	var/list/queued_purchases = list()
+	/// Weighted list of auction items to use with the auction black market.
+	var/list/auction_weights = list()
 
 /datum/controller/subsystem/blackmarket/Initialize()
 	for(var/market in subtypesof(/datum/market))
@@ -25,17 +27,21 @@ SUBSYSTEM_DEF(blackmarket)
 	for(var/datum/market_item/item as anything in subtypesof(/datum/market_item))
 		if(!initial(item.item))
 			continue
-		if(!prob(initial(item.availability_prob)))
-			continue
-
 		var/datum/market_item/item_instance = new item()
-		for(var/potential_market in item_instance.markets)
-			if(!markets[potential_market])
-				stack_trace("SSblackmarket: Item [item_instance] available in market that does not exist.")
-				continue
-			// If this fails the market item will just be GC'd
-			markets[potential_market].add_item(item_instance)
-
+		if(prob(item_instance.availability_prob[/datum/market/blackmarket]))
+			for(var/potential_market in item_instance.availability_prob) //Provide the market in the associated list.
+				if(!markets[potential_market])
+					stack_trace("SSblackmarket: Item [item_instance] available in market that does not exist.")
+					continue
+				// If this fails the market item will just be GC'd
+				markets[potential_market].add_item(item_instance)
+		if(item_instance.availability_prob[/datum/market/auction])
+			for(var/potential_market in item_instance.availability_prob) //Provide the market in the associated list.
+				if(!markets[potential_market])
+					stack_trace("SSblackmarket: Item [item_instance] available in market that does not exist.")
+					continue
+				auction_weights[item_instance.type] = item_instance.availability_prob[/datum/market/auction]
+				markets[potential_market].add_item(item_instance)
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/blackmarket/fire(resumed)

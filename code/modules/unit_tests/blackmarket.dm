@@ -15,7 +15,7 @@
 			TEST_FAIL("[prototype] doesn't have a correctly set random price (price_max should be higher than price_min)")
 		if(isnull(prototype::stock) && prototype::stock_max < prototype::stock_min)
 			TEST_FAIL("[prototype] doesn't have a correctly set random stock (stock_max shouldn't be lower than stock_min)")
-		if(!isnum(prototype::availability_prob))
+		if(!isnum(prototype::availability_prob[/datum/market/blackmarket]))
 			TEST_FAIL("[prototype] doesn't have a set availability_prob (must be a number)")
 		if(!prototype::name)
 			TEST_FAIL("[prototype] doesn't have a set name")

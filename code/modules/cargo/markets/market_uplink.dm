@@ -176,3 +176,12 @@
 	..()
 	blacklist |= typesof(/obj/item/radio/headset) // because we got shit like /obj/item/radio/off ... WHY!?!
 	blacklist |= typesof(/obj/item/radio/intercom)
+
+/obj/item/market_uplink/auction
+	name = "\improper Auction Uplink"
+	desc = "An illegal uplink."
+	icon = 'icons/obj/devices/blackmarket.dmi'
+	icon_state = "uplink"
+	//The original black market uplink
+	accessible_markets = list(/datum/market/auction)
+	custom_premium_price = PAYCHECK_CREW * 2.5

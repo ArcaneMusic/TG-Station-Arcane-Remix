@@ -3,7 +3,7 @@
 	category = "Hostages"
 	abstract_path = /datum/market_item/hostage
 	stock = 1
-	availability_prob = 100
+	availability_prob = list(/datum/market/blackmarket = 100)
 	shipping_override = list(SHIPPING_METHOD_LTSRBT = 0, SHIPPING_METHOD_SUPPLYPOD = 350)
 	/// temporary reference to the 4 in 7 chances of signaler and electropack.
 	var/obj/item/assembly/signaler/signaler

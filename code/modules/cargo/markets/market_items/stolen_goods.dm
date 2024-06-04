@@ -3,7 +3,7 @@
 	category = "Fenced Goods"
 	abstract_path = /datum/market_item/stolen_good
 	stock = 1
-	availability_prob = 100
+	availability_prob = list(/datum/market/blackmarket = 100)
 
 /datum/market_item/stolen_good/New(atom/movable/thing, thing_price)
 	..()
