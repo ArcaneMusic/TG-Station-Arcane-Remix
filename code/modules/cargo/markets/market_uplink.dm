@@ -185,3 +185,8 @@
 	//The original black market uplink
 	accessible_markets = list(/datum/market/auction)
 	custom_premium_price = PAYCHECK_CREW * 2.5
+
+/obj/item/market_uplink/auction/ui_interact(mob/user, datum/tgui/ui)
+	. = ..()
+	if(!SSblackmarket.auction_running)
+		SSblackmarket.auction_running = TRUE

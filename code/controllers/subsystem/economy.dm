@@ -121,6 +121,8 @@ SUBSYSTEM_DEF(economy)
 	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * seconds_per_tick)
 
 	SSstock_market.news_string = ""
+	if(SSblackmarket.auction_running)
+		SSblackmarket.markets[/datum/market/auction].add_item(pick_weight(SSblackmarket.auction_weights))
 
 /**
  * Handy proc for obtaining a department's bank account, given the department ID, AKA the define assigned for what department they're under.

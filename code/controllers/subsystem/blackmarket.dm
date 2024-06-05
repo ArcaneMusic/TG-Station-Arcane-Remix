@@ -17,6 +17,9 @@ SUBSYSTEM_DEF(blackmarket)
 	var/list/obj/machinery/ltsrbt/telepads = list()
 	/// Currently queued purchases.
 	var/list/queued_purchases = list()
+
+	/// Has someone opened an auction uplink somewhere? If so, we'll start running cooldowns to replace the item.
+	var/auction_running = FALSE
 	/// Weighted list of auction items to use with the auction black market.
 	var/list/auction_weights = list()
 
@@ -41,7 +44,9 @@ SUBSYSTEM_DEF(blackmarket)
 					stack_trace("SSblackmarket: Item [item_instance] available in market that does not exist.")
 					continue
 				auction_weights[item_instance.type] = item_instance.availability_prob[/datum/market/auction]
-				markets[potential_market].add_item(item_instance)
+
+	for(var/i in 1 to 2)
+		markets[/datum/market/auction].add_item(pick_weight(auction_weights))
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/blackmarket/fire(resumed)
