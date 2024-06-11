@@ -10,7 +10,10 @@
 	price_min = CARGO_CRATE_VALUE
 	price_max = CARGO_CRATE_VALUE * 2.5
 	stock_max = 3
-	availability_prob = list(/datum/market/blackmarket = 40)
+	availability_prob = list(
+		/datum/market/blackmarket = 40,
+		/datum/market/auction = 2,
+		)
 
 /datum/market_item/clothing/durathread_vest
 	name = "Durathread Vest"

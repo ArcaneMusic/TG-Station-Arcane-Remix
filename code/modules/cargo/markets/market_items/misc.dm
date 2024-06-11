@@ -10,7 +10,7 @@
 	price_min = CARGO_CRATE_VALUE * 1.25
 	price_max = CARGO_CRATE_VALUE *3
 	stock_max = 2
-	availability_prob = list(/datum/market/blackmarket = 50)
+	availability_prob = list(/datum/market/auction = 2)
 
 /datum/market_item/misc/jade_Lantern
 	name = "Jade Lantern"
@@ -49,7 +49,9 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4.5
 	stock_max = 2
-	availability_prob = list(/datum/market/blackmarket = 30)
+	availability_prob = list(
+		/datum/market/blackmarket = 30,
+		/datum/market/auction = 2,)
 
 /datum/market_item/misc/shove_blocker
 	name = "MOD Bulwark Module"
@@ -123,7 +125,10 @@
 	price_min = CARGO_CRATE_VALUE * 4
 	price_max = CARGO_CRATE_VALUE * 6
 	stock_max = 1
-	availability_prob = list(/datum/market/blackmarket = 15)
+	availability_prob = list(
+		/datum/market/blackmarket = 15,
+		/datum/market/auction = 1,
+		)
 
 /datum/market_item/misc/fish
 	name = "Fish"
@@ -142,4 +147,6 @@
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 5
 	stock_max = 1
-	availability_prob = list(/datum/market/blackmarket = 25)
+	availability_prob = list(
+		/datum/market/auction = 1,
+		)

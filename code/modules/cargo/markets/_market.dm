@@ -78,3 +78,12 @@
 		SHIPPING_METHOD_LAUNCH = 10,
 		SHIPPING_METHOD_TELEPORT= 75,
 	)
+
+/datum/market/auction/purchase(identifier, category, method, obj/item/market_uplink/uplink, user)
+	. = ..()
+	if(!.)
+		return
+	var/datum/market_item/item = available_items[category][identifier]
+	SSblackmarket.auction_weights -= item
+	to_chat(world, "successfully removed [item] from weights!")
+

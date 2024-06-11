@@ -121,7 +121,7 @@ SUBSYSTEM_DEF(economy)
 	mail_waiting += clamp(effective_mailcount, 1, MAX_MAIL_PER_MINUTE * seconds_per_tick)
 
 	SSstock_market.news_string = ""
-	if(SSblackmarket.auction_running)
+	if(SSblackmarket.auction_running && length(SSblackmarket.auction_weights))
 		SSblackmarket.markets[/datum/market/auction].add_item(pick_weight(SSblackmarket.auction_weights))
 
 /**

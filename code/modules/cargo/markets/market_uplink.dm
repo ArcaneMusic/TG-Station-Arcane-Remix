@@ -187,6 +187,13 @@
 	custom_premium_price = PAYCHECK_CREW * 2.5
 
 /obj/item/market_uplink/auction/ui_interact(mob/user, datum/tgui/ui)
-	. = ..()
+	if(!viewing_category)
+		update_viewing_category()
+
+	ui = SStgui.try_update_ui(user, src, ui)
+	if(!ui)
+		ui = new(user, src, "BlackMarketAuction", name)
+		ui.open()
 	if(!SSblackmarket.auction_running)
 		SSblackmarket.auction_running = TRUE
+

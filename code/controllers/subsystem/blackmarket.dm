@@ -134,3 +134,16 @@ SUBSYSTEM_DEF(blackmarket)
 		return FALSE
 	queued_purchases += purchase
 	return TRUE
+
+/datum/controller/subsystem/blackmarket/proc/handle_auctions(next_auction_delay = 75 SECONDS)
+	if(!auction_running)
+		return FALSE
+	if(!length(auction_weights))
+		return FALSE
+
+	///Go through the list of bids and find the highest one, then give the item to the highest bidder.
+
+	addtimer(CALLBACK(src, PROC_REF(handle_auctions)), next_auction_delay)
+	to_chat(world, span_notice("The auction black market is now open for business in [next_auction_delay / 10]!"))
+
+	

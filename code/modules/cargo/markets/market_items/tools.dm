@@ -22,7 +22,10 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = list(/datum/market/blackmarket = 20)
+	availability_prob = list(
+		/datum/market/blackmarket = 10,
+		/datum/market/auction = 2,
+		)
 
 /datum/market_item/tool/caravan_wirecutters
 	name = "Experimental Wirecutters"
@@ -32,7 +35,10 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = list(/datum/market/blackmarket = 20)
+	availability_prob = list(
+		/datum/market/blackmarket = 20,
+		/datum/market/auction = 3,
+		)
 
 /datum/market_item/tool/caravan_screwdriver
 	name = "Experimental Screwdriver"
@@ -42,7 +48,10 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = list(/datum/market/blackmarket = 20)
+	availability_prob = list(
+		/datum/market/blackmarket = 20,
+		/datum/market/auction = 3,
+		)
 
 /datum/market_item/tool/caravan_crowbar
 	name = "Experimental Crowbar"
@@ -52,7 +61,10 @@
 
 	price_min = CARGO_CRATE_VALUE * 2
 	price_max = CARGO_CRATE_VALUE * 4
-	availability_prob = list(/datum/market/blackmarket = 20)
+	availability_prob = list(
+		/datum/market/blackmarket = 20,
+		/datum/market/auction = 2,
+		)
 
 /datum/market_item/tool/binoculars
 	name = "Binoculars"

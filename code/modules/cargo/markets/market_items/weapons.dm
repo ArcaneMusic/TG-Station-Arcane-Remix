@@ -48,7 +48,7 @@
 	stock_max = 1
 	availability_prob = list(
 		/datum/market/blackmarket = 35,
-		/datum/market/auction = 1,
+		/datum/market/auction = 4,
 	)
 
 /datum/market_item/weapon/switchblade
@@ -91,4 +91,6 @@
 	price_min = CARGO_CRATE_VALUE * 40
 	price_max = CARGO_CRATE_VALUE * 50
 	stock_max = 1
-	availability_prob = list(/datum/market/blackmarket = 15)
+	availability_prob = list(
+			/datum/market/auction = 1,
+		)
