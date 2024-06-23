@@ -204,6 +204,16 @@
 	for(var/i in 1 to 7)
 		new /obj/item/ammo_casing/shotgun/breacher(src)
 
+/obj/item/storage/box/dart
+	name = "box of shotgun darts (Lethal - chemical darts)"
+	desc = "A box full of shotgun darts, designed for shotguns and capable of holding a chemical payload."
+	icon_state = "beanbagshot_box"
+	illustration = null
+
+/obj/item/storage/box/dart/PopulateContents()
+	for(var/i in 1 to 7)
+		new /obj/item/ammo_casing/shotgun/dart(src)
+
 /obj/item/storage/box/emptysandbags
 	name = "box of empty sandbags"
 	illustration = "sandbag"
