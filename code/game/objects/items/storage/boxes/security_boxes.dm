@@ -207,7 +207,7 @@
 /obj/item/storage/box/dart
 	name = "box of shotgun darts (Lethal - chemical darts)"
 	desc = "A box full of shotgun darts, designed for shotguns and capable of holding a chemical payload."
-	icon_state = "beanbagshot_box"
+	icon_state = "dart_box"
 	illustration = null
 
 /obj/item/storage/box/dart/PopulateContents()
