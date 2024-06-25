@@ -22,6 +22,8 @@ SUBSYSTEM_DEF(blackmarket)
 	var/auction_running = FALSE
 	/// Weighted list of auction items to use with the auction black market.
 	var/list/auction_weights = list()
+	/// Associated list of references to the bidders on the auction, using auctioneer datums. The highest human bidder will get the item, otherwise it's recycled.
+	var/list/auction_bids = list()
 
 /datum/controller/subsystem/blackmarket/Initialize()
 	for(var/market in subtypesof(/datum/market))
@@ -146,4 +148,4 @@ SUBSYSTEM_DEF(blackmarket)
 	addtimer(CALLBACK(src, PROC_REF(handle_auctions)), next_auction_delay)
 	to_chat(world, span_notice("The auction black market is now open for business in [next_auction_delay / 10]!"))
 
-	
+

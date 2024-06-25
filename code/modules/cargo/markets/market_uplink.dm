@@ -196,4 +196,9 @@
 		ui.open()
 	if(!SSblackmarket.auction_running)
 		SSblackmarket.auction_running = TRUE
-
+		for(var/datum/auctioneer/auction_options in SSblackmarket.auction_bids)
+			if(auction_options.bidder == user)
+				return
+		// We don't exist as an auctioneer yet, roll out
+		var/datum/auctioneer = new(user, 0)
+		SSblackmarket.auction_bids += auctioneer
