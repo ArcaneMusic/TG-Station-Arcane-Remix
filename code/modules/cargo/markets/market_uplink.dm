@@ -202,3 +202,19 @@
 		// We don't exist as an auctioneer yet, roll out
 		var/datum/auctioneer = new(user, 0)
 		SSblackmarket.auction_bids += auctioneer
+
+/obj/item/market_uplink/auction/ui_data(mob/user)
+	var/list/data = list()
+	data["auction_item"] = list()
+
+	var/datum/market/auction/prime_auction = SSblackmarket.markets[/datum/market/auction]
+	var/datum/market_item/current_item = prime_auction[id]
+
+	data["auction_item"] += list(list(
+		"id" = id,
+		"name" = item.name,
+		"cost" = item.price,
+		"amount" = item.stock,
+		"desc" = item.desc || item.name
+	))
+	return data

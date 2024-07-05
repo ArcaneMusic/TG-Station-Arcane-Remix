@@ -78,6 +78,8 @@
 		SHIPPING_METHOD_LAUNCH = 10,
 		SHIPPING_METHOD_TELEPORT= 75,
 	)
+	/// The order-specific list of the items being auctioned. Key 0 is the current item being auctioned, and after that are the items in the queue.
+	var/datum/list/auction_queue = list()
 
 /datum/market/auction/purchase(identifier, category, method, obj/item/market_uplink/uplink, user)
 	. = ..()
@@ -86,4 +88,9 @@
 	var/datum/market_item/item = available_items[category][identifier]
 	SSblackmarket.auction_weights -= item
 	to_chat(world, "successfully removed [item] from weights!")
+
+
+/datum/market/auction/add_item(datum/market_item/item)
+	auction_queue[length(auction_queue)] += item
+	return ..()
 

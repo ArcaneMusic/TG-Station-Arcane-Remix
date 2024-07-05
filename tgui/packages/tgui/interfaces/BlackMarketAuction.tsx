@@ -1,8 +1,10 @@
+import { resolveAsset } from '../assets';
 import { useBackend } from '../backend';
 import {
   AnimatedNumber,
   Box,
   Button,
+  Image,
   Modal,
   Section,
   Stack,
@@ -84,7 +86,9 @@ export const BlackMarketAuction = (props) => {
                   </Stack>
                 </Stack.Item>
                 <Stack.Item>
-                  <Section>Image goes here.</Section>
+                  <Section>
+                    <Image src={resolveAsset('auctioneer.gif')} />
+                  </Section>
                 </Stack.Item>
                 <Stack fill>
                   <Stack.Item width="70%">
@@ -95,7 +99,7 @@ export const BlackMarketAuction = (props) => {
                   </Stack.Item>
                 </Stack>
 
-                <Stack.Item>
+                <Stack.Item className="candystripe">
                   <Section>Map out bid history here.</Section>
                 </Stack.Item>
                 <Stack>
