@@ -23,6 +23,10 @@ type Data = {
   ltsrbt_built: boolean;
   delivery_methods: DeliveryMethod[];
   delivery_method_description: Record<string, string>;
+  auction_item_name: string;
+  auction_item_desc: string;
+  highest_bid: number;
+  highest_bidder: string;
 };
 
 type Market = {
@@ -52,6 +56,10 @@ export const BlackMarketAuction = (props) => {
     money,
     viewing_market,
     viewing_category,
+    auction_item_name,
+    auction_item_desc,
+    highest_bid,
+    highest_bidder,
   } = data;
   return (
     <Window width={800} height={500} theme="hackerman">
@@ -78,7 +86,11 @@ export const BlackMarketAuction = (props) => {
                 <Stack.Item>
                   <Stack fill>
                     <Stack.Item width="50%">
-                      <Section>Current auction</Section>
+                      <Section>
+                        Current auction
+                        {auction_item_name}
+                        {auction_item_desc}
+                      </Section>
                     </Stack.Item>
                     <Stack.Item width="50%">
                       <Section>identity stuff</Section>
@@ -92,10 +104,16 @@ export const BlackMarketAuction = (props) => {
                 </Stack.Item>
                 <Stack fill>
                   <Stack.Item width="70%">
-                    <Section>Top Bid</Section>
+                    <Section>
+                      Top Bid
+                      {highest_bidder}
+                    </Section>
                   </Stack.Item>
                   <Stack.Item width="30%">
-                    <Section>Bid number</Section>
+                    <Section>
+                      Bid number
+                      {highest_bid}
+                    </Section>
                   </Stack.Item>
                 </Stack>
 

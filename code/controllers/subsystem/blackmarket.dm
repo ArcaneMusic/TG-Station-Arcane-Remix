@@ -144,6 +144,11 @@ SUBSYSTEM_DEF(blackmarket)
 		return FALSE
 
 	///Go through the list of bids and find the highest one, then give the item to the highest bidder.
+	var/highest_bid = 0
+	for(var/datum/auctioneer/bidder in auction_bids)
+		if(bidder.bid > highest_bid)
+			highest_bid = bidder.bid
+			continue
 
 	addtimer(CALLBACK(src, PROC_REF(handle_auctions)), next_auction_delay)
 	to_chat(world, span_notice("The auction black market is now open for business in [next_auction_delay / 10]!"))

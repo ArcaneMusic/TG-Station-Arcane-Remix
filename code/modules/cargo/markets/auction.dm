@@ -8,7 +8,7 @@
 		SHIPPING_METHOD_TELEPORT= 75,
 	)
 	/// The order-specific list of the items being auctioned. Key 0 is the current item being auctioned, and after that are the items in the queue.
-	var/datum/list/auction_queue = list()
+	var/list/datum/auction_queue = list()
 
 /datum/market/auction/purchase(identifier, category, method, obj/item/market_uplink/uplink, user)
 	. = ..()
@@ -20,7 +20,8 @@
 
 
 /datum/market/auction/add_item(datum/market_item/item)
-	auction_queue[length(auction_queue)] += item
+	auction_queue += item //todo: is this sane? Make sure we're always adding from the end of the list.
+	to_chat(world, "Added [item] to the auction queue. Auction queue now contains [length(auction_queue)]")
 	return ..()
 
 /obj/item/market_uplink/auction
@@ -42,6 +43,7 @@
 		ui.open()
 	if(!SSblackmarket.auction_running)
 		SSblackmarket.auction_running = TRUE
+		SSblackmarket.handle_auctions()
 		for(var/datum/auctioneer/auction_options in SSblackmarket.auction_bids)
 			if(auction_options.bidder == user)
 				return
@@ -49,21 +51,59 @@
 		var/datum/auctioneer = new(user, 0)
 		SSblackmarket.auction_bids += auctioneer
 
-// /obj/item/market_uplink/auction/ui_data(mob/user)
-// 	var/list/data = list()
-// 	data["auction_item"] = list()
+	var/datum/market/auction/prime_auction = SSblackmarket.markets[/datum/market/auction]
+	for(var/i in prime_auction.auction_queue)
+		to_chat(world, "Queue contains [prime_auction.auction_queue[i]]")
 
-// 	var/datum/market/auction/prime_auction = SSblackmarket.markets[/datum/market/auction]
-// 	var/datum/market_item/current_item = prime_auction[id]
+/obj/item/market_uplink/auction/ui_data(mob/user)
+	var/list/data = list()
 
-// 	data["auction_item"] += list(list(
-// 		"id" = id,
-// 		"name" = item.name,
-// 		"cost" = item.price,
-// 		"amount" = item.stock,
-// 		"desc" = item.desc || item.name
-// 	))
-// 	return data
+	var/obj/item/card/id/id_card
+	if(isliving(user))
+		var/mob/living/livin = user
+		id_card = livin.get_idcard()
+	if(id_card?.registered_account)
+		current_user = id_card.registered_account
+	else
+		current_user = null
+	if(current_user)
+		data["money"] = current_user.account_balance
+
+	var/datum/market/auction/prime_auction = SSblackmarket.markets[/datum/market/auction]
+	var/datum/market_item/current_item
+	if(length(prime_auction))
+		current_item = prime_auction[0]
+
+	var/highest_bid = 0
+	var/highest_bidder = "none"
+	for(var/datum/auctioneer/auctioneer in SSblackmarket.auction_bids)
+		if(auctioneer.bid > highest_bid)
+			highest_bid = auctioneer.bid
+			highest_bidder = auctioneer.name
+
+	if(current_user)
+		data["money"] = current_user.account_balance
+	data["auction_item_name"] = current_item ? current_item.name : "Come Back Later."
+	data["auction_item_desc"] = current_item ? current_item.desc : "No item is currently being auctioned."
+	data["highest_bid"] = highest_bid
+	data["highest_bidder"] = highest_bidder
+
+	return data
+
+/obj/item/market_uplink/auction/ui_act(action, params)
+	. = ..()
+	if(.)
+		return
+	switch(action)
+		if("bid")
+			var/new_bid = params["bid"]
+			if(new_bid < 0)
+				return
+			for(var/datum/auctioneer/auctioneer in SSblackmarket.auction_bids)
+				if(auctioneer.bidder == usr)
+					auctioneer.update_bid(usr, new_bid)
+					return
+
 
 
 /**
@@ -92,7 +132,15 @@
 
 /datum/auctioneer/proc/update_bid(mob/living/carbon/human/user, new_bid)
 	if(new_bid <= bid)
-		return
+		return FALSE //You're not bidding more than you were before!
+
+	var/highest_bid = 0
+	for(var/datum/auctioneer/bidder in SSblackmarket.auction_bids)
+		if(bidder.bid > highest_bid)
+			highest_bid = bidder.bid
+
+			if(highest_bid >= new_bid)
+				return FALSE //You're not bidding more than the highest bid!
+
 	bid = new_bid
 	bidder = WEAKREF(user)
-
