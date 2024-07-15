@@ -28,6 +28,8 @@
 
 	if(implant.imp_in)
 		on_implant_implantation(implant.imp_in)
+	if(implant.malfunctioning)
+
 
 /datum/deathrattle_group/proc/on_implant_implantation(obj/item/implant/implant, mob/living/target, mob/user, silent = FALSE, force = FALSE)
 	SIGNAL_HANDLER
@@ -44,10 +46,15 @@
 
 	implants -= implant
 
-/datum/deathrattle_group/proc/on_user_statchange(mob/living/owner, new_stat)
+/datum/deathrattle_group/proc/on_implant_malfunction()
+	SIGNAL_HANDLER
+	addtimer(CALLBACK(src, PROC_REF(on_user_statchange), aggressive), 1.2 SECONDS)
+
+
+/datum/deathrattle_group/proc/on_user_statchange(mob/living/owner, new_stat, force = FALSE)
 	SIGNAL_HANDLER
 
-	if(new_stat != DEAD)
+	if((new_stat != DEAD) || force)
 		return
 
 	var/name = owner.mind ? owner.mind.name : owner.real_name
@@ -78,6 +85,8 @@
 	desc = "Hope no one else dies, prepare for when they do."
 
 	actions_types = null
+	/// If this implant is going to send false positives to the implanter. Should only be true for the black market ghetto deathrattle.
+	var/malfunctioning = FALSE
 
 /obj/item/implant/deathrattle/can_be_implanted_in(mob/living/target)
 	// Can be implanted in anything that's a mob. Syndicate cyborgs, talking fish, humans...
@@ -87,3 +96,30 @@
 	name = "implant case - 'Deathrattle'"
 	desc = "A glass case containing a deathrattle implant."
 	imp_type = /obj/item/implant/deathrattle
+
+/**
+ * Damaged varient, obtained from the black market.
+ */
+/obj/item/implant/deathrattle/damaged
+	malfunctioning = TRUE
+
+/obj/item/implantcase/deathrattle/damaged
+	imp_type = /obj/item/implant/deathrattle/damaged
+
+/obj/item/storage/box/contraband_deathrattles
+	name = "deathrattle implant box"
+	desc = "Contains 3 linked deathrattle implants. The box looks a little crushed on one side, but most of them should be in working order."
+
+/obj/item/storage/box/contraband_deathrattles/PopulateContents()
+	new /obj/item/implanter(src)
+
+	var/datum/deathrattle_group/group = new
+
+	var/implants = list()
+	for(var/j in 1 to 3)
+		var/obj/item/implantcase/deathrattle/damaged/case = new (src)
+		implants += case.imp
+
+	for(var/i in implants)
+		group.register(i)
+	desc += " The implants are registered to the \"[group.name]\" group."
