@@ -624,3 +624,28 @@
 	inhand_icon_state = null
 	body_parts_covered = CHEST|GROIN|LEGS|ARMS
 	supports_variations_flags = CLOTHING_DIGITIGRADE_VARIATION_NO_NEW_ICON
+
+/obj/item/clothing/suit/costume/sentai
+	name = "sentai suit"
+	desc = "Based on the galaxy-famous \"Kyūkyoku no Ninja Pawā Sentai\", this suit is a close recreation of the classic suit design."
+	icon_state = "sentai_suit_red"
+	inhand_icon_state = null
+	body_parts_covered = CHEST|GROIN|LEGS|ARMS
+
+/obj/item/clothing/suit/costume/sentai/blue
+	icon_state = "sentai_suit_blue"
+
+/obj/item/clothing/suit/costume/sentai/yellow
+	icon_state = "sentai_suit_yellow"
+
+/obj/item/clothing/suit/costume/sentai/pink
+	icon_state = "sentai_suit_pink"
+
+/obj/item/clothing/suit/costume/sentai/black
+	icon_state = "sentai_suit_black"
+
+/obj/item/clothing/suit/costume/sentai/green
+	icon_state = "sentai_suit_green"
+
+/obj/item/clothing/suit/costume/sentai/white
+	icon_state = "sentai_suit_white"

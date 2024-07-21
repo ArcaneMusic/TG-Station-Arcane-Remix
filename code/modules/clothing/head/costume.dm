@@ -199,3 +199,29 @@
 	It's only a replica, and probably wouldn't protect you from anything."
 	icon_state = "allies_helmet"
 	inhand_icon_state = null
+
+/obj/item/clothing/head/costume/sentai
+	name = "sentai helmet"
+	desc = "A helmet that protects you secret identity as a martial artist who operates out of a rec center."
+	icon_state = "sentai_helmet_red"
+	clothing_flags = SNUG_FIT
+	flags_cover = HEADCOVERSEYES
+	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE|HIDEHAIR|HIDEFACIALHAIR|HIDESNOUT
+
+/obj/item/clothing/head/costume/sentai/blue
+	icon_state = "sentai_helmet_blue"
+
+/obj/item/clothing/head/costume/sentai/yellow
+	icon_state = "sentai_helmet_yellow"
+
+/obj/item/clothing/head/costume/sentai/pink
+	icon_state = "sentai_helmet_pink"
+
+/obj/item/clothing/head/costume/sentai/black
+	icon_state = "sentai_helmet_black"
+
+/obj/item/clothing/head/costume/sentai/green
+	icon_state = "sentai_helmet_green"
+
+/obj/item/clothing/head/costume/sentai/white
+	icon_state = "sentai_helmet_white"
