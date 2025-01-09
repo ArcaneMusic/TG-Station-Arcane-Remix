@@ -1,5 +1,6 @@
 #define ENGINE_COOLDOWN (5 SECONDS)
 #define DASH_COOLDOWN (2.5 SECONDS)
+#define ROULETTE_STAGGER (0.5 SECONDS)
 #define HOUSE_EDGE_ICONS_MAX 3
 #define HOUSE_EDGE_ICONS_MIN 0
 
@@ -91,9 +92,25 @@
 		balloon_alert(user, "no fire charges!")
 		return ITEM_INTERACT_BLOCKING
 	user.throw_at(target = get_turf(interacting_with), range = 2 * fire_charges, speed = 5, thrower = user, spin = FALSE, gentle = FALSE, quickstart = TRUE)
+	var/outer_surface = 1
+	var/inner_surface = 0
+	for(var/i in 1 to max(1, fire_charges))
+		to_chat(world, "call [i] out of [max(1, fire_charges)]")
+		addtimer(CALLBACK(src, PROC_REF(roulette), inner_surface, outer_surface, user), (ROULETTE_STAGGER * i))
+		inner_surface++
+		outer_surface++
 	COOLDOWN_START(src, fire_charge_cooldown, DASH_COOLDOWN)
 	reset_charges(on_dash = TRUE)
 	return ITEM_INTERACT_SUCCESS
+
+/// Creates a ring of fire around the user, which disappates shorly after. Ring size is determined by inner and outer variables using turf_peel().
+/obj/item/house_edge/proc/roulette(inner = 1, outer = 2, mob/living/user)
+	to_chat(world, "called with [inner],[outer].")
+	var/turf_list = turf_peel(outer, inner, user, TRUE)
+	if(!turf_list)
+		return //Our ring is empty, or we can't see anything at that point in the ring.
+	for(var/location as anything in turf_list)
+		new /obj/effect/hotspot(location)
 
 /obj/item/house_edge/update_icon_state()
 	inhand_icon_state = HAS_TRAIT(src, TRAIT_WIELDED) ? "house_edge1" : "house_edge0"
@@ -111,5 +128,6 @@
 
 #undef ENGINE_COOLDOWN
 #undef DASH_COOLDOWN
+#undef ROULETTE_STAGGER
 #undef HOUSE_EDGE_ICONS_MAX
 #undef HOUSE_EDGE_ICONS_MIN
