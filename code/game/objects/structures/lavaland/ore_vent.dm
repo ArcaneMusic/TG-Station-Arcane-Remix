@@ -306,6 +306,8 @@
 	log_game("Ore vent [key_name_and_tag(src)] was tapped")
 	SSblackbox.record_feedback("tally", "ore_vent_completed", 1, type)
 	balloon_alert_to_viewers("vent tapped!")
+	if(length(SSore_generation.vent_codes))
+		name = "[initial(name) - [pick_n_take(SSore_generation.vent_codes)]]"
 	icon_state = icon_state_tapped
 	update_appearance(UPDATE_ICON_STATE)
 	qdel(GetComponent(/datum/component/gps))

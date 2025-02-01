@@ -18,10 +18,13 @@ SUBSYSTEM_DEF(ore_generation)
 	 * If we call cave_generation more than once, we copy a list from the lists in lists/ores_spawned.dm
 	 */
 	var/list/ore_vent_minerals = list()
+	/// NATO alphabetical callsigns for vents so that when a vent is completed, an identifier is picked from here.
+	var/list/vent_codes = list()
 
-	/// A tracker of how many of each ore vent size we have in the game. Useful for tracking purposes.
 
 /datum/controller/subsystem/ore_generation/Initialize()
+	vent_codes = GLOB.phonetic_alphabet.Copy()
+
 	//Basically, we're going to round robin through the list of ore vents and assign a mineral to them until complete.
 	while(length(ore_vent_minerals) > 0) //Keep looping if there's more to assign
 		var/stallbreaker = 0
