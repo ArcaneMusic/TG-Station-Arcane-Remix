@@ -755,4 +755,25 @@
 	report_message = "Due to a mishap at the Robust Softdrinks Megafactory, some drinks may contain traces of ethanol or psychoactive chemicals."
 	trait_to_give = STATION_TRAIT_SPIKED_DRINKS
 
+/datum/station_trait/peanut_mishap
+	name = "Oops, all peanut allergies"
+	trait_type = STATION_TRAIT_NEGATIVE
+	weight = 2
+	show_in_report = TRUE
+	report_message = "Due to a frankly, egregious clerical error, the staffing roster this shift got mixed up with \
+		our file on crew with peanut allergies. Please be advised that everyone onboard should avoid anything containing peanuts."
+	trait_to_give = STATION_TRAIT_PEANUT_ALLERGY
+
+/datum/station_trait/peanut_mishap/New()
+	. = ..()
+	RegisterSignal(SSdcs, COMSIG_GLOB_JOB_AFTER_SPAWN, PROC_REF(on_job_after_spawn))
+
+/datum/station_trait/peanut_mishap/proc/on_job_after_spawn(datum/source, datum/job/job, mob/living/living_mob, mob/M, joined_late)
+	SIGNAL_HANDLER
+
+	//Assign all the mobs on spawn with an allergy
+	//Make sure the allergy is to peanut butter
+	//done deal
+
+
 #undef GLOW_NEBULA
