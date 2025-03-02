@@ -142,7 +142,11 @@
 	manifest_text += "<ul>"
 	var/container_contents = list() // Associative list with the format (item_name = nº of occurrences, ...)
 	for(var/atom/movable/AM in container.contents - manifest_paper)
-		container_contents[AM.name]++
+		if(isstack(AM))
+			var/obj/item/stack/item_stack = AM
+			container_contents[AM.name] += item_stack.amount
+		else
+			container_contents[AM.name]++
 	if((manifest_paper.errors & MANIFEST_ERROR_CONTENTS) && container_contents)
 		if(HAS_TRAIT(container, TRAIT_NO_MANIFEST_CONTENTS_ERROR))
 			manifest_paper.errors &= ~MANIFEST_ERROR_CONTENTS
@@ -155,7 +159,7 @@
 
 
 	for(var/item in container_contents)
-		manifest_text += "<li> [container_contents[item]] [item][container_contents[item] == 1 ? "" : "s"]</li>"
+		manifest_text += "<li> [container_contents[item]] x [item][container_contents[item] == 1 ? "" : "s"]</li>"
 	manifest_text += "</ul>"
 	manifest_text += "<h4>Stamp below to confirm receipt of goods:</h4>"
 
