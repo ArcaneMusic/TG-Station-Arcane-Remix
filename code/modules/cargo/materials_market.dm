@@ -309,6 +309,7 @@
 				orderer_rank = GALATIC_MATERIAL_ORDER,
 				orderer_ckey = living_user.ckey,
 				paying_account = is_ordering_private ? account_payable : null,
+				manifest_can_fail = FALSE,
 				cost_type = "cr",
 				can_be_cancelled = FALSE
 			)
