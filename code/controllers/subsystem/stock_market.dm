@@ -31,7 +31,7 @@ SUBSYSTEM_DEF(stock_market)
 			materials_trend_life[possible_market] = rand(1,3)
 
 			materials_quantity += possible_market
-			materials_quantity[possible_market] = possible_market.tradable_base_quantity + (rand(-(possible_market.tradable_base_quantity) * 0.5, possible_market.tradable_base_quantity * 0.5))
+			materials_quantity[possible_market] = (2 * possible_market.tradable_base_quantity) + (rand(-(possible_market.tradable_base_quantity) * 0.5, possible_market.tradable_base_quantity * 0.5))
 	return SS_INIT_SUCCESS
 
 /datum/controller/subsystem/stock_market/fire(resumed)
@@ -68,7 +68,7 @@ SUBSYSTEM_DEF(stock_market)
 	var/quantity_baseline = mat.tradable_base_quantity
 
 	//clamp it down
-	new_quantity = round(clamp(new_quantity, 0, quantity_baseline * 2))
+	new_quantity = round(clamp(new_quantity, 0, quantity_baseline * 3))
 	materials_quantity[mat.type] = new_quantity
 
 /**
@@ -128,7 +128,7 @@ SUBSYSTEM_DEF(stock_market)
 			price_change = -ROUND_UP(gaussian(price_units * 0.3, price_baseline * 0.15))
 			quantity_change = round(gaussian(quantity_baseline * 0.15, quantity_baseline * 0.15))
 	materials_prices[mat] =  round(clamp(price_units + price_change, price_minimum, price_maximum))
-	materials_quantity[mat] = round(clamp(stock_quantity + quantity_change, 0, quantity_baseline * 2))
+	materials_quantity[mat] = round(clamp(stock_quantity + quantity_change, 0, quantity_baseline * 3))
 
 /**
  * Market events are a way to spice up the market and make it more interesting.
