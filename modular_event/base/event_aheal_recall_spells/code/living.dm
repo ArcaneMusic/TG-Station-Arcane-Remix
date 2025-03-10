@@ -1,7 +1,7 @@
 /mob/living
 	/// The holder for this mob living's admin heal action. It should never be set to null or modified except on qdel
 	var/datum/action/cooldown/aheal/aheal_action = new
-	var/datum/action/cooldown/spell/summonitem/recall_action = new
+	var/datum/action/cooldown/spell/summonitem/arena/recall_action = new
 
 /mob/living/Destroy()
 	aheal_action.Remove(src)
