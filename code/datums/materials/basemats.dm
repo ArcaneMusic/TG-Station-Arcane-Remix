@@ -94,7 +94,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	)
 	sheet_type = /obj/item/stack/sheet/mineral/silver
 	ore_type = /obj/item/stack/ore/silver
-	value_per_unit = 50 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 25 / SHEET_MATERIAL_AMOUNT
 	tradable = TRUE
 	tradable_base_quantity = MATERIAL_QUANTITY_UNCOMMON
 	beauty_modifier = 0.075
@@ -128,7 +128,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	)
 	sheet_type = /obj/item/stack/sheet/mineral/gold
 	ore_type = /obj/item/stack/ore/gold
-	value_per_unit = 125 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 75 / SHEET_MATERIAL_AMOUNT
 	tradable = TRUE
 	tradable_base_quantity = MATERIAL_QUANTITY_RARE
 	beauty_modifier = 0.15
@@ -166,7 +166,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	ore_type = /obj/item/stack/ore/diamond
 	alpha = 132
 	starlight_color = COLOR_BLUE_LIGHT
-	value_per_unit = 500 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 150 / SHEET_MATERIAL_AMOUNT
 	strength_modifier = 1.1
 	integrity_modifier = 1.25
 	tradable = TRUE
@@ -203,7 +203,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	)
 	sheet_type = /obj/item/stack/sheet/mineral/uranium
 	ore_type = /obj/item/stack/ore/uranium
-	value_per_unit = 100 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 60 / SHEET_MATERIAL_AMOUNT
 	tradable = TRUE
 	tradable_base_quantity = MATERIAL_QUANTITY_RARE
 	beauty_modifier = 0.3 //It shines so beautiful
@@ -254,7 +254,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	)
 	sheet_type = /obj/item/stack/sheet/mineral/plasma
 	ore_type = /obj/item/stack/ore/plasma
-	value_per_unit = 200 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 100 / SHEET_MATERIAL_AMOUNT
 	beauty_modifier = 0.15
 	armor_modifiers = list(MELEE = 1.4, BULLET = 0.7, ENERGY = 1.2, BIO = 1.2, ACID = 0.5)
 	mineral_rarity = MATERIAL_RARITY_PRECIOUS
@@ -301,7 +301,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	beauty_modifier = 0.5
 	sheet_type = /obj/item/stack/sheet/bluespace_crystal
 	ore_type = /obj/item/stack/ore/bluespace_crystal
-	value_per_unit = 300 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 175 / SHEET_MATERIAL_AMOUNT
 	mineral_rarity = MATERIAL_RARITY_RARE
 	points_per_unit = 50 / SHEET_MATERIAL_AMOUNT
 	tradable = TRUE
@@ -426,7 +426,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 	)
 	sheet_type = /obj/item/stack/sheet/mineral/titanium
 	ore_type = /obj/item/stack/ore/titanium
-	value_per_unit = 125 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 75 / SHEET_MATERIAL_AMOUNT
 	tradable = TRUE
 	tradable_base_quantity = MATERIAL_QUANTITY_UNCOMMON
 	beauty_modifier = 0.05
@@ -502,7 +502,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 		MAT_CATEGORY_ITEM_MATERIAL = TRUE,
 		MAT_CATEGORY_ITEM_MATERIAL_COMPLEMENTARY = TRUE,
 	)
-	value_per_unit = 25 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 10 / SHEET_MATERIAL_AMOUNT
 	beauty_modifier = -0.01
 	armor_modifiers = list(MELEE = 1.5, BULLET = 1.1, LASER = 0.3, ENERGY = 0.5, BOMB = 1, BIO = 1, FIRE = 1.1, ACID = 1)
 	mineral_rarity = MATERIAL_RARITY_UNDISCOVERED //Nobody's found oil on lavaland yet.
@@ -861,7 +861,7 @@ Unless you know what you're doing, only use the first three numbers. They're in 
 		MAT_CATEGORY_ITEM_MATERIAL_COMPLEMENTARY = TRUE,
 		)
 	sheet_type = /obj/item/stack/sheet/bronze
-	value_per_unit = 50 / SHEET_MATERIAL_AMOUNT
+	value_per_unit = 30 / SHEET_MATERIAL_AMOUNT
 	armor_modifiers = list(MELEE = 1, BULLET = 1, LASER = 1, ENERGY = 1, BOMB = 1, BIO = 1, FIRE = 1.5, ACID = 1.5)
 	beauty_modifier = 0.2
 	fish_weight_modifier = 1.4

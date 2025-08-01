@@ -132,7 +132,7 @@
 	moles_visible = MOLES_GAS_VISIBLE
 	fusion_power = 10
 	rarity = 50
-	base_value = 2.5
+	base_value = 2
 	desc = "The most noble gas of them all. High quantities of hyper-noblium actively prevents reactions from occurring."
 	primary_color = COLOR_TEAL
 
@@ -159,7 +159,7 @@
 	moles_visible = MOLES_GAS_VISIBLE
 	dangerous = TRUE
 	rarity = 1
-	base_value = 6
+	base_value = 4
 	desc = "An experimental performance enhancing gas. Nitrium can have amplified effects as more of it gets into your bloodstream."
 	primary_color = "#a52a2a"
 
@@ -172,7 +172,7 @@
 	dangerous = TRUE
 	fusion_power = 5
 	rarity = 300
-	base_value = 2.5
+	base_value = 2
 	desc = "A highly flammable and radioactive gas."
 	primary_color = "#32cd32"
 
@@ -194,7 +194,7 @@
 	name = "Pluoxium"
 	fusion_power = -10
 	rarity = 200
-	base_value = 2.5
+	base_value = 2
 	desc = "A gas that could supply even more oxygen to the bloodstream when inhaled, without being an oxidizer."
 	primary_color = "#7b68ee"
 
@@ -219,7 +219,7 @@
 	moles_visible = MOLES_GAS_VISIBLE *30
 	fusion_power = -5
 	rarity = 10
-	base_value = 5
+	base_value = 3
 	desc = "A coolant gas. Mainly used for its endothermic reaction with oxygen."
 	primary_color = "#afeeee"
 
@@ -242,7 +242,7 @@
 	gas_overlay = "healium"
 	moles_visible = MOLES_GAS_VISIBLE
 	rarity = 300
-	base_value = 5.5
+	base_value = 3.25
 	desc = "Causes deep, regenerative sleep."
 	primary_color = "#fa8072"
 
@@ -254,7 +254,7 @@
 	gas_overlay = "proto_nitrate"
 	moles_visible = MOLES_GAS_VISIBLE
 	rarity = 200
-	base_value = 2.5
+	base_value = 2
 	desc = "A very volatile gas that reacts differently with various gases."
 	primary_color = "#adff2f"
 
@@ -266,7 +266,7 @@
 	gas_overlay = "zauker"
 	moles_visible = MOLES_GAS_VISIBLE
 	rarity = 1
-	base_value = 7
+	base_value = 4.25
 	desc = "A highly toxic gas, its production is highly regulated on top of being difficult. It also breaks down when in contact with nitrogen."
 	primary_color = "#006400"
 
@@ -278,7 +278,7 @@
 	gas_overlay = "halon"
 	moles_visible = MOLES_GAS_VISIBLE
 	rarity = 300
-	base_value = 4
+	base_value = 2.75
 	desc = "A potent fire suppressant. Removes oxygen from high temperature fires and cools down the area"
 	primary_color = COLOR_PURPLE
 
@@ -288,7 +288,7 @@
 	name = "Helium"
 	fusion_power = 7
 	rarity = 50
-	base_value = 3.5
+	base_value = 2.55
 	desc = "A very inert gas produced by the fusion of hydrogen and its derivatives."
 	primary_color = "#f0f8ff"
 
@@ -301,7 +301,7 @@
 	moles_visible = MOLES_GAS_VISIBLE
 	fusion_power = 20
 	rarity = 1
-	base_value = 10
+	base_value = 7
 	desc = "We still don't know what it does, but it sells for a lot."
 	primary_color = COLOR_MAROON
 
