@@ -7,6 +7,13 @@
 	icon_state = "minepost"
 	density = FALSE
 
+/obj/structure/fluff/totempole
+	name = "totem pole"
+	desc = "Ah, yes, the ancestors of this wild west celebrated the people who built this land. "
+	icon = 'icons/obj/totempole.dmi'
+	icon_state = "totempole"
+	density = TRUE
+
 //Areas
 /area/awaymission/moonoutpost19
 	name = "space"
