@@ -208,12 +208,13 @@
  * Returns the quantity of mineral sheets in each ore vent's boulder contents roll.
  * First roll can produce the most ore, with subsequent rolls scaling lower logarithmically.
  * Inversely scales with ore_floor, so that the first roll is the largest, and subsequent rolls are smaller.
- * (1 -> from 16 to 7 sheets of materials, and 3 -> from 8 to 6 sheets of materials on a small vent)
+ * (1 -> from 25 to 16 sheets of materials, and 3 -> from 19 to 15 sheets of materials on a large vent)
  * This also means a large boulder can highroll a boulder with a full stack of 50 sheets of material.
- * @params ore_floor The number of minerals already rolled. Used to scale the logarithmic function.
+ * @params ore_floor: The number of minerals already rolled. Used to scale the logarithmic function.
+ * @params multiplier: Multiplier on the pre-rounded quantity function, to be pulled from datum/material.
  */
-/obj/structure/ore_vent/proc/ore_quantity_function(ore_floor)
-	return SHEET_MATERIAL_AMOUNT * max(round(boulder_size * (log(rand(1 + ore_floor, 4 + ore_floor)) ** -1)), 1)
+/obj/structure/ore_vent/proc/ore_quantity_function(ore_floor, multiplier)
+	return SHEET_MATERIAL_AMOUNT * max(round(boulder_size * multiplier * (log(rand(3 + ore_floor, 7 + ore_floor)) ** -1)), 1)
 
 /**
  * This confirms that the user wants to start the wave defense event, and that they can start it.
@@ -428,7 +429,7 @@
 	var/list/mats_list = list()
 	for(var/iteration in 1 to MINERALS_PER_BOULDER)
 		var/datum/material/material = pick_weight(mineral_breakdown)
-		mats_list[material] += ore_quantity_function(iteration)
+		mats_list[material] += ore_quantity_function(iteration, material.mineral_rarity)
 	new_rock.set_custom_materials(mats_list)
 
 	//set size & durability

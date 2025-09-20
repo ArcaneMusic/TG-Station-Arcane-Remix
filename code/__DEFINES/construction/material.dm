@@ -93,17 +93,12 @@
 /// How much quantity of a material stock exists for exotic materials like diamond & bluespace crystals.
 #define MATERIAL_QUANTITY_EXOTIC 50
 
-// The number of ore vents that will spawn boulders with this material.
-/// Is this material going to spawn often in ore vents? (80% of vents on lavaland)
-#define MATERIAL_RARITY_COMMON 12
-/// Is this material going to spawn often in ore vents? (53% of vents on lavaland)
-#define MATERIAL_RARITY_SEMIPRECIOUS 8
-/// Is this material going to spawn uncommonly in ore vents? (33% of vents on lavaland)
-#define MATERIAL_RARITY_PRECIOUS 5
-/// Is this material going to spawn rarely in ore vents? (20% of vents on lavaland)
-#define MATERIAL_RARITY_RARE 3
-/// Is this material only going to spawn once in ore vents? (6% of vents on lavaland)
-#define MATERIAL_RARITY_UNDISCOVERED 1
+// The multiplier by which this material is extracted from boulders.
+#define MATERIAL_RARITY_COMMON 1
+#define MATERIAL_RARITY_SEMIPRECIOUS 0.75
+#define MATERIAL_RARITY_PRECIOUS 0.5
+#define MATERIAL_RARITY_RARE 0.25
+#define MATERIAL_RARITY_UNDISCOVERED 1 // This isn't a typo, these are just minerals that shouldn't be in boulders or are meant to be rare enough to discover on their own that there's no need to nerf their output.
 
 ///The key to access the 'optimal' amount of a material key from its assoc value list.
 #define MATERIAL_LIST_OPTIMAL_AMOUNT "optimal_amount"
