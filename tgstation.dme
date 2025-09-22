@@ -5348,6 +5348,7 @@
 #include "code\modules\mob\living\basic\vermin\crab.dm"
 #include "code\modules\mob\living\basic\vermin\frog.dm"
 #include "code\modules\mob\living\basic\vermin\lizard.dm"
+#include "code\modules\mob\living\basic\vermin\migrant.dm"
 #include "code\modules\mob\living\basic\vermin\mouse.dm"
 #include "code\modules\mob\living\basic\vermin\space_bat.dm"
 #include "code\modules\mob\living\basic\vermin\cockroach\cockroach.dm"
