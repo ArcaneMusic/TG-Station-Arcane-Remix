@@ -233,6 +233,15 @@
 		else
 			data["picking"] = FALSE
 
+	for(var/datum/bounty/global_bounty in GLOB.bounties_list)
+		data["listBounty"] = list()
+		data["listBounty"]["name"] = global_bounty.name
+		data["listBounty"]["description"] = global_bounty.description
+		data["listBounty"]["reward"] = global_bounty.reward
+		data["listBounty"]["shipped_"] = global_bounty.reward
+		data["listBounty"]["claimed"] = global_bounty.claimed
+
+
 	return data
 
 /obj/machinery/computer/piratepad_control/civilian/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -259,6 +268,8 @@
 		if("eject")
 			id_eject(user, inserted_scan_id)
 			inserted_scan_id = null
+		if("update_list")
+			update_global_bounty_list(enable_high_priority = TRUE)
 	. = TRUE
 
 ///Self explanitory, holds the ID card in the console for bounty payout and manipulation.
@@ -298,6 +309,36 @@
 		inserted_scan_id = null
 		return TRUE
 
+/**
+ * Updates the global bounty list: First by sorting through all completed bounties on the list and deleting them.
+ * Then, adds new bounties up to the limit, defined by the update_up_to argument.
+ * The bounties to be added should not share duplicates between job subtypes.
+ * @param update_up_to How many new bounties to add to the list, up to the maximum defined by MAXIMUM_BOUNTY_JOBS.
+ */
+/obj/machinery/computer/piratepad_control/civilian/proc/update_global_bounty_list(update_up_to = 5, enable_high_priority = FALSE)
+	//First, clear out completed bounties.
+	for(var/datum/bounty/complete in GLOB.bounties_list)
+		if(complete.claimed)
+			GLOB.bounties_list -= complete
+
+	//Then, add new bounties up to the limit.
+	var/list/jobs_picked = list()
+	while(length(GLOB.bounties_list) < update_up_to)
+		var/job_code = rand(CIV_JOB_BASIC, CIV_JOB_BITRUN) //CIV_JOB_ defines taken from _DEFINES/economy.dm. If new job bounty classes are added, swap out our maximum.
+		if(job_code in jobs_picked)
+			continue
+		jobs_picked += job_code
+
+		var/datum/bounty/new_bounty = random_bounty(job_code)
+		GLOB.bounties_list += new_bounty
+
+	if(enable_high_priority && length(GLOB.bounties_list))
+		var/datum/bounty/high_pri = pick(GLOB.bounties_list)
+		high_pri.high_priority = TRUE
+		high_pri.reward = high_pri.reward * 1.5
+		high_pri.description += " This bounty is marked as <b>high priority</b>, and will reward <b>1.5x</b> the normal payout!"
+	return TRUE
+
 ///Upon completion of a civilian bounty, one of these is created. It is sold to cargo to give the cargo budget bounty money, and the person who completed it cash.
 /obj/item/bounty_cube
 	name = "bounty cube"
@@ -309,7 +350,7 @@
 	///Multiplier for the bounty payout received by the Supply budget if the cube is sent without having to nag.
 	var/speed_bonus = 0.2
 	///Multiplier for the bounty payout received by the person who completed the bounty.
-	var/holder_cut = 0.3
+	var/holder_cut = BOUNTY_CUT_STANDARD
 	///Multiplier for the bounty payout received by the person who claims the handling tip.
 	var/handler_tip = 0.1
 	///Time between nags.
@@ -429,6 +470,27 @@
 			new /obj/machinery/computer/piratepad_control/civilian(drop_location())
 			qdel(src)
 	uses--
+
+/obj/item/paper/bounty_printout
+	name = "paper - Bounties"
+
+/obj/item/paper/bounty_printout/Initialize()
+	. = ..()
+	var/list/printout_text = list()
+	printout_text += "<h2>Nanotrasen Cargo Bounties</h2></br>"
+
+	for(var/datum/bounty/current_bounty in GLOB.bounties_list)
+		if(current_bounty.claimed)
+			continue
+		printout_text += {"<h3>[current_bounty.name]</h3>
+			<ul>
+			<li>Reward: <b>[current_bounty.reward]</b> cr.</li>
+			<li>Cut: [round(BOUNTY_CUT_STANDARD * current_bounty.reward)] cr.</li>
+			<li>[current_bounty.!claimed ? "Not" : ""] Completed</li>
+			</ul>"}
+	add_raw_text(printout_text.join("<br />"))
+	update_appearance()
+	return TRUE
 
 /datum/aas_config_entry/bounty_cube_created
 	name = "Cargo Alert: Bounty Cube Created"

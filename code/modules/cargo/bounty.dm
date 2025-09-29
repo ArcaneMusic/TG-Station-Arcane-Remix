@@ -1,11 +1,18 @@
 /// How many jobs have bounties, minus the random civ bounties. PLEASE INCREASE THIS NUMBER AS MORE DEPTS ARE ADDED TO BOUNTIES.
 #define MAXIMUM_BOUNTY_JOBS 14
 
+GLOBAL_LIST_EMPTY(bounties_list)
+
 /datum/bounty
+	/// A name for the bounty. Displayed on the bounty console/Paper sheets.
 	var/name
+	/// A description for the bounty.
 	var/description
-	var/reward = 1000 // In credits.
+	/// The reward for completing the bounty in credits, before being split by cargo/the player.
+	var/reward = 1000
+	/// Whether or not the bounty has been claimed by cargo. Only applies to cargo list bounties.
 	var/claimed = FALSE
+	/// Whether or not the bounty is high priority. High priority bounties appear at the top of the list.
 	var/high_priority = FALSE
 
 /datum/bounty/proc/can_claim()
@@ -27,7 +34,7 @@
 /datum/bounty/proc/ship(obj/O)
 	return
 
-/** Returns a new bounty of random type, but does not add it to GLOB.bounties_list.
+/** Returns a new bounty of random type.
  *
  * * Category determines what specific catagory of bounty should be chosen.
  */

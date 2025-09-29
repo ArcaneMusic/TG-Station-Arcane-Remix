@@ -81,3 +81,5 @@
 #define MARKET_TREND_STABLE 0
 
 #define MARKET_EVENT_PROBABILITY 8 //Probability of a market event firing, in percent. Fires once per material, every stock market tick.
+
+#define BOUNTY_CUT_STANDARD 0.3
