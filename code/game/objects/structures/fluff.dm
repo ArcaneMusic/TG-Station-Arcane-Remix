@@ -328,3 +328,28 @@
 	icon_state = "wallsign"
 
 MAPPING_DIRECTIONAL_HELPERS(/obj/structure/fluff/wallsign, 32)
+
+/obj/structure/fluff/totempole
+	name = "totem pole"
+	desc = "A wooden totem pole carved with various familiar faces stacked atop one another."
+	icon = 'icons/obj/fluff/totempole.dmi'
+	icon_state = "totempole"
+	density = TRUE
+	anchored = TRUE
+	deconstructible = FALSE
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+
+// This is lazy as all hell. Sausages for all.
+/obj/machinery/drone_dispenser/binoculars/sausage
+	name = "Mysterious sausage cart"
+	desc = "A hefty cart that periodically creates a fresh sausage, ready to roast over a campfire."
+	icon = 'icons/obj/service/kitchen.dmi'
+	icon_state = "foodcart"
+	dispense_type = list(/obj/item/food/sausage)
+	end_create_message = "dispenses a fresh sausage."
+
+/obj/machinery/drone_dispenser/binoculars/sausage_sticks
+	name = "Mysterious roasting stick fabricator"
+	desc = "Spits out roasting sticks for telling stories around the campfire."
+	dispense_type = list(/obj/item/melee/roastingstick)
+	end_create_message = "dispenses a roasting stick."

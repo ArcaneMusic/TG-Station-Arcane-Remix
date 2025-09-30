@@ -2,6 +2,12 @@
 "aF" = (
 /turf/open/floor/mineral/titanium,
 /area/space)
+"aK" = (
+/obj/structure/railing{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/station/medical/virology)
 "aP" = (
 /turf/closed/indestructible/wood,
 /area/space)
@@ -11,12 +17,35 @@
 "bt" = (
 /turf/open/misc/sandy_dirt,
 /area/station/medical/morgue)
+"bE" = (
+/obj/structure/table/wood,
+/obj/item/food/cakeslice/mothmallow,
+/obj/item/knife/plastic,
+/turf/open/misc/grass/lavaland,
+/area/space)
 "bR" = (
 /turf/closed/indestructible/rock,
 /area/station/security/courtroom)
 "bV" = (
 /turf/open/floor/plating,
 /area/station/medical/virology)
+"cm" = (
+/obj/structure/chair/sofa/bench/right{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space)
+"ct" = (
+/obj/structure/flora/tree/stump{
+	can_buckle = 1
+	},
+/turf/open/misc/sandy_dirt,
+/area/space)
+"cA" = (
+/mob/living/basic/pony,
+/obj/item/food/grown/carrot,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "cP" = (
 /obj/structure/chair/sofa/bench/solo,
 /turf/open/misc/asteroid,
@@ -35,10 +64,19 @@
 "da" = (
 /turf/closed/wall/mineral/iron,
 /area/space)
+"dh" = (
+/obj/item/food/grown/apple,
+/turf/open/misc/grass/jungle/station,
+/area/space)
+"dG" = (
+/obj/machinery/drone_dispenser/binoculars/sausage_sticks,
+/turf/open/misc/grass/lavaland,
+/area/space)
 "eM" = (
 /turf/open/misc/sandy_dirt,
 /area/station/medical/patients_rooms)
 "eQ" = (
+/obj/machinery/drone_dispenser/binoculars/sausage,
 /turf/open/misc/grass/lavaland,
 /area/station/medical/virology)
 "fo" = (
@@ -50,6 +88,22 @@
 "ft" = (
 /obj/structure/falsewall/iron,
 /turf/open/floor/stone,
+/area/space)
+"fB" = (
+/obj/structure/chair/sofa/bench/right{
+	dir = 4
+	},
+/turf/open/misc/grass/lavaland,
+/area/space)
+"fP" = (
+/obj/item/clothing/mask/animal/horsehead,
+/turf/open/misc/grass/lavaland,
+/area/space)
+"fV" = (
+/obj/structure/chair/sofa/bench/left{
+	dir = 4
+	},
+/turf/open/misc/grass/jungle/station,
 /area/space)
 "ga" = (
 /obj/structure/marker_beacon/burgundy,
@@ -74,6 +128,15 @@
 "gV" = (
 /turf/open/misc/sandy_dirt,
 /area/station/security)
+"ho" = (
+/obj/structure/table/wood,
+/obj/structure/fluff/beach_umbrella/security{
+	pixel_x = -4
+	},
+/obj/item/food/cake/mothmallow,
+/obj/item/knife/plastic,
+/turf/open/misc/asteroid,
+/area/space)
 "iK" = (
 /obj/structure/railing/wooden_fence{
 	dir = 1
@@ -113,6 +176,12 @@
 /obj/structure/fans/tiny,
 /turf/closed/wall/mineral/titanium,
 /area/space)
+"lt" = (
+/obj/structure/chair/pew/right{
+	dir = 1
+	},
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "lU" = (
 /obj/machinery/door/poddoor/preopen,
 /turf/open/floor/wood,
@@ -120,6 +189,13 @@
 "mg" = (
 /turf/open/misc/asteroid,
 /area/station/security/checkpoint/supply)
+"mh" = (
+/obj/structure/flora/tree/jungle/small/style_2{
+	layer = 3
+	},
+/obj/structure/railing/wooden_fence,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "ms" = (
 /turf/open/floor/plating,
 /area/station/escapepodbay)
@@ -187,6 +263,12 @@
 /obj/structure/marker_beacon/burgundy,
 /turf/open/misc/sandy_dirt,
 /area/space)
+"su" = (
+/obj/structure/chair/sofa/bench/left{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/space)
 "sG" = (
 /obj/structure/table/wood,
 /turf/open/floor/wood/tile,
@@ -198,11 +280,17 @@
 "sU" = (
 /turf/closed/indestructible/rock,
 /area/station/holodeck)
+"sY" = (
+/obj/structure/fence/post,
+/turf/open/misc/asteroid,
+/area/space)
 "tk" = (
 /turf/open/misc/asteroid,
 /area/station/security)
 "tl" = (
-/obj/structure/chair/pew,
+/obj/structure/chair/pew{
+	dir = 1
+	},
 /turf/open/misc/grass/jungle/station,
 /area/station/medical/virology)
 "tA" = (
@@ -227,6 +315,15 @@
 	},
 /turf/open/floor/wood,
 /area/space)
+"up" = (
+/obj/structure/table/wood,
+/obj/structure/fluff/beach_umbrella/cap{
+	pixel_x = -4
+	},
+/obj/item/food/cake/mothmallow,
+/obj/item/knife/plastic,
+/turf/open/misc/asteroid,
+/area/space)
 "uK" = (
 /turf/closed/wall/mineral/titanium,
 /area/space)
@@ -243,6 +340,12 @@
 "wq" = (
 /turf/closed/indestructible/rock,
 /area/station/command)
+"wD" = (
+/obj/structure/chair/pew/left{
+	dir = 1
+	},
+/turf/open/misc/sandy_dirt,
+/area/space)
 "xj" = (
 /turf/closed/indestructible/rock,
 /area/station/medical/virology)
@@ -260,6 +363,10 @@
 "yr" = (
 /turf/open/misc/asteroid,
 /area/station/security/detectives_office)
+"yC" = (
+/obj/structure/fence/post,
+/turf/open/misc/asteroid,
+/area/station/medical/virology)
 "yM" = (
 /obj/item/instrument/recorder,
 /obj/item/instrument/recorder{
@@ -269,6 +376,18 @@
 	pixel_y = 5
 	},
 /obj/structure/rack,
+/turf/open/misc/grass/lavaland,
+/area/space)
+"zh" = (
+/obj/structure/chair/sofa/bench/left{
+	dir = 8
+	},
+/turf/open/misc/asteroid,
+/area/space)
+"zm" = (
+/obj/structure/fence/corner{
+	dir = 10
+	},
 /turf/open/misc/grass/lavaland,
 /area/space)
 "zT" = (
@@ -287,7 +406,9 @@
 /turf/open/misc/asteroid,
 /area/space)
 "AG" = (
-/obj/structure/chair/pew,
+/obj/structure/chair/pew{
+	dir = 1
+	},
 /turf/open/misc/grass/lavaland,
 /area/station/medical/virology)
 "AP" = (
@@ -299,6 +420,11 @@
 	},
 /turf/open/floor/wood,
 /area/space)
+"Bi" = (
+/obj/structure/fluff/totempole,
+/obj/effect/decal/cleanable/oil,
+/turf/open/misc/sandy_dirt,
+/area/station/medical/virology)
 "BI" = (
 /turf/open/misc/asteroid,
 /area/station/command)
@@ -309,8 +435,16 @@
 /turf/open/floor/wood,
 /area/station/medical/patients_rooms)
 "Cl" = (
-/obj/structure/chair/pew,
+/obj/structure/chair/pew{
+	dir = 1
+	},
 /turf/open/misc/grass/jungle/station,
+/area/space)
+"Cp" = (
+/obj/structure/table/wood,
+/obj/item/food/cakeslice/mothmallow,
+/obj/item/knife/plastic,
+/turf/open/misc/asteroid,
 /area/space)
 "Cr" = (
 /obj/machinery/smartfridge/drying/rack,
@@ -361,25 +495,19 @@
 /obj/effect/mapping_helpers/damaged_window,
 /turf/open/floor/plating,
 /area/space)
-"Hk" = (
-/obj/item/ammo_casing/arrow,
-/obj/item/ammo_casing/arrow{
-	pixel_x = 4;
-	pixel_y = -6
-	},
-/obj/item/ammo_casing/arrow{
-	pixel_x = -8;
-	pixel_y = 1
-	},
-/obj/item/ammo_casing/arrow{
-	pixel_y = 4;
-	pixel_x = -11
-	},
-/turf/open/misc/grass/jungle/station,
-/area/space)
 "Hp" = (
 /turf/closed/indestructible/rock,
 /area/station/escapepodbay)
+"Hs" = (
+/obj/structure/railing/corner,
+/turf/open/misc/asteroid,
+/area/space)
+"Ht" = (
+/obj/structure/chair/pew/left{
+	dir = 1
+	},
+/turf/open/misc/grass/lavaland,
+/area/space)
 "Hu" = (
 /turf/closed/indestructible/wood,
 /area/station/medical/patients_rooms)
@@ -389,6 +517,12 @@
 	pixel_y = 6
 	},
 /turf/open/misc/grass/jungle/station,
+/area/space)
+"HQ" = (
+/obj/structure/chair/sofa/bench/right{
+	dir = 8
+	},
+/turf/open/misc/grass/lavaland,
 /area/space)
 "Ig" = (
 /turf/open/misc/sandy_dirt,
@@ -409,6 +543,10 @@
 /obj/structure/marker_beacon/burgundy,
 /turf/open/misc/asteroid,
 /area/space)
+"Iq" = (
+/obj/structure/flora/tree/jungle/small/style_2,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "IA" = (
 /obj/structure/table/wood,
 /obj/item/food/grown/tobacco{
@@ -420,6 +558,18 @@
 	pixel_y = 3
 	},
 /turf/open/floor/wood,
+/area/space)
+"Je" = (
+/obj/structure/flora/tree/jungle/small/style_2,
+/obj/structure/fence/end{
+	dir = 4;
+	layer = 5.1
+	},
+/turf/open/misc/grass/jungle/station,
+/area/space)
+"Js" = (
+/mob/living/basic/pony,
+/turf/open/misc/grass/jungle/station,
 /area/space)
 "JM" = (
 /obj/structure/mineral_door/wood,
@@ -441,6 +591,11 @@
 	},
 /turf/open/floor/wood,
 /area/space)
+"Ld" = (
+/obj/structure/flora/grass/jungle/a/style_3,
+/obj/item/food/grown/carrot,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "Lk" = (
 /obj/effect/mapping_helpers/broken_floor,
 /obj/structure/table_frame/wood,
@@ -452,6 +607,10 @@
 "Mz" = (
 /turf/closed/indestructible/wood,
 /area/station/security/courtroom)
+"Nu" = (
+/obj/structure/fence/post,
+/turf/open/misc/grass/lavaland,
+/area/space)
 "NL" = (
 /obj/structure/table/wood,
 /obj/item/switchblade/extended{
@@ -461,12 +620,22 @@
 /obj/effect/decal/cleanable/blood/old,
 /turf/open/floor/wood,
 /area/space)
+"NV" = (
+/obj/item/food/grown/apple,
+/turf/open/misc/grass/lavaland,
+/area/space)
 "Od" = (
 /turf/open/floor/plating,
 /area/space)
 "Oh" = (
 /turf/closed/indestructible/rock,
 /area/station/medical/patients_rooms)
+"Oy" = (
+/obj/structure/fence{
+	dir = 4
+	},
+/turf/open/misc/grass/lavaland,
+/area/space)
 "OL" = (
 /turf/open/misc/asteroid,
 /area/station/medical/morgue)
@@ -487,6 +656,12 @@
 "Px" = (
 /turf/closed/indestructible/paper,
 /area/space)
+"PC" = (
+/obj/structure/chair/sofa/bench/right{
+	dir = 4
+	},
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "PD" = (
 /turf/open/misc/sandy_dirt,
 /area/station/cargo)
@@ -497,6 +672,15 @@
 "QA" = (
 /turf/closed/indestructible/wood,
 /area/station/security)
+"QD" = (
+/obj/structure/fence/door,
+/turf/open/misc/asteroid,
+/area/space)
+"QL" = (
+/obj/structure/flora/grass/jungle,
+/obj/item/food/grown/carrot,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "QR" = (
 /turf/open/misc/grass/jungle/station,
 /area/space)
@@ -521,6 +705,9 @@
 /obj/structure/railing/corner,
 /turf/open/misc/grass/jungle/station,
 /area/space)
+"SG" = (
+/turf/open/misc/sandy_dirt,
+/area/station/medical/virology)
 "SV" = (
 /turf/open/misc/asteroid,
 /area/station/escapepodbay)
@@ -578,6 +765,11 @@
 	},
 /turf/open/floor/plating/airless,
 /area/space)
+"Xl" = (
+/obj/structure/flora/grass/jungle/a/style_3,
+/obj/structure/fence/post,
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "Xr" = (
 /turf/open/misc/sandy_dirt,
 /area/station/security/checkpoint/supply)
@@ -591,11 +783,27 @@
 /obj/structure/flora/grass/jungle,
 /turf/open/misc/grass/jungle/station,
 /area/space)
+"YI" = (
+/obj/structure/railing{
+	dir = 4
+	},
+/turf/open/misc/asteroid,
+/area/station/medical/virology)
 "YM" = (
 /obj/effect/decal/cleanable/dirt/dust,
 /obj/item/restraints/handcuffs/cable,
 /obj/effect/decal/cleanable/blood/gibs/old,
 /turf/open/floor/wood,
+/area/space)
+"YP" = (
+/obj/item/food/grown/carrot,
+/turf/open/misc/grass/lavaland,
+/area/space)
+"YU" = (
+/obj/structure/fence/corner{
+	dir = 5
+	},
+/turf/open/misc/asteroid,
 /area/space)
 "YV" = (
 /turf/open/misc/asteroid,
@@ -607,6 +815,12 @@
 "Zv" = (
 /turf/open/floor/wood,
 /area/station/security)
+"ZH" = (
+/obj/structure/chair/sofa/bench/left{
+	dir = 8
+	},
+/turf/open/misc/grass/jungle/station,
+/area/space)
 "ZS" = (
 /obj/structure/chair/comfy/shuttle,
 /turf/open/floor/mineral/titanium,
@@ -84543,7 +84757,7 @@ Dg
 Dg
 Dg
 Dg
-Dg
+Iq
 QR
 yM
 tA
@@ -84551,11 +84765,11 @@ gS
 cQ
 Dg
 Dg
+Je
 Dg
+fP
 Dg
-Dg
-Dg
-Dg
+NV
 Dg
 Dg
 xj
@@ -84808,13 +85022,13 @@ kv
 kX
 Yr
 QR
+Oy
+cA
+Ld
+NV
+YP
 kX
-QR
-sK
-Dg
-Dg
-Dg
-Dg
+NV
 xj
 Dg
 Dg
@@ -85059,18 +85273,18 @@ Dg
 UQ
 Ec
 QR
-kX
+Ht
 kv
-kv
+wD
 kv
 QR
 kX
-kv
-kX
-QR
-QR
-Yr
-Dg
+QD
+NV
+Js
+Js
+QL
+YP
 Dg
 xj
 Dg
@@ -85312,23 +85526,23 @@ rf
 xj
 Dg
 Dg
-Dg
+mh
 sG
 HK
 kX
 AG
 QR
 Cl
+FZ
 kv
 kv
-kv
-kv
-kv
-TA
-kX
-QR
-Dg
-Dg
+YU
+sY
+yC
+zm
+dh
+NV
+NV
 xj
 Dg
 Dg
@@ -85578,13 +85792,13 @@ QR
 Cl
 QR
 kv
-kv
-kv
-kv
-TA
-kv
-kX
-sK
+ct
+FZ
+ct
+SG
+YU
+Nu
+Xl
 Dg
 xj
 Dg
@@ -85826,7 +86040,7 @@ rf
 xj
 Dg
 Dg
-Dg
+mh
 sG
 DI
 kv
@@ -85835,13 +86049,13 @@ mE
 tl
 mE
 TA
+SG
+Bi
+SG
 TA
-TA
-TA
-TA
-QR
-kv
-QR
+kX
+su
+PC
 Dg
 xj
 Dg
@@ -86087,18 +86301,18 @@ Dg
 UQ
 Ec
 kv
-Cl
+lt
 QR
-Cl
+lt
 QR
-kv
-kv
-kv
-kv
+FZ
+ct
+FZ
+ct
 TA
 kv
-kv
-kX
+ho
+bE
 Dg
 xj
 Dg
@@ -86350,12 +86564,12 @@ QR
 Sw
 AD
 kv
+FZ
+Hs
+YI
 kv
-kv
-TA
-kv
-kv
-kv
+cm
+zh
 Dg
 xj
 Dg
@@ -86608,9 +86822,9 @@ KQ
 nN
 qh
 kv
-kv
-kv
-kv
+KQ
+nN
+qh
 QR
 QR
 Dg
@@ -86856,17 +87070,17 @@ Dg
 Dg
 Dg
 Dg
-Dg
+Iq
 Yr
 mE
 QR
 QR
 vv
 pf
+FZ
 kv
-kv
-kv
-TA
+vv
+aK
 kv
 kv
 QR
@@ -87117,12 +87331,12 @@ Dg
 Dg
 eQ
 kv
+FZ
 kv
 kv
-kv
-kv
-kv
-kv
+ct
+FZ
+ct
 TA
 kv
 kv
@@ -87370,20 +87584,20 @@ Dg
 kv
 kv
 Dg
-kX
+dG
 kX
 mE
 TA
 TA
 mE
 TA
-TA
-TA
-TA
-TA
+SG
+Bi
+SG
+SG
 kv
-QR
-kX
+fV
+fB
 Dg
 xj
 Dg
@@ -87629,18 +87843,18 @@ kv
 kv
 kv
 QR
-kv
+FZ
 kX
 QR
 kX
 kv
-kv
-kv
-kv
+ct
+FZ
+ct
 TA
 kv
-kv
-kv
+up
+Cp
 Dg
 xj
 Dg
@@ -87884,20 +88098,20 @@ kv
 kX
 kv
 QR
-kv
+FZ
 kv
 kv
 Dg
 Dg
-Hk
+Iq
 kX
 kv
 kv
-kv
+FZ
 TA
 kv
-kX
-QR
+HQ
+ZH
 Dg
 xj
 Dg
@@ -88139,7 +88353,7 @@ OL
 TA
 kv
 kv
-kv
+FZ
 kv
 Dg
 Dg
@@ -88651,8 +88865,8 @@ OL
 OL
 OL
 TA
+FZ
 kv
-kv
 Dg
 Dg
 Dg
@@ -88663,7 +88877,7 @@ Dg
 Dg
 Dg
 Dg
-Dg
+Iq
 Dg
 Dg
 Dg
