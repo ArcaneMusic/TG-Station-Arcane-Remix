@@ -5,10 +5,15 @@ import {
   LabeledList,
   NoticeBox,
   Section,
+  Tabs,
 } from 'tgui-core/components';
 
+import { useState } from 'react';
 import { useBackend } from '../backend';
 import { Window } from '../layouts';
+
+
+// Main window content.
 
 export const CivCargoHoldTerminal = (props) => {
   const { act, data } = useBackend();
@@ -16,6 +21,8 @@ export const CivCargoHoldTerminal = (props) => {
     data;
   const in_text = 'Welcome valued employee.';
   const out_text = 'To begin, insert your ID into the console.';
+  const [tab, setTab] = useState('personal');
+
   return (
     <Window width={580} height={375}>
       <Window.Content scrollable>
@@ -24,55 +31,92 @@ export const CivCargoHoldTerminal = (props) => {
             <NoticeBox color={!id_inserted ? 'default' : 'blue'}>
               {id_inserted ? in_text : out_text}
             </NoticeBox>
-            <Section
-              title="Cargo Pad"
-              buttons={
-                <>
+            <Section>
+              <Tabs fluid>
+                <Tabs.Tab
+                  icon="user"
+                  onClick={() => setTab('personal')}
+                  selected={tab === 'personal'}
+                  backgroundColor={tab === 'personal' ? "green" : "default"}
+                >
+                  Personal Bounties
+                </Tabs.Tab>
+                <Tabs.Tab
+                  icon="space-shuttle"
+                  onClick={() => setTab('station')}
+                  selected={tab === 'station'}
+                  backgroundColor={tab === 'station' ? "brown" : "default"}
+                >
+                  Station Bounties
+                </Tabs.Tab>
+              </Tabs>
+            </Section>
+            {tab === 'personal' ?
+              <><Section
+                title="Cargo Pad"
+                buttons={<>
                   <Button
                     icon={'sync'}
                     tooltip={'Check Contents'}
                     disabled={!pad || !id_inserted}
-                    onClick={() => act('recalc')}
-                  />
+                    onClick={() => act('recalc')} />
                   <Button
                     icon={sending ? 'times' : 'arrow-up'}
                     tooltip={sending ? 'Stop Sending' : 'Send Goods'}
                     selected={sending}
                     disabled={!pad || !id_inserted}
-                    onClick={() => act(sending ? 'stop' : 'send')}
-                  />
+                    onClick={() => act(sending ? 'stop' : 'send')} />
                   <Button
                     icon={id_bounty_info ? 'recycle' : 'pen'}
                     color={id_bounty_info ? 'green' : 'default'}
                     tooltip={id_bounty_info ? 'Replace Bounty' : 'New Bounty'}
                     disabled={!id_inserted}
-                    onClick={() => act('bounty')}
-                  />
+                    onClick={() => act('bounty')} />
                   <Button
                     icon={'download'}
                     content={'Eject ID'}
                     disabled={!id_inserted}
-                    onClick={() => act('eject')}
-                  />
-                </>
-              }
-            >
-              <LabeledList>
-                <LabeledList.Item label="Status" color={pad ? 'good' : 'bad'}>
-                  {pad ? 'Online' : 'Not Found'}
-                </LabeledList.Item>
-                <LabeledList.Item label="Cargo Report">
-                  {status_report}
-                </LabeledList.Item>
-              </LabeledList>
-            </Section>
-            {picking ? <BountyPickBox /> : <BountyTextBox />}
+                    onClick={() => act('eject')} />
+                </>}
+              >
+                <LabeledList>
+                  <LabeledList.Item label="Status" color={pad ? 'good' : 'bad'}>
+                    {pad ? 'Online' : 'Not Found'}
+                  </LabeledList.Item>
+                  <LabeledList.Item label="Cargo Report">
+                    {status_report}
+                  </LabeledList.Item>
+                </LabeledList>
+              </Section><>
+                  {picking ? <BountyPickBox /> : <BountyTextBox />}
+                </></>
+            : <>
+                <Section>
+                  
+                </Section>
+
+              </>
+
+            }
           </Flex.Item>
         </Flex>
       </Window.Content>
     </Window>
   );
 };
+
+// Main thing
+const personalBountyBlock = (props) => {
+  const { act, data } = useBackend();
+  return (
+    <Section>
+      TEST TEXT
+    </Section>
+  );
+};
+
+
+// Content specific to personal bounties.
 
 const BountyTextBox = (props) => {
   const { data } = useBackend();

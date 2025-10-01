@@ -486,9 +486,9 @@
 			<ul>
 			<li>Reward: <b>[current_bounty.reward]</b> cr.</li>
 			<li>Cut: [round(BOUNTY_CUT_STANDARD * current_bounty.reward)] cr.</li>
-			<li>[current_bounty.!claimed ? "Not" : ""] Completed</li>
+			<li>[!(current_bounty.claimed) ? "Not" : ""] Completed</li>
 			</ul>"}
-	add_raw_text(printout_text.join("<br />"))
+	add_raw_text(printout_text.Join("<br />"))
 	update_appearance()
 	return TRUE
 
