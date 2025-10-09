@@ -233,14 +233,25 @@
 		else
 			data["picking"] = FALSE
 
+	data["listBounty"] = list()
 	for(var/datum/bounty/global_bounty in GLOB.bounties_list)
-		data["listBounty"] = list()
-		data["listBounty"]["name"] = global_bounty.name
-		data["listBounty"]["description"] = global_bounty.description
-		data["listBounty"]["reward"] = global_bounty.reward
-		data["listBounty"]["shipped_"] = global_bounty.reward
-		data["listBounty"]["claimed"] = global_bounty.claimed
+		var/ship_total = global_bounty.claimed ? 100 : 0
+		var/ship_max = global_bounty.required_count ? global_bounty.required_count : 1
 
+		if(istype(global_bounty, /datum/bounty/item))
+			var/datum/bounty/item/item_bounty = global_bounty
+			ship_total = item_bounty.shipped_count //Present value as a percentage, we'll handle 0 and 100 as constants
+
+			if(data["listBounty"]["name"] == global_bounty.name)
+				continue
+			data["listBounty"] += list(list(
+				"name" = global_bounty.name,
+				"description" = global_bounty.description,
+				"reward" = global_bounty.reward,
+				"claimed" = global_bounty.claimed,
+				"shipped" = ship_total
+				"maximum" = ship_max
+			))
 
 	return data
 
@@ -269,7 +280,7 @@
 			id_eject(user, inserted_scan_id)
 			inserted_scan_id = null
 		if("update_list")
-			update_global_bounty_list(enable_high_priority = TRUE)
+			update_global_bounty_list(enable_high_priority = FALSE)
 	. = TRUE
 
 ///Self explanitory, holds the ID card in the console for bounty payout and manipulation.

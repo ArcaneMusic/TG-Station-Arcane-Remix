@@ -1,3 +1,4 @@
+
 import {
   Box,
   Button,
@@ -5,8 +6,10 @@ import {
   LabeledList,
   NoticeBox,
   Section,
+  Stack,
   Tabs,
 } from 'tgui-core/components';
+import type { BooleanLike } from 'tgui-core/react';
 
 import { useState } from 'react';
 import { useBackend } from '../backend';
@@ -15,11 +18,38 @@ import { Window } from '../layouts';
 
 // Main window content.
 
+type Data = {
+  pad: string;
+  sending: BooleanLike;
+  status_report: string;
+  picking: BooleanLike;
+
+  id_inserted: BooleanLike;
+  id_bounty_info: string;
+  id_bounty_value: number;
+  id_bounty_num: number;
+
+  id_bounty_names: string[];
+  id_bounty_infos: string[];
+  id_bounty_values: number[];
+
+  listBounty: singleBounty[];
+};
+
+type singleBounty = {
+  name: string;
+  description: string;
+  reward: number;
+  shipped: number;
+  claimed: BooleanLike;
+
+}
+
+
 export const CivCargoHoldTerminal = (props) => {
-  const { act, data } = useBackend();
-  const { pad, sending, status_report, id_inserted, id_bounty_info, picking,
-   } =
-    data;
+  const { act, data } = useBackend<Data>();
+  const { id_inserted } = data;
+
   const in_text = 'Welcome valued employee.';
   const out_text = 'To begin, insert your ID into the console.';
   const [tab, setTab] = useState('personal');
@@ -30,10 +60,8 @@ export const CivCargoHoldTerminal = (props) => {
       <Window.Content scrollable>
         <Flex>
           <Flex.Item grow>
-            <NoticeBox color={!id_inserted ? 'default' : 'blue'}>
-              {id_inserted ? in_text : out_text}
-            </NoticeBox>
             <Section>
+
               <Tabs fluid>
                 <Tabs.Tab
                   icon="user"
@@ -53,16 +81,18 @@ export const CivCargoHoldTerminal = (props) => {
                 </Tabs.Tab>
               </Tabs>
             </Section>
+
             {tab === 'personal' ?
-              <personalBountyBlock></personalBountyBlock>
-            : <>
-                <Section>
-                  <Button
-                    onClick={() => act('update_list')}>
-                      UPDATE
-                  </Button>
-                </Section>
-              </>
+              <NoticeBox color={!id_inserted ? 'default' : 'blue'}>
+                {id_inserted ? in_text : out_text}
+              </NoticeBox>
+              : <></>
+            }
+
+            {tab === 'personal' ?
+              <PersonalBountyBlock />
+            :
+              <GlobalBountyBlock />
             }
           </Flex.Item>
         </Flex>
@@ -71,9 +101,10 @@ export const CivCargoHoldTerminal = (props) => {
   );
 };
 
-// Main thing
-const personalBountyBlock = (props) => {
-  const { act, data } = useBackend();
+// Block for the personal bounty information.
+const PersonalBountyBlock = (props) => {
+  const { act, data } = useBackend<Data>();
+  const { pad, sending, status_report, id_inserted, id_bounty_info, picking } = data;
   return (
     <>
       <Section
@@ -121,10 +152,8 @@ const personalBountyBlock = (props) => {
 };
 
 
-// Content specific to personal bounties.
-
 const BountyTextBox = (props) => {
-  const { data } = useBackend();
+  const { data } = useBackend<Data>();
   const { id_bounty_info, id_bounty_value, id_bounty_num } = data;
   const na_text = 'N/A, please add a new bounty.';
   return (
@@ -144,8 +173,9 @@ const BountyTextBox = (props) => {
   );
 };
 
+
 const BountyPickBox = (props) => {
-  const { act, data } = useBackend();
+  const { act, data } = useBackend<Data>();
   const { id_bounty_names, id_bounty_infos, id_bounty_values } = data;
   return (
     <Section title="Please Select a Bounty:" textAlign="center">
@@ -210,3 +240,65 @@ const BountyPickButton = (props) => {
     </Button>
   );
 };
+
+const GlobalBountyBlock = (props) => {
+  const { act, data } = useBackend<Data>();
+  const {
+    listBounty = [],
+    sending,
+    pad,
+    id_inserted,
+  } = data;
+  const safeListBounty = Array.isArray(listBounty) ? listBounty : [];
+  return (
+    <>
+    <Section>
+      <Button
+        width = "100%"
+        onClick={() => act('update_list')}>
+          Update List
+      </Button>
+    </Section>
+    <Section>
+      {safeListBounty.map((bounty) => (
+        <Section
+          title={bounty.name}>
+          <Stack fill>
+            <Stack.Item
+              width="60%">
+              {bounty.description}
+            </Stack.Item>
+            <Stack.Item
+              width="20%">
+              {bounty.reward} cr
+            </Stack.Item>
+            <Stack.Item
+              width="20%"
+              backgroundColor={bounty.shipped >= 100 ? "green" : null}>
+                <Stack vertical>
+                  <Stack.Item>
+                    {bounty.shipped} shipped
+                  </Stack.Item>
+                  <Stack.Item>
+                    <Button
+                      width = "100%"
+                      icon={sending ? 'times' : 'arrow-up'}
+                      tooltip={sending ? 'Stop Sending' : 'Send Goods'}
+                      selected={sending}
+                      disabled={!pad || !id_inserted}
+                      onClick={() => act(sending ? 'stop' : 'send')}>
+                      Send & Claim
+                    </Button>
+                  </Stack.Item>
+                </Stack>
+
+            </Stack.Item>
+          </Stack>
+        </Section>
+      ))
+      }
+    </Section>
+    </>
+  )
+}
+
