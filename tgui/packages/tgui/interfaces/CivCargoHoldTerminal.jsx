@@ -17,11 +17,13 @@ import { Window } from '../layouts';
 
 export const CivCargoHoldTerminal = (props) => {
   const { act, data } = useBackend();
-  const { pad, sending, status_report, id_inserted, id_bounty_info, picking } =
+  const { pad, sending, status_report, id_inserted, id_bounty_info, picking,
+   } =
     data;
   const in_text = 'Welcome valued employee.';
   const out_text = 'To begin, insert your ID into the console.';
   const [tab, setTab] = useState('personal');
+  const listBounties = data.listBounty || [];
 
   return (
     <Window width={580} height={375}>
@@ -52,51 +54,15 @@ export const CivCargoHoldTerminal = (props) => {
               </Tabs>
             </Section>
             {tab === 'personal' ?
-              <><Section
-                title="Cargo Pad"
-                buttons={<>
-                  <Button
-                    icon={'sync'}
-                    tooltip={'Check Contents'}
-                    disabled={!pad || !id_inserted}
-                    onClick={() => act('recalc')} />
-                  <Button
-                    icon={sending ? 'times' : 'arrow-up'}
-                    tooltip={sending ? 'Stop Sending' : 'Send Goods'}
-                    selected={sending}
-                    disabled={!pad || !id_inserted}
-                    onClick={() => act(sending ? 'stop' : 'send')} />
-                  <Button
-                    icon={id_bounty_info ? 'recycle' : 'pen'}
-                    color={id_bounty_info ? 'green' : 'default'}
-                    tooltip={id_bounty_info ? 'Replace Bounty' : 'New Bounty'}
-                    disabled={!id_inserted}
-                    onClick={() => act('bounty')} />
-                  <Button
-                    icon={'download'}
-                    content={'Eject ID'}
-                    disabled={!id_inserted}
-                    onClick={() => act('eject')} />
-                </>}
-              >
-                <LabeledList>
-                  <LabeledList.Item label="Status" color={pad ? 'good' : 'bad'}>
-                    {pad ? 'Online' : 'Not Found'}
-                  </LabeledList.Item>
-                  <LabeledList.Item label="Cargo Report">
-                    {status_report}
-                  </LabeledList.Item>
-                </LabeledList>
-              </Section><>
-                  {picking ? <BountyPickBox /> : <BountyTextBox />}
-                </></>
+              <personalBountyBlock></personalBountyBlock>
             : <>
                 <Section>
-                  
+                  <Button
+                    onClick={() => act('update_list')}>
+                      UPDATE
+                  </Button>
                 </Section>
-
               </>
-
             }
           </Flex.Item>
         </Flex>
@@ -109,9 +75,48 @@ export const CivCargoHoldTerminal = (props) => {
 const personalBountyBlock = (props) => {
   const { act, data } = useBackend();
   return (
-    <Section>
-      TEST TEXT
-    </Section>
+    <>
+      <Section
+        title="Cargo Pad"
+        buttons={
+          <>
+            <Button
+              icon={'sync'}
+              tooltip={'Check Contents'}
+              disabled={!pad || !id_inserted}
+              onClick={() => act('recalc')} />
+            <Button
+              icon={sending ? 'times' : 'arrow-up'}
+              tooltip={sending ? 'Stop Sending' : 'Send Goods'}
+              selected={sending}
+              disabled={!pad || !id_inserted}
+              onClick={() => act(sending ? 'stop' : 'send')} />
+            <Button
+              icon={id_bounty_info ? 'recycle' : 'pen'}
+              color={id_bounty_info ? 'green' : 'default'}
+              tooltip={id_bounty_info ? 'Replace Bounty' : 'New Bounty'}
+              disabled={!id_inserted}
+              onClick={() => act('bounty')} />
+            <Button
+              icon={'download'}
+              content={'Eject ID'}
+              disabled={!id_inserted}
+              onClick={() => act('eject')} />
+          </>}
+        >
+        <LabeledList>
+          <LabeledList.Item label="Status" color={pad ? 'good' : 'bad'}>
+            {pad ? 'Online' : 'Not Found'}
+          </LabeledList.Item>
+          <LabeledList.Item label="Cargo Report">
+            {status_report}
+          </LabeledList.Item>
+        </LabeledList>
+      </Section>
+      <>
+        {picking ? <BountyPickBox /> : <BountyTextBox />}
+      </>
+    </>
   );
 };
 
