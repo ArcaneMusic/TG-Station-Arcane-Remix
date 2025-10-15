@@ -235,8 +235,17 @@
 
 	data["listBounty"] = list()
 	for(var/datum/bounty/global_bounty in GLOB.bounties_list)
-		var/ship_total = global_bounty.claimed ? 100 : 0
-		var/ship_max = global_bounty.required_count ? global_bounty.required_count : 1
+		var/ship_total = 0
+		var/ship_max = 1
+
+		if(istype(global_bounty, /datum/bounty/item))
+			var/datum/bounty/item/global_item = global_bounty
+			ship_max = global_item.required_count
+			ship_total = global_item.shipped_count
+		else if (istype(global_bounty, /datum/bounty/reagent))
+			var/datum/bounty/reagent/global_chems = global_bounty
+			ship_max = global_chems.required_volume
+			ship_total = global_chems.shipped_volume
 
 		if(istype(global_bounty, /datum/bounty/item))
 			var/datum/bounty/item/item_bounty = global_bounty
@@ -249,8 +258,8 @@
 				"description" = global_bounty.description,
 				"reward" = global_bounty.reward,
 				"claimed" = global_bounty.claimed,
-				"shipped" = ship_total
-				"maximum" = ship_max
+				"shipped" = ship_total,
+				"maximum" = ship_max,
 			))
 
 	return data
@@ -347,7 +356,7 @@
 		var/datum/bounty/high_pri = pick(GLOB.bounties_list)
 		high_pri.high_priority = TRUE
 		high_pri.reward = high_pri.reward * 1.5
-		high_pri.description += " This bounty is marked as <b>high priority</b>, and will reward <b>1.5x</b> the normal payout!"
+		high_pri.description = "[initial(high_pri.description)] This bounty is marked as <b>high priority</b>, and will reward <b>1.5x</b> the normal payout!"
 	return TRUE
 
 ///Upon completion of a civilian bounty, one of these is created. It is sold to cargo to give the cargo budget bounty money, and the person who completed it cash.

@@ -1,10 +1,12 @@
 
 import {
+  BlockQuote,
   Box,
   Button,
   Flex,
   LabeledList,
   NoticeBox,
+  ProgressBar,
   Section,
   Stack,
   Tabs,
@@ -252,53 +254,97 @@ const GlobalBountyBlock = (props) => {
   const safeListBounty = Array.isArray(listBounty) ? listBounty : [];
   return (
     <>
-    <Section>
-      <Button
-        width = "100%"
-        onClick={() => act('update_list')}>
-          Update List
-      </Button>
-    </Section>
-    <Section>
-      {safeListBounty.map((bounty) => (
+    <Stack fill>
+      <Stack.Item
+        width="30%"
+        bold
+        >
+        <Tabs vertical>
+          <Tabs.Tab
+            onClick={() => act('update_list')}
+            backgroundColor="good"
+            textColor="white"
+          >
+            Update List
+          </Tabs.Tab>
+          {safeListBounty.map((bounty) => (
+            <Tabs.Tab
+              key={bounty.index}
+              pt={0.75}
+              pb={0.75}
+              mr={1}
+              onClick={() => act('selectBounty', { bounty })}
+            >
+              {bounty.name}
+            </Tabs.Tab>
+          ))}
+        </Tabs>
+      </Stack.Item>
+      <Stack.Item>
         <Section
-          title={bounty.name}>
-          <Stack fill>
-            <Stack.Item
-              width="60%">
-              {bounty.description}
-            </Stack.Item>
-            <Stack.Item
-              width="20%">
-              {bounty.reward} cr
-            </Stack.Item>
-            <Stack.Item
-              width="20%"
-              backgroundColor={bounty.shipped >= 100 ? "green" : null}>
-                <Stack vertical>
-                  <Stack.Item>
-                    {bounty.shipped} shipped
-                  </Stack.Item>
-                  <Stack.Item>
-                    <Button
-                      width = "100%"
-                      icon={sending ? 'times' : 'arrow-up'}
-                      tooltip={sending ? 'Stop Sending' : 'Send Goods'}
-                      selected={sending}
-                      disabled={!pad || !id_inserted}
-                      onClick={() => act(sending ? 'stop' : 'send')}>
-                      Send & Claim
-                    </Button>
-                  </Stack.Item>
-                </Stack>
-
-            </Stack.Item>
-          </Stack>
+          title = "Bounty"
+          >
+          <ProgressBar
+            value={bounty.shipped}
+            max={bounty.maximum}
+            />
+            {bounty.shipped} / {bounty.maximum}
+          </ProgressBar>
+          <BlockQuote>
+            {bounty.description}
+          </BlockQuote>
+          <Button
+            width="100%"
+            icon={sending ? 'times' : 'arrow-up'}
+            tooltip={sending ? 'Stop Sending' : 'Send Goods'}
+            selected={sending}
+            disabled={!pad || !id_inserted}
+            onClick={() => act(sending ? 'stop' : 'send')}
+          >
+            Send & Claim
+          </Button>
         </Section>
+      </Stack.Item>
+    </Stack>
+    // <Section>
+    //   {safeListBounty.map((bounty) => (
+    //     <Section
+    //       title={bounty.name}>
+    //       <Stack fill>
+    //         <Stack.Item
+    //           width="60%">
+    //           {bounty.description}
+    //         </Stack.Item>
+    //         <Stack.Item
+    //           width="20%">
+    //           {bounty.reward} cr
+    //         </Stack.Item>
+    //         <Stack.Item
+    //           width="20%"
+    //           backgroundColor={bounty.shipped >= 100 ? "green" : null}>
+    //             <Stack vertical>
+    //               <Stack.Item>
+    //                 {bounty.shipped} shipped
+    //               </Stack.Item>
+    //               <Stack.Item>
+    //                 <Button
+    //                   width = "100%"
+    //                   icon={sending ? 'times' : 'arrow-up'}
+    //                   tooltip={sending ? 'Stop Sending' : 'Send Goods'}
+    //                   selected={sending}
+    //                   disabled={!pad || !id_inserted}
+    //                   onClick={() => act(sending ? 'stop' : 'send')}>
+    //                   Send & Claim
+    //                 </Button>
+    //               </Stack.Item>
+    //             </Stack>
+
+    //         </Stack.Item>
+    //       </Stack>
+    //     </Section>
       ))
       }
     </Section>
     </>
   )
 }
-
