@@ -46,6 +46,8 @@
 	interface_type = "CivCargoHoldTerminal"
 	///Typecast of an inserted, scanned ID card inside the console, as bounties are held within the ID card.
 	var/obj/item/card/id/inserted_scan_id
+	///Cooldown for printing the bounty sheet, and not breaking people's eardrums.
+	COOLDOWN_DECLARE(sheet_printer_cooldown)
 
 /obj/machinery/computer/piratepad_control/civilian/attackby(obj/item/I, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(isidcard(I))
@@ -290,6 +292,13 @@
 			inserted_scan_id = null
 		if("update_list")
 			update_global_bounty_list(enable_high_priority = FALSE)
+		if("print")
+			if(!COOLDOWN_FINISHED(src, sheet_printer_cooldown))
+				balloon_alert(user, "printer spooling!")
+				return FALSE
+			new /obj/item/paper/bounty_printout(loc)
+			playsound(src, 'sound/machines/printer.ogg', 100, TRUE)
+			COOLDOWN_START(src, sheet_printer_cooldown, 4 SECONDS)
 	. = TRUE
 
 ///Self explanitory, holds the ID card in the console for bounty payout and manipulation.

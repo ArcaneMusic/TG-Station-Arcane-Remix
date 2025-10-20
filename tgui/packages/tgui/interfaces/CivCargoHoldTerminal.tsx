@@ -44,7 +44,7 @@ type singleBounty = {
   reward: number;
   shipped: number;
   claimed: BooleanLike;
-
+  maximum: number;
 }
 
 
@@ -251,6 +251,16 @@ const GlobalBountyBlock = (props) => {
     pad,
     id_inserted,
   } = data;
+
+  const [localBounty, setBountyData] = useState<singleBounty>({
+    name: 'n/a',
+    description: '',
+    reward: 0,
+    shipped: 0,
+    claimed: false,
+    maximum: 0,
+  });
+
   const safeListBounty = Array.isArray(listBounty) ? listBounty : [];
   return (
     <>
@@ -264,34 +274,48 @@ const GlobalBountyBlock = (props) => {
             onClick={() => act('update_list')}
             backgroundColor="good"
             textColor="white"
+            width="100%"
+          >
+            Update List
+          </Tabs.Tab>
+          <Tabs.Tab
+            onClick={() => act('print')}
+            backgroundColor="#ffffff70"
+            textColor="white"
+            width="100%"
           >
             Update List
           </Tabs.Tab>
           {safeListBounty.map((bounty) => (
             <Tabs.Tab
-              key={bounty.index}
+              key={bounty.name}
               pt={0.75}
               pb={0.75}
               mr={1}
-              onClick={() => act('selectBounty', { bounty })}
+              width="100%"
+              onClick={() => setBountyData(bounty)}
             >
               {bounty.name}
             </Tabs.Tab>
           ))}
         </Tabs>
       </Stack.Item>
-      <Stack.Item>
-        <Section
-          title = "Bounty"
-          >
+      <Stack.Item grow>
+        {localBounty.reward !== 0 ? (
+          <>
+            <Section
+              title={localBounty.name}
+              >
           <ProgressBar
-            value={bounty.shipped}
-            max={bounty.maximum}
-            />
-            {bounty.shipped} / {bounty.maximum}
+            value={localBounty.shipped}
+            maxValue={localBounty.maximum}
+            >
+          {localBounty.shipped} / {localBounty.maximum} shipped.
           </ProgressBar>
-          <BlockQuote>
-            {bounty.description}
+          <BlockQuote
+            my="5%"
+            >
+            {localBounty.description}
           </BlockQuote>
           <Button
             width="100%"
@@ -304,47 +328,17 @@ const GlobalBountyBlock = (props) => {
             Send & Claim
           </Button>
         </Section>
+        </>
+        ) : (
+          <>
+            <NoticeBox
+              width="100%">
+              Please select a bounty from the list.
+            </NoticeBox>
+          </>
+        )}
       </Stack.Item>
     </Stack>
-    // <Section>
-    //   {safeListBounty.map((bounty) => (
-    //     <Section
-    //       title={bounty.name}>
-    //       <Stack fill>
-    //         <Stack.Item
-    //           width="60%">
-    //           {bounty.description}
-    //         </Stack.Item>
-    //         <Stack.Item
-    //           width="20%">
-    //           {bounty.reward} cr
-    //         </Stack.Item>
-    //         <Stack.Item
-    //           width="20%"
-    //           backgroundColor={bounty.shipped >= 100 ? "green" : null}>
-    //             <Stack vertical>
-    //               <Stack.Item>
-    //                 {bounty.shipped} shipped
-    //               </Stack.Item>
-    //               <Stack.Item>
-    //                 <Button
-    //                   width = "100%"
-    //                   icon={sending ? 'times' : 'arrow-up'}
-    //                   tooltip={sending ? 'Stop Sending' : 'Send Goods'}
-    //                   selected={sending}
-    //                   disabled={!pad || !id_inserted}
-    //                   onClick={() => act(sending ? 'stop' : 'send')}>
-    //                   Send & Claim
-    //                 </Button>
-    //               </Stack.Item>
-    //             </Stack>
-
-    //         </Stack.Item>
-    //       </Stack>
-    //     </Section>
-      ))
-      }
-    </Section>
     </>
   )
 }
