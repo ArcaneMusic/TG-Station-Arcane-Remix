@@ -33,20 +33,13 @@
 /datum/ai_controller/basic_controller/migrant
 	blackboard = list( // Always cowardly
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic, // Use this to find people to run away from
-		BB_PET_TARGETING_STRATEGY = /datum/targeting_strategy/basic/not_friends,
-		BB_BASIC_MOB_FLEE_DISTANCE = 1,
 	)
 
 	ai_traits = PASSIVE_AI_FLAGS
 	ai_movement = /datum/ai_movement/basic_avoidance
 	idle_behavior = /datum/idle_behavior/idle_random_walk // Random delayed teleportation.
 	planning_subtrees = list(
-		/datum/ai_planning_subtree/find_and_hunt_target/plasma_search, // Search for plasma.
 
-		// Skedaddle
-		/datum/ai_planning_subtree/flee_target/mouse,
-		// Otherwise, look for and execute hunts for cabling
-		/datum/ai_planning_subtree/find_and_hunt_target/look_for_cables,
 	)
 
 // Mouse subtree to hunt down delicious cheese.
