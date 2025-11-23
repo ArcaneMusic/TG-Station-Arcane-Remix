@@ -317,7 +317,7 @@ const NewscasterWantedScreen = (props) => {
               </Button>
             </LabeledList.Item>
           </LabeledList>
-          <Section>
+          <Section mb={1} mt={1}>
             <Button
               icon="camera"
               selected={photo_data}
@@ -416,7 +416,7 @@ const NewscasterChannelBox = (props) => {
               </BlockQuote>
             </Section>
           ) : (
-            <Section fill scrollable>
+            <Section fill scrollable minHeight="50px">
               <BlockQuote italic fontSize={1.2} wrap>
                 {decodeHtmlEntities(channelDesc)}
               </BlockQuote>
@@ -452,7 +452,7 @@ const NewscasterChannelBox = (props) => {
             {!!admin_mode && (
               <Button
                 icon="ban"
-                tooltip="Censor the whole channel and its \
+                tooltip="Censor the whole channel and its
                   contents as dangerous to the station. Cannot be undone."
                 disabled={!admin_mode || !viewing_channel}
                 onClick={() =>
@@ -558,7 +558,7 @@ const NewscasterChannelMessages = (props) => {
     );
   }
   const visibleMessages = messages.filter(
-    (message) => message.ID !== viewing_channel,
+    (message) => message.channel_num == viewing_channel,
   );
   return (
     <Section>
@@ -570,9 +570,9 @@ const NewscasterChannelMessages = (props) => {
             title={
               <i>
                 {message.censored_author ? (
-                  <Box textColor="red">
-                    By: [REDACTED]. <b>D-Notice Notice</b> .
-                  </Box>
+                  <span style={{color: 'red'}}>
+                    By: [REDACTED]. <b>D-Notice</b>.
+                  </span>
                 ) : (
                   <>
                     By: {message.auth} at {message.time}
@@ -583,28 +583,28 @@ const NewscasterChannelMessages = (props) => {
             buttons={
               <>
                 {!!admin_mode && (
-                  <Button
-                    icon="comment-slash"
-                    tooltip="Censor Story"
-                    disabled={!admin_mode}
-                    onClick={() =>
-                      act('storyCensor', {
-                        messageID: message.ID,
-                      })
-                    }
-                  />
-                )}
-                {!!admin_mode && (
-                  <Button
-                    icon="user-slash"
-                    tooltip="Censor Author"
-                    disabled={!admin_mode}
-                    onClick={() =>
-                      act('authorCensor', {
-                        messageID: message.ID,
-                      })
-                    }
-                  />
+                  <>
+                    <Button
+                      icon="comment-slash"
+                      tooltip="Censor Story"
+                      disabled={!admin_mode}
+                      onClick={() =>
+                        act('storyCensor', {
+                          messageID: message.ID,
+                        })
+                      }
+                    />
+                    <Button
+                      icon="user-slash"
+                      tooltip="Censor Author"
+                      disabled={!admin_mode}
+                      onClick={() =>
+                        act('authorCensor', {
+                          messageID: message.ID,
+                        })
+                      }
+                    />
+                  </>
                 )}
                 <Button
                   icon="comment"
@@ -631,7 +631,7 @@ const NewscasterChannelMessages = (props) => {
                   the station and therefore marked with a <b>D-Notice</b>.
                 </Section>
               ) : (
-                <Section pl={1}>
+                <Section pl={1} textColor="#dbdbdbff">
                   <Box dangerouslySetInnerHTML={processedText(message.body)} />
                 </Section>
               )}
@@ -641,15 +641,18 @@ const NewscasterChannelMessages = (props) => {
               {!!message.comments && (
                 <Box>
                   {message.comments.map((comment) => (
-                    <BlockQuote key={comment.index}>
-                      <Box italic textColor="white">
+                    <BlockQuote key={comment.index}
+                      backgroundColor="#cccfff1a">
+                      <Box italic textColor="white"
+                        pt={1}>
                         By: {comment.auth} at {comment.time}
                       </Box>
-                      <Section ml={2.5}>
                         <Box
                           dangerouslySetInnerHTML={processedText(comment.body)}
+                          textColor="#c4c4c4ff"
+                          ml={1.5}
+                          pb={0.25}
                         />
-                      </Section>
                     </BlockQuote>
                   ))}
                 </Box>

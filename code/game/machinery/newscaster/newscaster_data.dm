@@ -159,10 +159,6 @@ GLOBAL_LIST_EMPTY(request_list)
 	var/last_action
 	/// What does this feed network say when a message/author is redacted?
 	var/redacted_text = "\[REDACTED\]"
-	/// Channel ID to use when next making a new channel, to maintain unique IDs.
-	var/next_channel_id = 1
-	/// How many messages currently exist on this feed_network? Increments as new messages are written.
-	var/message_count = 0
 
 /datum/feed_network/New()
 	create_feed_channel(NEWSCASTER_STATION_ANNOUNCEMENTS, "SS13", "Company news, staff announcements, and all the latest information. Have a secure shift!", locked = TRUE)
@@ -182,8 +178,7 @@ GLOBAL_LIST_EMPTY(request_list)
 	new_channel.locked = locked
 	new_channel.is_admin_channel = adminChannel
 	new_channel.receiving_cross_sector = receiving_cross_sector
-	new_channel.channel_id = next_channel_id
-	next_channel_id++
+	new_channel.channel_id = length(network_channels)
 
 	add_feed_channel(new_channel)
 
@@ -211,10 +206,9 @@ GLOBAL_LIST_EMPTY(request_list)
 	new_article.is_admin_message = adminMessage
 	new_article.locked = !allow_comments
 
-	message_count++
 	last_action++
 	new_article.creation_time = last_action
-	new_article.message_id = message_count
+	new_article.message_id = get_message_count()
 
 	if(picture)
 		new_article.img = picture.picture_image
@@ -280,6 +274,14 @@ GLOBAL_LIST_EMPTY(request_list)
 		clean.Insert(photo, "", SOUTH, 1, 0)
 		fcopy(clean, "[GLOB.log_directory]/photos/[photo_file].png")
 	return photo_file
+
+
+/datum/feed_network/proc/get_message_count()
+	var/message_count = 0
+	for(var/datum/feed_channel/net in network_channels)
+		for(var/j in net.messages)
+			message_count++
+	return message_count
 
 //**************************
 //	 Bounty Board Datums
