@@ -27,3 +27,6 @@
 
 /datum/ai_planning_subtree/simple_find_target/hunt
 	strategy_key = BB_HUNT_TARGETING_STRATEGY
+
+/datum/ai_planning_subtree/simple_find_target/x
+	
