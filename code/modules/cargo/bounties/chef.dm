@@ -164,3 +164,9 @@
 	reward = CARGO_CRATE_VALUE * 10
 	required_count = 7
 	wanted_types = list(/obj/item/food/pickle = TRUE)
+
+/datum/bounty/item/chef/dynamic_recipe
+	name = "Featured Dish"
+	description = "Central Command is going crazy about this new dish that's been going viral. We would never pass up the opportunity to supply their demand."
+
+	

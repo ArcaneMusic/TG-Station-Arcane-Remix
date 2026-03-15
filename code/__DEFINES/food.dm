@@ -202,15 +202,15 @@ DEFINE_BITFIELD(food_flags, list(
 ///Foods that are meant to have no value, such as lollypops from medborgs.
 #define FOOD_PRICE_WORTHLESS 0
 ///cheap and quick foods, like those from vending machines.
-#define FOOD_PRICE_TRASH 25
+#define FOOD_PRICE_TRASH CARGO_CRATE_VALUE / 8
 ///In line with prices of cheap snacks and foods you find in vending machine, practically disposable.
-#define FOOD_PRICE_CHEAP 70
+#define FOOD_PRICE_CHEAP CARGO_CRATE_VALUE / 4
 ///Half a crate of profit, selling 4 of these lets you buy a kitchen crate from cargo.
-#define FOOD_PRICE_NORMAL 150
+#define FOOD_PRICE_NORMAL CARGO_CRATE_VALUE / 2
 ///Making one of these should be worth the time investment, solid chunk of profit.
-#define FOOD_PRICE_EXOTIC 450
+#define FOOD_PRICE_EXOTIC CARGO_CRATE_VALUE * 2.25
 ///Large windfall for making something from this list.
-#define FOOD_PRICE_LEGENDARY 1300
+#define FOOD_PRICE_LEGENDARY CARGO_CRATE_VALUE * 6.5
 
 ///***Drink price classes***
 ///Drinks that are only limited by a single click of the dispenser.
