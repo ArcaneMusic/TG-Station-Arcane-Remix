@@ -540,7 +540,8 @@
 	//produce the boulder
 	var/obj/item/boulder/new_rock
 	if(prob(artifact_chance))
-		new_rock = new /obj/item/boulder/artifact(loc)
+		var/picked_artifact = pick(typesof(/obj/item/boulder/artifact))
+		new_rock = new picked_artifact(loc)
 	else
 		new_rock = new /obj/item/boulder(loc)
 	Shake(duration = 1.5 SECONDS)
