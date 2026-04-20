@@ -27,7 +27,15 @@
 
 /obj/item/boulder/artifact/update_icon_state()
 	. = ..()
-	icon_state = "boulder_artifact" // Hardset to artifact sprites for consistency
+	icon_state = initial(icon_state) // Hardset to artifact sprites for consistency
+
+/obj/item/boulder/artifact/bluespace
+	icon_state = "boulder_artifact_BS"
+	artifact_type = /obj/item/stack/ore/bluespace_crystal
+
+/obj/item/boulder/artifact/diamond
+	icon_state = "boulder_artifact_diamond"
+	artifact_type = /obj/item/stack/ore/diamond
 
 ///Boulders usually spawned in lavaland labour camp area
 /obj/item/boulder/gulag
