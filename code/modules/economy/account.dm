@@ -87,7 +87,7 @@
 	if(!add_to_accounts)
 		return
 
-	if(old_job)
+	if(old_job && SSeconomy.bank_accounts_by_job[old_job.type])
 		SSeconomy.bank_accounts_by_job[old_job.type] -= src
 	if(new_job)
 		LAZYADD(SSeconomy.bank_accounts_by_job[new_job.type], src)
