@@ -21,7 +21,7 @@
 	/// Sequence var for the id cache
 	var/id_cache_seq = 1
 
-/datum/computer_file/program/science/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing)
+/datum/computer_file/program/science/on_install(datum/computer_file/source, obj/item/modular_computer/computer_installing, mob/user)
 	. = ..()
 	if(!CONFIG_GET(flag/no_default_techweb_link) && !stored_research)
 		CONNECT_TO_RND_SERVER_ROUNDSTART(stored_research, computer)
@@ -80,23 +80,16 @@
 			"can_unlock" = stored_research.can_unlock_node(node),
 			"have_experiments_done" = stored_research.have_experiments_for_node(node),
 			"tier" = stored_research.tiers[node.id],
-			"enqueued_by_user" = enqueued_by_user
+			"enqueued_by_user" = enqueued_by_user,
+			"discount_boosted" = node.discount_boosted
 		))
 
 	// Get experiments and serialize them
 	var/list/exp_to_process = stored_research.available_experiments.Copy()
 	for (var/comp_experi in stored_research.completed_experiments)
 		exp_to_process += stored_research.completed_experiments[comp_experi]
-	for (var/process_experi in exp_to_process)
-		var/datum/experiment/unf_experi = process_experi
-		data["experiments"][unf_experi.type] = list(
-			"name" = unf_experi.name,
-			"description" = unf_experi.description,
-			"tag" = unf_experi.exp_tag,
-			"progress" = unf_experi.check_progress(),
-			"completed" = unf_experi.completed,
-			"performance_hint" = unf_experi.performance_hint
-		)
+	for (var/datum/experiment/unf_experi as anything in exp_to_process)
+		data["experiments"][unf_experi.type] = unf_experi.to_ui_data()
 	return data
 
 /datum/computer_file/program/science/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -164,6 +157,8 @@
 			node_cache[compressed_id]["required_experiments"] = node.required_experiments
 		if (LAZYLEN(node.discount_experiments))
 			node_cache[compressed_id]["discount_experiments"] = node.discount_experiments
+		if (LAZYLEN(node.discount_boosts))
+			node_cache[compressed_id]["discount_boosts"] = node.discount_boosts
 
 	// Build design cache
 	var/design_cache = list()

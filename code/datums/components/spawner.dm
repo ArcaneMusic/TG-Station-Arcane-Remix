@@ -12,7 +12,7 @@
 	/// Callback to a proc that is called when a mob is spawned. Primarily used for sentient spawners.
 	var/datum/callback/spawn_callback
 
-	/// How many mobs can we spawn maximum each time we try to spawn? (1 - max) This number is applied 
+	/// How many mobs can we spawn maximum each time we try to spawn? (1 - max) This number is applied
 	var/max_spawn_per_attempt
 	/// How many types of mobs, taken from spawn_types, will be spawned in every spawn attempt?
 	var/max_spawn_types_per_attempt
@@ -196,7 +196,7 @@
 
 	if(isliving(spawned_mob))
 		var/mob/living/created_mob = spawned_mob
-		created_mob.faction = src.faction
+		created_mob.set_faction(faction)
 		RegisterSignal(created_mob, COMSIG_MOB_STATCHANGE, PROC_REF(mob_stat_changed))
 
 	SEND_SIGNAL(src, COMSIG_SPAWNER_SPAWNED, spawned_mob)
@@ -204,7 +204,7 @@
 	spawn_callback?.Invoke(spawned_mob)
 
 	if(spawn_text)
-		spawner.visible_message(span_danger("A [spawned_mob] [spawn_text] [spawner]."))
+		spawner.visible_message(span_danger("A creature [spawn_text] [spawner]."))
 
 
 /// Remove weakrefs to atoms which have been killed or deleted without us picking it up somehow
