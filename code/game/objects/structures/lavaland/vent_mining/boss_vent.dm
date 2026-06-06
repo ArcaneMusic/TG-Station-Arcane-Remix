@@ -12,9 +12,9 @@
 		/datum/material/titanium = 1,
 		/datum/material/silver = 1,
 		/datum/material/gold = 1,
-		/datum/material/diamond = 1,
+		/datum/material/diamond = 0.1,
 		/datum/material/uranium = 1,
-		/datum/material/bluespace = 1,
+		/datum/material/bluespace = 0.1,
 		/datum/material/plastic = 1,
 	)
 	defending_mobs = list(
@@ -29,6 +29,10 @@
 /obj/structure/ore_vent/boss/Initialize(mapload)
 	. = ..()
 	summoned_boss = pick(defending_mobs)
+
+/obj/structure/ore_vent/boss/Destroy()
+	. = ..()
+	summoned_boss = null
 
 /obj/structure/ore_vent/boss/examine(mob/user)
 	. = ..()
@@ -63,9 +67,46 @@
 
 /obj/structure/ore_vent/boss/icebox
 	icon_state = "ore_vent_ice"
-	icon_state_tapped = "ore_vent_ice_active"
+	base_icon_state = "ore_vent_ice"
 	defending_mobs = list(
 		/mob/living/simple_animal/hostile/megafauna/demonic_frost_miner,
 		/mob/living/simple_animal/hostile/megafauna/wendigo/noportal,
 		/mob/living/simple_animal/hostile/megafauna/colossus,
 	)
+
+/** Debug vent: The one we have for testing.*/
+/obj/structure/ore_vent/debug
+	name = "debug ore vent"
+	desc = "How the hell did you get this?."
+	tapped = TRUE
+	discovered = TRUE
+	unique_vent = TRUE
+	color = "#ff00f2"
+	boulder_size = BOULDER_SIZE_SMALL
+	mineral_breakdown = list(
+		/datum/material/iron = 1,
+	)
+
+/obj/structure/ore_vent/debug/attack_hand(mob/living/user, list/modifiers)
+	. = ..()
+	var/datum/material/choice = tgui_input_list(user, "Choose a material to add/remove.", "New material", subtypesof(/datum/material))
+	if(!choice)
+		return
+	if(mineral_breakdown[choice])
+		mineral_breakdown -= choice
+		balloon_alert_to_viewers("removed [choice::name]")
+		return
+	mineral_breakdown += choice
+	balloon_alert_to_viewers("added [choice::name]")
+	var/value = tgui_input_number(user, "What weight should it have?", "ore pickweight", 1, 100, 1)
+	mineral_breakdown[choice] = value
+	balloon_alert_to_viewers("weighting of [value] added")
+	generate_description()
+
+/obj/structure/ore_vent/debug/attack_hand_secondary(mob/user, list/modifiers)
+	. = ..()
+	var/choice = tgui_input_list(user, "Choose a vent size.", "New size", list(SMALL_VENT_TYPE, MEDIUM_VENT_TYPE, LARGE_VENT_TYPE))
+	if(!choice)
+		return
+	vent_size_setup(random = FALSE, force_size = choice, map_loading = FALSE)
+
