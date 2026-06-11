@@ -83,7 +83,7 @@
 	if(effect)
 		src.spawn_windup = spawn_windup
 
-	RegisterSignal(parent, COMSIG_QDELETING, PROC_REF(stop_spawning))
+	RegisterSignals(parent, list(COMSIG_QDELETING, COMSIG_SPAWNER_STOPPED), PROC_REF(stop_spawning))
 	START_PROCESSING((spawn_time < 2 SECONDS ? SSfastprocess : SSprocessing), src)
 
 /datum/component/spawner/process()
@@ -138,7 +138,7 @@
 			adjusted_spawn_count = rand(1, max_spawn_this_attempt)
 		for(var/j in 1 to adjusted_spawn_count)
 			var/atom/created
-			var/turf/picked_spot = pick_turf(spawner)
+			var/turf/picked_spot = select_turf(spawner)
 			if(!effect || (effect && !spawn_windup))
 				created = new chosen_mob_type(picked_spot)
 			else
@@ -152,12 +152,12 @@
  * This proc determines the tile that a spawner will place a mob on.
  * @param: atom/spawner: typed definition of the parent, used to send a signal in case a mob spawns to the default position, as well as center our circles to pick turfs from.
  */
-/datum/component/spawner/proc/pick_turf(atom/spawner)
+/datum/component/spawner/proc/select_turf(atom/spawner)
 	var/turf/picked_spot
 	if(spawn_distance == 1)
 		picked_spot = spawner.loc
 	else if(spawn_distance >= 1 && spawn_distance_exclude >= 1)
-		picked_spot = pick(turf_peel(spawn_distance, spawn_distance_exclude, spawner.loc, view_based = TRUE))
+		picked_spot = pick(turf_peel(spawn_distance, spawn_distance_exclude, spawner.loc, view_based = TRUE, reject_dense = TRUE))
 		if(!picked_spot)
 			picked_spot = pick(circle_range_turfs(spawner.loc, spawn_distance))
 		if(picked_spot == spawner.loc)
@@ -198,6 +198,8 @@
 		var/mob/living/created_mob = spawned_mob
 		created_mob.set_faction(faction)
 		RegisterSignal(created_mob, COMSIG_MOB_STATCHANGE, PROC_REF(mob_stat_changed))
+		if(spawner_logic == SPAWN_BY_WAVE_BEHAVIOR)
+			created_mob.adjust_timed_status_effect(60 SECONDS, /datum/status_effect/heads_up)
 
 	SEND_SIGNAL(src, COMSIG_SPAWNER_SPAWNED, spawned_mob)
 	RegisterSignal(spawned_mob, COMSIG_QDELETING, PROC_REF(on_deleted))

@@ -41,6 +41,7 @@
 		MEDIUM_VENT_TYPE = 5,
 		SMALL_VENT_TYPE = 7,
 	)
+	/// The number of waves a vent will spawn to protect itself. See the spawner component for more details.
 	var/wave_timer = WAVE_DURATION_SMALL
 
 	/// What string do we use to warn the player about the excavation event?
@@ -240,8 +241,7 @@
 	if(spawn_drone)
 		node = new /mob/living/basic/node_drone(loc)
 		node.arrive(src)
-		RegisterSignal(node, COMSIG_QDELETING, PROC_REF(handle_wave_conclusion))
-		RegisterSignal(node, COMSIG_MOVABLE_MOVED, PROC_REF(handle_wave_conclusion))
+		RegisterSignals(node, list(COMSIG_QDELETING, COMSIG_LIVING_DEATH, COMSIG_MOVABLE_MOVED), PROC_REF(handle_wave_conclusion))
 
 	add_shared_particles(/particles/smoke/ash)
 	for(var/i in 1 to 5) // Clears the surroundings of the ore vent before starting wave defense.
@@ -265,7 +265,7 @@
 					continue
 
 				var/obj/item/boulder/produced = produce_boulder(FALSE)
-				var/obj/structure/lattice/catwalk/boulder/platform = produced.create_platform(rock, null, (wave_timer/5) * 60 SECONDS)
+				var/obj/structure/lattice/catwalk/boulder/platform = produced.create_platform(rock, null, (wave_timer/5) * 75 SECONDS) // We have to finangle the number a bit to turn it into a timer again.
 
 				if(!platform || !QDELETED(produced))
 					qdel(produced)
@@ -316,8 +316,9 @@
 	remove_shared_particles(/particles/smoke/ash)
 
 	//happens in COMSIG_QDELETING
-	if(QDELETED(node))
+	if(QDELETED(node) || node.stat == DEAD)
 		initiate_wave_loss(loss_message = "\the [src] creaks and groans as the mining attempt fails, and the vent closes back up.")
+
 		return
 
 	//happens in COMSIG_MOVABLE_MOVED

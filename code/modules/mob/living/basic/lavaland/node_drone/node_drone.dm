@@ -57,8 +57,10 @@
 	explosion(origin = src, light_impact_range = 1, smoke = 1)
 
 /mob/living/basic/node_drone/Destroy()
-	attached_vent?.node = null //clean our reference to the vent both ways.
-	attached_vent = null
+	if(attached_vent)
+		SEND_SIGNAL(attached_vent, COMSIG_SPAWNER_STOPPED)
+		attached_vent.node = null //clean our reference to the vent both ways.
+		attached_vent = null
 	return ..()
 
 /mob/living/basic/node_drone/examine(mob/user)
