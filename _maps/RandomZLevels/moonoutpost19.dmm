@@ -7005,7 +7005,7 @@
 /obj/item/stack/ore/glass/basalt{
 	amount = 37
 	},
-/turf/open/misc/asteroid/basalt,
+/turf/open/misc/asteroid/basalt/moon_air,
 /area/awaymission/moonoutpost19/main)
 "Yc" = (
 /obj/structure/sink{
