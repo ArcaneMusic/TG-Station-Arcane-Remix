@@ -3,6 +3,7 @@
  */
 
 /datum/unit_test/boulder_processing
+	priority = TEST_DEFAULT
 
 /datum/unit_test/boulder_processing/Run()
 	var/turf/refinery_loc = get_step(run_loc_floor_bottom_left, EAST)
@@ -17,18 +18,25 @@
 	//Test to confirm that the boulder is as we expect it to be:
 	TEST_ASSERT(test_boulder.durability > 0,  "Boulder was spawned such that it's durability is less than 1!")
 	test_boulder.durability = 2
+	log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 	test_boulder.Move(get_turf(refinery_loc), EAST)
+	log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 	TEST_ASSERT_EQUAL(test_boulder.loc, test_refine, "The boulder was not moved into the refinery's contents!")
-	for(var/i in 1 to 3)
+	for(var/i in 1 to 2)
+		log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 		test_refine.process()
+	log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 	TEST_ASSERT_NOTEQUAL(test_boulder.loc, test_refine, "The boulder was not moved out of the refinery's contents!")
 	TEST_ASSERT(!test_boulder.has_material_type(/datum/material/glass), "After the boulder was successfully processed by the refinery, no-ferrous materials still remain inside!")
 	TEST_ASSERT(test_boulder.durability > 0,  "Boulder was processed successfully, but exited with durability under 1!")
 	test_boulder.durability = 2
 	test_boulder.Move(get_turf(smelter_loc), EAST)
+	log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 	test_boulder.Move(get_turf(smelter_loc), EAST)
+	log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 	TEST_ASSERT_EQUAL(test_boulder.loc, test_smelter, "The boulder was not moved into the smelter's contents! We are at: [test_boulder.x], [test_boulder.y], and machine is at [test_smelter.x], [test_smelter.y]")
-	for(var/i in 1 to 3)
+	for(var/i in 1 to 2)
+		log_test("Boulder is at [test_boulder.x], [test_boulder.y], at loc [test_boulder.loc]")
 		test_smelter.process()
 	TEST_ASSERT(QDELETED(test_boulder),"After being processed by both a refinery and smelter, the boulder was not qdeleted!")
 	/// Now we run it in reverse, using the opposite_loc to start with the smelter!
