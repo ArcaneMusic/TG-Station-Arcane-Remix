@@ -929,7 +929,7 @@
 	. = ..()
 	var/turf/owner_turf = get_turf(owner)
 	arrow_overlay = new /obj/effect/overlay/wave_headsup
-	arrow_overlay.pixel_x = owner.base_pixel_x
+	arrow_overlay.pixel_x = -(owner.base_pixel_x)
 	SET_PLANE(arrow_overlay, PLANE_TO_TRUE(arrow_overlay.plane), owner_turf)
 	owner.vis_contents += arrow_overlay
 	RegisterSignal(owner, COMSIG_MOVABLE_Z_CHANGED, PROC_REF(on_z_change))
