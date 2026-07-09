@@ -51,5 +51,3 @@
 	for(var/i in 1 to 2)
 		test_refine.process()
 	TEST_ASSERT(QDELETED(second_boulder), "After being processed by both a refinery and smelter, the boulder was not qdeleted!")
-	qdel(test_refine)
-	qdel(test_smelter)
