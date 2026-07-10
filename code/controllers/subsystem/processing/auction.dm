@@ -3,6 +3,8 @@
 #define AUCTION_LATE (1<<2) // Auction is in the last half of it's 60 second duration.
 #define AUCTION_OVERTIME (1<<3) // Auction is finishing up.
 
+#define AUCTIONEER_PAYCHECK_STANDARD 200
+
 /// The subsystem used to process auctions. Only starts running when a market uplink is created and accessed for the first time.
 PROCESSING_SUBSYSTEM_DEF(auction)
 	name = "Auction"
@@ -58,7 +60,7 @@ PROCESSING_SUBSYSTEM_DEF(auction)
 		if(winner.current_bid > winner.account_budget)
 			CRASH("WE COMITTED FRAUD!!")
 		winner.account_budget -= winner.current_bid
-		
+
 
 
 /datum/controller/subsystem/auction/proc/current_auction_item()
@@ -76,3 +78,13 @@ PROCESSING_SUBSYSTEM_DEF(auction)
 			highest_bidder = bidder
 			highest_bid = highest_bidder.current_bid
 	return highest_bidder
+
+/// Sorts the current bidders, returns the highest placed bid.
+/datum/controller/subsystem/auction/proc/highest_bid()
+	var/highest_bid = 0
+	for(var/datum/auctioneer/bidder in auctioneers)
+		if(bidder.current_bid > highest_bid)
+			highest_bid = highest_bidder.current_bid
+	return highest_bid
+
+#undef AUCTIONEER_PAYCHECK_STANDARD
