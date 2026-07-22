@@ -1,25 +1,4 @@
-// Bidding strategies
-/// Aggressive: Will try and bid aggressively and response quickly for the first 30 seconds of the auction, but slow down for the last 30.
-#define STRATEGY_AGGRESSIVE "aggressive"
-/// Sniper: Will try and bid aggressively and responds quickly for the last 30 seconds of the auction, but slow for the first 30.
-#define STRATEGY_SNIPER "sniper"
-/// Hater: Starts When a new ite
-#define STRATEGY_HATER "asshole"
-/// Knockout: Will start off with a single, big bet to scare off competition, but only follow up with minimum bids.
-#define STRATEGY_KNOCKOUT "knockout"
-/// True Random: Flip flops between small, minimum bids, and large, random jumps, for the entire auction. The default strategy.
-#define STRATEGY_RANDOM "random"
-/// Player: Do nothing! This exists as a holder for the player's name and real bids more than anything, but the player will be able to blend in with AI bidders.
-#define STRATEGY_PLAYER "player"
-
-/// The auction is not running, or has not been started yet.
-#define BID_IDLE "idle"
-/// This auctioneer is currently active and still attempting to place bids.
-#define BID_ACTIVE "active"
-/// Not sure yet.
-// #define BID_FIGHTING "fighting"
-/// This auctioneer, through it's own logic or another auctioneer's logic, is no longer bidding until the next auction.
-#define BID_RETIRED "retired"
+// For defines, see code\__DEFINES\auction.dm.
 
 /datum/auctioneer
 	/// Name to be displayed within the auction interface. Randomized on init from a json list of options.
@@ -49,19 +28,19 @@
 	// First, we need to pick a value for how high of a bid the auctioneer can place without their AI getting in the way.
 	soft_limit = 0 //Also reset this as we enter a new auction with a new budget.
 	var/preferred = FALSE
-	if(preferred_item == ssauction.current_auction_item())
+	if(preferred_item == SSauction.current_auction_item())
 		soft_limit = account_budget * (rand(60,100) / 100)
 		preferred = TRUE
 	else
 		soft_limit = account_budget * (rand(40,70) / 100)
-	to_chat(world, "Soft limit for [name] set to [soft_limit]. [preferred : "This is their preferred item!" ? "Normal rules."]")
-	current_bid = rand(ssauction.minimum_bid)
+	to_chat(world, "Soft limit for [name] set to [soft_limit]. [preferred ? "This is their preferred item!" : "Normal rules."]")
+	current_bid = rand(SSauction.minimum_bid)
 
 ///Here we handle all the logic and processing of each auctioneer.
 /datum/auctioneer/proc/handle_bidding()
 	if(bid_status == BID_RETIRED || bid_status == BID_IDLE)
 		return FALSE// early return in cases where we have stopped bidding, or there is no auction.
-	var/current_auction_price = ssauction.highest_bidder()
+	var/current_auction_price = SSauction.highest_bidder()
 	if(current_auction_price >= soft_limit || (current_auction_price + SSauction.minimum_bid) > soft_limit)
 		bid_status = BID_RETIRED
 		to_chat(world,"I, [name] have been busted! I will only spend [soft_limit], not [current_auction_price]!")

@@ -1,16 +1,11 @@
-#define AUCTION_IDLE (1<<0) //Auction is not running.
-#define AUCTION_EARLY (1<<1) // Auction is within the first half of it's 60 second duration.
-#define AUCTION_LATE (1<<2) // Auction is in the last half of it's 60 second duration.
-#define AUCTION_OVERTIME (1<<3) // Auction is finishing up.
-
-#define AUCTIONEER_PAYCHECK_STANDARD 200
 
 /// The subsystem used to process auctions. Only starts running when a market uplink is created and accessed for the first time.
-PROCESSING_SUBSYSTEM_DEF(auction)
+SUBSYSTEM_DEF(auction)
 	name = "Auction"
 	wait = 1 SECONDS
+	runlevels = RUNLEVEL_GAME
 	/// List of all initialized auctioneer AIs
-	var/auctioneers = list()
+	var/list/auctioneers = list()
 	/// List of items that are available to bid on. This list is order specific, the first entry in the list is the current auction.
 	var/list/auction_items = list()
 	/// What is the current minimum bid?
@@ -84,7 +79,5 @@ PROCESSING_SUBSYSTEM_DEF(auction)
 	var/highest_bid = 0
 	for(var/datum/auctioneer/bidder in auctioneers)
 		if(bidder.current_bid > highest_bid)
-			highest_bid = highest_bidder.current_bid
+			highest_bid = bidder.current_bid
 	return highest_bid
-
-#undef AUCTIONEER_PAYCHECK_STANDARD
