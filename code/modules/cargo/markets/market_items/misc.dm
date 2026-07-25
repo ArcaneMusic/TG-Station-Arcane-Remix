@@ -151,6 +151,7 @@
 	price_max = CARGO_CRATE_VALUE * 6
 	stock_max = 1
 	availability_prob = 15
+	auction_item = TRUE
 
 /datum/market_item/misc/fishing_capsule
 	name = "Fishing Spot Capsule"
@@ -216,6 +217,7 @@
 	price_max = CARGO_CRATE_VALUE * 10
 	stock_max = 1
 	availability_prob = 15
+	auction_item = TRUE
 
 /datum/market_item/misc/self_surgery_skillchip/buy(obj/item/market_uplink/uplink, mob/buyer, shipping_method, legal_status)
 	. = ..()

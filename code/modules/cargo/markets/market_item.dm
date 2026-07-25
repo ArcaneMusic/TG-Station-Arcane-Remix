@@ -42,6 +42,9 @@
 	/// Can this item be restocked
 	var/restockable = TRUE
 
+	/// Is this item offered on the black market auction? These items are rare and intended to be singletons.
+	var/auction_item = FALSE
+
 /datum/market_item/New()
 	if(isnull(price))
 		price = rand(price_min, price_max)

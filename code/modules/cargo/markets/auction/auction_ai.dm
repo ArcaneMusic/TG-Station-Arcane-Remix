@@ -34,6 +34,7 @@
 		preferred = TRUE
 	else
 		soft_limit = account_budget * (rand(40,70) / 100)
+	soft_limit = round(soft_limit)
 	to_chat(world, "Soft limit for [name] set to [soft_limit]. [preferred ? "This is their preferred item!" : "Normal rules."]")
 	current_bid = rand(SSauction.minimum_bid)
 

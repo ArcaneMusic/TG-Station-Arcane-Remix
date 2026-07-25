@@ -125,6 +125,7 @@
 	price_max = CARGO_CRATE_VALUE * 50
 	stock_max = 1
 	availability_prob = 15
+	auction_item = TRUE
 
 /datum/market_item/weapon/giant_wrench_parts
 	name = "Big Slappy parts"
@@ -134,6 +135,7 @@
 	price_max = CARGO_CRATE_VALUE * 5
 	stock_max = 1
 	availability_prob = 25
+	auction_item = TRUE
 
 /datum/market_item/weapon/liberator
 	name = "illegal 3D printer designs"
@@ -143,6 +145,7 @@
 	price_max = CARGO_CRATE_VALUE * 5
 	stock_max = 1
 	availability_prob = 35
+	auction_item = TRUE
 
 /datum/market_item/weapon/surplus_esword
 	name = "Pattern I 'Iaito' Energy Sword"
@@ -161,5 +164,5 @@
 	item = /obj/item/earthcracker/small
 	price_min = CARGO_CRATE_VALUE
 	price_max = CARGO_CRATE_VALUE * 3
-	stock_max = 1
+	stock_max = 3
 	availability_prob = 30
