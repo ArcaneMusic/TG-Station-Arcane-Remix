@@ -19,10 +19,11 @@
 
 /datum/auctioneer/New()
 	. = ..()
-	var/adjective = pick(GLOB.adjectives)
+	var/adjective = capitalize(pick(GLOB.adjectives))
 	var/noun = pick(GLOB.operative_aliases)
 	name = "[adjective] [noun]"
 	account_budget = rand(400,750)
+	LAZYADD(SSauction.auctioneers, src)
 
 /datum/auctioneer/proc/start_bidding()
 	// First, we need to pick a value for how high of a bid the auctioneer can place without their AI getting in the way.
@@ -71,3 +72,6 @@
 // /datum/auctioneer/knockout
 // 	strategy = STRATEGY_KNOCKOUT
 
+/datum/auctioneer/random
+
+/datum/auctioneer/also_random

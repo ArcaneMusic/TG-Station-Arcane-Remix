@@ -16,7 +16,7 @@ SUBSYSTEM_DEF(auction)
 	COOLDOWN_DECLARE(auction_break)
 
 /datum/controller/subsystem/auction/Initialize()
-	init_subtypes(/datum/auctioneer, auctioneers)
+	auctioneers = init_subtypes(/datum/auctioneer, list())
 
 /datum/controller/subsystem/auction/fire(resumed)
 	// Auction is taking a break between items. Nothing to do.
