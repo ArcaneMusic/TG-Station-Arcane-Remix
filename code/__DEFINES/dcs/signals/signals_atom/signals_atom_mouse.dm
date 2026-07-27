@@ -30,3 +30,7 @@
 #define COMSIG_MOUSE_SCROLL_ON "mousescroll_on"
 /// From /atom/movable/screen/click(): (atom/target, atom/location, control, params, mob/user)
 #define COMSIG_SCREEN_ELEMENT_CLICK "screen_element_click"
+///from base of mob/MouseEnteredOn(): (/atom, location, control, params)
+#define COMSIG_MOUSE_ENTERED_ON "mouseentered_on"
+///from base of mob/MouseEnteredOnCheap(): (/atom)
+#define COMSIG_MOUSE_ENTERED_ON_CHEAP "mouseentered_oncheap"

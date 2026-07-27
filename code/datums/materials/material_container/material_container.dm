@@ -17,7 +17,7 @@
 	VAR_PRIVATE/atom/movable/parent
 	/// The maximum amount of materials this material container can contain
 	var/max_amount
-	/// Map of material ref -> amount
+	/// Map of material singleton -> amount
 	var/list/materials //Map of key = material ref | Value = amount
 	/// The list of materials that this material container can accept
 	var/list/allowed_materials
@@ -800,5 +800,26 @@
 	context[SCREENTIP_CONTEXT_RMB] = "Insert"
 
 	return CONTEXTUAL_SCREENTIP_SET
+
+/// For adding a dictionary of materials. mats is the map of materials to add and the corresponding amounts, example: list(M/datum/material/glass =100, datum/material/iron=200)
+/datum/component/material_container/proc/add_materials(list/mats, multiplier=1)
+	if(!mats || !length(mats))
+		return FALSE
+
+	var/list/mats_to_add = list() //Assoc list MAT | AMOUNT
+
+	for(var/x in mats) //Loop through all required materials
+		var/datum/material/req_mat = x
+		if(!istype(req_mat))
+			req_mat = GET_MATERIAL_REF(req_mat) //Get the ref if necesary
+		var/amount_required = mats[x] * multiplier
+		if(!has_space(amount_required)) // do we have enough space for this resource?
+			return FALSE //Can't fit it
+		mats_to_add[req_mat] += amount_required //Add it to the assoc list of things to add
+		continue
+	for(var/i in mats_to_add)
+		insert_amount_mat(mats_to_add[i], i)
+
+	return TRUE
 
 #undef MATERIAL_INSERT_ITEM_SUCCESS

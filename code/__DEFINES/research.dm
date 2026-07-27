@@ -100,6 +100,11 @@
 #define SCIPAPER_GAIN_TO_MONEY 125
 #define SCIPAPER_ALREADY_BOUGHT 2
 
+/// Techweb ID defines.
+#define TECHWEB_STATION "STATION"
+#define TECHWEB_ADMIN "ADMIN"
+#define TECHWEB_CHARLIE "CHARLIE"
+
 ///Connects the 'server_var' to a valid research server on your Z level.
 ///Used for machines in LateInitialize, to ensure that RND servers are loaded first.
 #define CONNECT_TO_RND_SERVER_ROUNDSTART(server_var, holder) do { \

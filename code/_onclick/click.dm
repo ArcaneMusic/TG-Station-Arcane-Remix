@@ -500,6 +500,14 @@
 /mob/proc/MouseWheelOn(atom/A, delta_x, delta_y, params)
 	SEND_SIGNAL(src, COMSIG_MOUSE_SCROLL_ON, A, delta_x, delta_y, params)
 
+/// MouseEnteredOn
+/mob/proc/MouseEnteredOn(atom/A, location, control, params)
+	SEND_SIGNAL(src, COMSIG_MOUSE_ENTERED_ON, A, location, control, params)
+
+/// MouseEnteredOnCheap
+/mob/proc/MouseEnteredOnCheap(atom/A)
+	SEND_SIGNAL(src, COMSIG_MOUSE_ENTERED_ON_CHEAP, A)
+
 /mob/dead/observer/MouseWheelOn(atom/A, delta_x, delta_y, params)
 	var/list/modifiers = params2list(params)
 	if(LAZYACCESS(modifiers, SHIFT_CLICK))

@@ -878,6 +878,7 @@
 	var/mob/user = client?.mob
 	if (isnull(user))
 		return
+	user.MouseEnteredOnCheap(src)
 
 	SEND_SIGNAL(user, COMSIG_ATOM_MOUSE_ENTERED, src)
 

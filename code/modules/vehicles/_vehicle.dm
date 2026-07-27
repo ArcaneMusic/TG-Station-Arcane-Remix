@@ -37,6 +37,8 @@
 	var/are_legs_exposed = FALSE
 	var/enter_sound
 	var/exit_sound
+	/// Associative list of mouse pointers to occupants.
+	var/list/mouse_pointers = list()
 
 /datum/armor/obj_vehicle
 	melee = 30

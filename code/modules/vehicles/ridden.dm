@@ -45,6 +45,7 @@
 	if(inserted_key) //just in case there's an invalid key
 		inserted_key.forceMove(drop_location())
 	inserted_key = tool
+	on_key_inserted()
 	return ITEM_INTERACT_SUCCESS
 
 /obj/vehicle/ridden/click_alt(mob/user)
@@ -56,6 +57,7 @@
 	to_chat(user, span_notice("You remove \the [inserted_key] from \the [src]."))
 	user.put_in_hands(inserted_key)
 	inserted_key = null
+	key_removed()
 	return CLICK_ACTION_SUCCESS
 
 /obj/vehicle/ridden/user_buckle_mob(mob/living/M, mob/user, check_loc = TRUE)
@@ -76,3 +78,9 @@
 /obj/vehicle/ridden/zap_act(power, zap_flags)
 	zap_buckle_check(power)
 	return ..()
+
+/obj/vehicle/ridden/proc/on_key_inserted()
+	return
+
+/obj/vehicle/ridden/proc/key_removed()
+	return

@@ -5,6 +5,7 @@
 
 /obj/structure/closet/secure_closet/quartermaster/PopulateContents()
 	..()
+	new /obj/item/key/forklift/cargo(src)
 	new /obj/item/storage/lockbox/medal/cargo(src)
 	new /obj/item/radio/weather_monitor (src)
 	new /obj/item/radio/headset/heads/qm(src)

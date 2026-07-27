@@ -26,6 +26,7 @@
 
 /obj/structure/closet/secure_closet/hop/PopulateContents()
 	..()
+	new /obj/item/key/forklift/service(src)
 	new /obj/item/dog_bone(src)
 	new /obj/item/storage/bag/garment/hop(src)
 	new /obj/item/storage/lockbox/medal/service(src)
@@ -55,6 +56,7 @@
 	..()
 
 	new /obj/item/disk/computer/command/hos(src)
+	new /obj/item/key/forklift/security(src)
 	new /obj/item/radio/headset/heads/hos(src)
 	new /obj/item/radio/headset/heads/hos/alt(src)
 	new /obj/item/storage/bag/garment/hos(src)

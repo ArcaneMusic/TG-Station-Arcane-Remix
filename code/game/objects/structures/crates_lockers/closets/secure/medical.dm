@@ -76,7 +76,7 @@
 
 /obj/structure/closet/secure_closet/chief_medical/PopulateContents()
 	..()
-
+	new /obj/item/key/forklift/medbay(src)
 	new /obj/item/clothing/suit/bio_suit/cmo(src)
 	new /obj/item/clothing/head/bio_hood/cmo(src)
 	new /obj/item/storage/bag/garment/chief_medical(src)
@@ -98,6 +98,7 @@
 	// Traitor steal objective
 	new /obj/item/reagent_containers/hypospray/cmo(src)
 	new /obj/item/defibrillator/compact/loaded/cmo(src)
+
 
 /obj/structure/closet/secure_closet/animal
 	name = "animal control locker"
