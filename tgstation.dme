@@ -6906,7 +6906,6 @@
 #include "code\modules\vehicles\cars\speedwagon.dm"
 #include "code\modules\vehicles\cars\golfcart\golfcart.dm"
 #include "code\modules\vehicles\cars\golfcart\golfcart_rear.dm"
-#include "code\modules\vehicles\cars\vim.dm"
 #include "code\modules\vehicles\forklift\construction_hologram.dm"
 #include "code\modules\vehicles\forklift\forklift.dm"
 #include "code\modules\vehicles\forklift\forklift_module.dm"
