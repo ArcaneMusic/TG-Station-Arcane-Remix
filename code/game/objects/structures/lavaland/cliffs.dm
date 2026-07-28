@@ -31,6 +31,7 @@
 		return
 	animate(leaving, pixel_y = 2, time = 0.1 SECONDS)
 	animate(leaving, pixel_y = 0, time = 0.1 SECONDS, delay = 0.1 SECONDS)
+	new /obj/effect/temp_visual/dust_cloud_dark (get_turf(direction))
 
 /obj/structure/cliff/tool_act(mob/living/user, obj/item/tool, list/modifiers)
 	. = ..()
@@ -38,3 +39,15 @@
 		if(!do_after(user, 3 SECONDS * tool.toolspeed, target = src))
 			return
 		qdel(src)
+
+/obj/effect/temp_visual/dust_cloud_dark
+	name = "dust"
+	desc = "We're all like... ash... in the wind."
+	icon_state = "dust_cloud"
+	layer = ABOVE_MOB_LAYER
+	plane = GAME_PLANE
+	pixel_x = -4
+	pixel_z = -4
+	base_pixel_z = -4
+	base_pixel_x = -4
+	duration = 1 SECONDS
