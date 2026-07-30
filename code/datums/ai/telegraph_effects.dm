@@ -38,3 +38,6 @@
 
 /obj/effect/temp_visual/telegraphing/line/short
 	duration = 0.5 SECONDS
+
+/obj/effect/temp_visual/telegraphing/line/longer
+	duration = 2.4 SECONDS

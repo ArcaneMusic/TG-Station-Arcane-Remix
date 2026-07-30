@@ -317,6 +317,16 @@
 	mineral_cost = 1
 	always_place = TRUE
 
+/datum/map_template/ruin/lavaland/vent
+	name = "Lava-Ruin Ore Vent - Spire"
+	id = "ore_vent_spire"
+	description = "A vent that spews out ore. Seems to be a natural phenomenon."
+	suffix = "lavaland_surface_ore_spire.dmm"
+	allow_duplicates = FALSE
+	cost = 0
+	mineral_cost = 1
+	always_place = FALSE
+
 /datum/map_template/ruin/lavaland/watcher_grave
 	name = "Lava-Ruin Watchers' Grave"
 	id = "watcher-grave"

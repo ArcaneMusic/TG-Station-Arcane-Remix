@@ -1,0 +1,148 @@
+//MAP CONVERTED BY dmm2tgm.py THIS HEADER COMMENT PREVENTS RECONVERSION, DO NOT REMOVE
+"a" = (
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"e" = (
+/obj/structure/cliff{
+	dir = 4
+	},
+/obj/structure/cliff,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"h" = (
+/obj/structure/trap/lava_plume,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"k" = (
+/obj/structure/cliff,
+/obj/structure/cliff{
+	dir = 8
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"m" = (
+/obj/structure/cliff{
+	dir = 4
+	},
+/obj/structure/cliff{
+	dir = 1
+	},
+/obj/structure/trap/lava_plume,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"o" = (
+/obj/structure/cliff,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"p" = (
+/obj/structure/cliff{
+	dir = 8
+	},
+/obj/structure/trap/lava_plume,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"z" = (
+/obj/structure/cliff{
+	dir = 4
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"I" = (
+/obj/structure/cliff{
+	dir = 1
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"M" = (
+/turf/template_noop,
+/area/template_noop)
+"Q" = (
+/obj/structure/cliff{
+	dir = 8
+	},
+/obj/structure/cliff{
+	dir = 1
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"T" = (
+/obj/structure/cliff{
+	dir = 8
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"U" = (
+/obj/structure/cliff,
+/obj/structure/cliff{
+	dir = 4
+	},
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+"X" = (
+/obj/structure/ore_vent/random,
+/turf/open/misc/asteroid/basalt/lava_land_surface/biome_replace,
+/area/lavaland/surface/outdoors)
+
+(1,1,1) = {"
+M
+a
+a
+a
+a
+a
+M
+"}
+(2,1,1) = {"
+h
+Q
+a
+T
+T
+p
+a
+"}
+(3,1,1) = {"
+a
+I
+Q
+T
+k
+o
+a
+"}
+(4,1,1) = {"
+a
+I
+I
+X
+o
+o
+a
+"}
+(5,1,1) = {"
+a
+I
+a
+z
+U
+o
+a
+"}
+(6,1,1) = {"
+a
+m
+e
+a
+a
+a
+a
+"}
+(7,1,1) = {"
+M
+a
+a
+a
+h
+a
+M
+"}

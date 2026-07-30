@@ -241,3 +241,72 @@
 	new /mob/living/basic/construct/proteon/hostile(loc)
 	new /mob/living/basic/construct/proteon/hostile(loc)
 	QDEL_IN(src, 3 SECONDS)
+
+/obj/structure/trap/lava_plume
+	name = "lava plume"
+	desc = "Signs of unstable geothermal activity. Like everywhere else on this planet, but worse here."
+	icon = 'icons/effects/effects.dmi'
+	icon_state = "lava_plume"
+	resistance_flags = INDESTRUCTIBLE | LAVA_PROOF | FIRE_PROOF | UNACIDABLE | ACID_PROOF
+	flare_message = span_warning("The ground crackles with heat!")
+	time_between_triggers = 15 SECONDS
+	antimagic_flags = NONE
+
+	light_system = OVERLAY_LIGHT
+	light_range = 2
+	light_power = 3
+	light_color = "#ffaf55"
+	/// How much fire damage we deal if you're affected by the lava plume.
+	var/plume_damage = 50
+
+/obj/structure/trap/lava_plume/Initialize(mapload)
+	. = ..()
+	set_light_on(FALSE)
+
+/obj/structure/trap/lava_plume/trap_effect(mob/living/victim)
+	. = ..()
+	var/list/dangers = list()
+	for(var/turf/option as anything in oview(1, src))
+		if(!isturf(option))
+			continue
+		var/obj/indicator = new /obj/effect/temp_visual/telegraphing/line/longer(option)
+		indicator.dir = SOUTH
+		dangers += option
+	if(!length(dangers))
+		return
+	for(var/affected_by in dangers)
+		addtimer(CALLBACK(src, PROC_REF(lava_burn), affected_by), rand(2 SECONDS, 2.5 SECONDS))
+	set_light_on(TRUE)
+
+/**
+ * Burn all atoms, and particularly mobs, on the turf affected by the lava plume.
+ */
+/obj/structure/trap/lava_plume/proc/lava_burn(turf/target_turf)
+	if(!target_turf)
+		return
+	new /obj/effect/temp_visual/lava_geyser(target_turf)
+	for(var/atom/content in target_turf.contents)
+		content.fire_act(plume_damage, 500)
+		if(isliving(content))
+			var/mob/living/burnt_living = content
+			burnt_living.adjust_fire_stacks(10)
+			burnt_living.ignite_mob()
+	set_light_on(FALSE)
+
+/obj/effect/temp_visual/lava_geyser
+	name = "lava geyser"
+	desc = "REALLY HOT!"
+	icon = 'icons/effects/32x48.dmi'
+	icon_state = "lava_geyser"
+	layer = ABOVE_MOB_LAYER
+	plane = GAME_PLANE
+	duration = 1 SECONDS
+
+	light_system = OVERLAY_LIGHT
+	light_range = 1
+	light_power = 1
+	light_color = "#f5f5f4"
+
+/obj/effect/temp_visual/lava_geyser/Initialize(mapload)
+	. = ..()
+	set_light_on(TRUE)
