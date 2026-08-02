@@ -91,12 +91,16 @@
 	/// The role that ghosts will get. Only used for poll text.
 	var/spawner_role = "Antagonist"
 
-
+/**
+ * For a player to be able to see the name of a given domain, they must either:
+ * * Have a higher tier scanner than the difficulty of the mission AND have enough server points depending on the mission cost.
+ * * OR: have completed this domain before.
+ */
 /datum/lazy_template/virtual_domain/proc/can_view_name(scanner_tier, server_points)
-	return difficulty < scanner_tier && cost <= server_points + 5
+	return (is_type_in_list(src, SSbitrunning.completed_domains)) || ((scanner_tier > difficulty) && (server_points + 5) >= (cost * 5))
 
 /datum/lazy_template/virtual_domain/proc/can_view_reward(scanner_tier, server_points)
-	return difficulty < (scanner_tier + 1) && cost <= server_points + 3
+	return (scanner_tier + 1) > difficulty && (server_points + 3) >= cost
 
 /datum/lazy_template/virtual_domain/Destroy(force)
 	QDEL_NULL(ghost_spawners)

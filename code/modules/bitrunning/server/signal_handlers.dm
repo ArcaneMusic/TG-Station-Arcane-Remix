@@ -48,6 +48,7 @@
 
 	if(istype(arrived, /obj/structure/closet/crate/secure/bitrunning/encrypted))
 		generate_loot(arrived, chosen_forge)
+		SSbitrunning.completed_domains += generated_domain.type
 		return
 
 	if(istype(arrived, /obj/item/storage/lockbox/bitrunning/encrypted))

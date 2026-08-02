@@ -4,7 +4,10 @@ SUBSYSTEM_DEF(bitrunning)
 	name = "Bitrunning"
 	ss_flags = SS_NO_FIRE
 
+	/// List of all domain subtypes.
 	var/list/all_domains = list()
+	/// List of all domains that have been completed in a given round.
+	var/list/completed_domains = list()
 
 /datum/controller/subsystem/bitrunning/Initialize()
 	InitializeDomains()
@@ -13,6 +16,7 @@ SUBSYSTEM_DEF(bitrunning)
 /datum/controller/subsystem/bitrunning/proc/InitializeDomains()
 	for(var/path in subtypesof(/datum/lazy_template/virtual_domain))
 		all_domains += new path()
+	shuffle(all_domains)
 
 /// Compiles a list of available domains.
 /datum/controller/subsystem/bitrunning/proc/get_available_domains(scanner_tier, points)
