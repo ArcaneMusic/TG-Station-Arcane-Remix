@@ -1,11 +1,10 @@
 
 /mob/living/basic/migrant
 	name = "migrant"
-	desc = "An interdimensional pest. They slip and glide across dimensions looking for tasty energy sources before they return back to the nether."
+	desc = "An interdimensional pest. They slip and glide across dimensions looking for tasty energy sources before they return back to the Nether."
 	icon_state = "migrant"
 	icon_living = "migrant"
 	icon_dead = "migrant_dead"
-
 	maxHealth = 10
 	health = 10
 	density = FALSE
@@ -31,6 +30,7 @@
 
 /// The migrant AI controller
 /datum/ai_controller/basic_controller/migrant
+	behavior_tree_json = "code/modules/mob/living/basic/vermin/migrant.bt.json"
 	blackboard = list( // Always cowardly
 		BB_TARGETING_STRATEGY = /datum/targeting_strategy/basic, // Use this to find people to run away from
 	)
@@ -47,5 +47,3 @@
 	hunting_behavior = /datum/ai_behavior/hunt_target/interact_with_target
 	hunt_targets = list(/obj/item/stack/sheet/mineral/plasma)
 	hunt_range = 5
-
-
