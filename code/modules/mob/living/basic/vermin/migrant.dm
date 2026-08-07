@@ -13,7 +13,7 @@
 	mob_biotypes = MOB_MINERAL
 	gold_core_spawnable = FRIENDLY_SPAWN
 	faction = list(FACTION_NETHER, FACTION_MAINT_CREATURES)
-	butcher_results = list(/obj/item/food/meat/slab/mouse = 1)
+	butcher_results = list(/obj/effect/decal/cleanable/ash = 1)
 
 	speak_emote = list("chirps")
 	response_help_continuous = "rubs"
