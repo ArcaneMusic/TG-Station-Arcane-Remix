@@ -7,6 +7,7 @@
 	pressure_resistance = 2
 	resistance_flags = FLAMMABLE
 	obj_flags = UNIQUE_RENAME | RENAME_NO_DESC
+	custom_materials = list(/datum/material/cardboard = SHEET_MATERIAL_AMOUNT)
 	/// The background color for tgui in hex (with a `#`)
 	var/bg_color = "#7f7f7f"
 	/// A typecache of the objects that can be inserted into a folder
@@ -167,7 +168,7 @@
 	if(.)
 		return
 
-	if(usr.stat != CONSCIOUS || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
+	if(IS_UNCONSCIOUS_OR_CRIT(usr) || HAS_TRAIT(usr, TRAIT_HANDS_BLOCKED))
 		return
 
 	switch(action)
@@ -182,3 +183,6 @@
 			if(istype(Item))
 				usr.examinate(Item)
 				. = TRUE
+
+/obj/item/folder/IsContainedAtomAccessible(atom/contained, atom/movable/user)
+	return TRUE

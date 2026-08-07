@@ -61,13 +61,14 @@
 	RegisterSignal(new_ethereal, COMSIG_ATOM_SABOTEUR_ACT, PROC_REF(hit_by_saboteur))
 	RegisterSignal(new_ethereal, COMSIG_LIGHT_EATER_ACT, PROC_REF(on_light_eater))
 	RegisterSignal(new_ethereal, COMSIG_LIVING_HEALTH_UPDATE, PROC_REF(refresh_light_color))
+	RegisterSignal(new_ethereal, COMSIG_CARBON_BODYPART_UPDATED, PROC_REF(update_bodypart_color))
 	ethereal_light = new_ethereal.mob_light(light_type = /obj/effect/dummy/lighting_obj/moblight/species)
 	refresh_light_color(new_ethereal)
 
 	var/obj/item/organ/heart/ethereal/ethereal_heart = new_ethereal.get_organ_slot(ORGAN_SLOT_HEART)
 	ethereal_heart.ethereal_color = default_color
 
-	for(var/obj/item/bodypart/limb as anything in new_ethereal.bodyparts)
+	for(var/obj/item/bodypart/limb as anything in new_ethereal.get_bodyparts())
 		if(limb.limb_id == SPECIES_ETHEREAL)
 			limb.update_limb(is_creating = TRUE)
 
@@ -78,6 +79,7 @@
 		COMSIG_ATOM_SABOTEUR_ACT,
 		COMSIG_LIGHT_EATER_ACT,
 		COMSIG_LIVING_HEALTH_UPDATE,
+		COMSIG_CARBON_BODYPART_UPDATED,
 	))
 	QDEL_NULL(ethereal_light)
 	return ..()
@@ -112,16 +114,22 @@
 				currently_flickered = FALSE
 			ethereal_light.set_light_on(TRUE)
 		fixed_mut_color = current_color
-		ethereal.update_body()
 		ethereal.set_facial_haircolor(current_color, override = TRUE, update = FALSE)
-		ethereal.set_haircolor(current_color, override = TRUE,  update = TRUE)
+		ethereal.set_haircolor(current_color, override = TRUE, update = FALSE)
+		ethereal.update_body()
 	else
 		ethereal_light.set_light_on(FALSE)
 		var/dead_color = rgb(128,128,128)
 		fixed_mut_color = dead_color
-		ethereal.update_body()
 		ethereal.set_facial_haircolor(dead_color, override = TRUE, update = FALSE)
-		ethereal.set_haircolor(dead_color, override = TRUE, update = TRUE)
+		ethereal.set_haircolor(dead_color, override = TRUE, update = FALSE)
+		ethereal.update_body()
+
+/datum/species/ethereal/proc/update_bodypart_color(datum/source, obj/item/bodypart/part, dropping_limb, is_creating)
+	SIGNAL_HANDLER
+	if(part.limb_id != SPECIES_ETHEREAL)
+		return
+	part.species_color = current_color
 
 /datum/species/ethereal/proc/on_emp_act(mob/living/carbon/human/source, severity, protection)
 	SIGNAL_HANDLER

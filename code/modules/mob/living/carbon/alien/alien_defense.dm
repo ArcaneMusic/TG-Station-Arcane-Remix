@@ -31,7 +31,7 @@ In all, this is a lot like the monkey code. /N
 		visible_message(span_danger("[user.name] bites [src]!"), \
 						span_userdanger("[user.name] bites you!"), span_hear("You hear a chomp!"), COMBAT_MESSAGE_RANGE, user)
 		to_chat(user, span_danger("You bite [src]!"))
-		adjustBruteLoss(1)
+		adjust_brute_loss(1)
 		log_combat(user, src, "attacked")
 	else
 		to_chat(user, span_warning("[name] is too injured for that."))
@@ -57,7 +57,7 @@ In all, this is a lot like the monkey code. /N
 
 /mob/living/carbon/alien/get_shove_flags(mob/living/shover, obj/item/weapon)
 	. = ..()
-	if(isnull(weapon) || stat != CONSCIOUS)
+	if(isnull(weapon) || IS_UNCONSCIOUS_OR_CRIT(src))
 		. &= ~(SHOVE_CAN_MOVE|SHOVE_CAN_HIT_SOMETHING|SHOVE_CAN_STAGGER)
 
 /mob/living/carbon/alien/attack_paw(mob/living/carbon/human/user, list/modifiers)

@@ -23,17 +23,14 @@
 	/// List of weakrefs to all turrets
 	var/list/turrets = list()
 
-/obj/machinery/turretid/Destroy()
-	turrets.Cut()
-	return ..()
-
 /obj/machinery/turretid/Initialize(mapload)
 	. = ..()
-	if(!mapload)
-		locked = FALSE
+
+	if(mapload)
+		find_and_mount_on_atom()
 	else
-		find_and_hang_on_wall()
-		power_change()
+		locked = FALSE
+	power_change()
 
 	var/area/control_area_instance
 
@@ -47,6 +44,10 @@
 
 	for(var/obj/machinery/porta_turret/T in control_area_instance)
 		turrets |= WEAKREF(T)
+
+/obj/machinery/turretid/Destroy()
+	turrets.Cut()
+	return ..()
 
 /obj/machinery/turretid/update_overlays()
 	. = ..()
@@ -90,27 +91,30 @@
 		to_chat(user, span_notice("You link \the [multi_tool.buffer] with \the [src]."))
 		return ITEM_INTERACT_SUCCESS
 
-/obj/machinery/turretid/attackby(obj/item/attacking_item, mob/user, list/modifiers, list/attack_modifiers)
+/obj/machinery/turretid/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
 	if(machine_stat & BROKEN)
-		return
+		return NONE
 
 	if (issilicon(user))
 		return attack_hand(user)
 
-	var/id = attacking_item.GetID()
+	var/card = tool.GetID()
 
-	if(isnull(id))
-		return
+	if(isnull(card))
+		return NONE
 
-	if (check_access(id))
-		if(obj_flags & EMAGGED)
-			to_chat(user, span_warning("The turret control is unresponsive!"))
-			return
-
-		locked = !locked
-		to_chat(user, span_notice("You [ locked ? "lock" : "unlock"] the panel."))
-	else
+	if(!check_access(card))
 		to_chat(user, span_alert("Access denied."))
+		return ITEM_INTERACT_BLOCKING
+
+	if(obj_flags & EMAGGED)
+		to_chat(user, span_warning("The turret control is unresponsive!"))
+		return ITEM_INTERACT_BLOCKING
+
+	locked = !locked
+	to_chat(user, span_notice("You [ locked ? "lock" : "unlock"] the panel."))
+	return ITEM_INTERACT_SUCCESS
+
 
 /obj/machinery/turretid/emag_act(mob/user, obj/item/card/emag/emag_card)
 	if(obj_flags & EMAGGED)
@@ -203,20 +207,11 @@
 		turret.setState(enabled, lethal, shoot_cyborgs)
 	update_appearance()
 
-/obj/machinery/turretid/update_icon_state()
-	if(machine_stat & NOPOWER)
-		icon_state = "[base_icon_state]_off"
-		return ..()
-	if (enabled)
-		icon_state = "[base_icon_state]_[lethal ? "kill" : "stun"]"
-		return ..()
-	icon_state = "[base_icon_state]_standby"
-	return ..()
-
 /obj/item/wallframe/turret_control
 	name = "turret control frame"
 	desc = "Used for building turret control panels."
 	icon = 'icons/obj/machines/turret_control.dmi'
 	icon_state = "control_frame"
 	result_path = /obj/machinery/turretid
-	custom_materials = list(/datum/material/iron= SHEET_MATERIAL_AMOUNT)
+	custom_materials = list(/datum/material/iron = SHEET_MATERIAL_AMOUNT * 6)
+	pixel_shift = 30

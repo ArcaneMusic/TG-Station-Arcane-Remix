@@ -39,7 +39,7 @@
 			return
 
 	user.do_attack_animation(attacked_mob)
-	attacked_mob.adjustStaminaLoss(stamina_damage)
+	attacked_mob.adjust_stamina_loss(stamina_damage)
 	attacked_mob.set_confusion_if_lower(5 SECONDS)
 	attacked_mob.adjust_stutter(20 SECONDS)
 	attacked_mob.set_jitter_if_lower(5 SECONDS)
@@ -174,7 +174,7 @@
 				)
 			else
 				if(!iscyborg(attacked_mob))
-					attacked_mob.adjustFireLoss(10)
+					attacked_mob.adjust_fire_loss(10)
 					user.visible_message(
 						span_userdanger("[user] shocks [attacked_mob]!"),
 						span_danger("You shock [attacked_mob]!"),
@@ -201,7 +201,7 @@
 						span_danger("You crush [attacked_mob]!"),
 				)
 			playsound(loc, 'sound/items/weapons/smash.ogg', 50, TRUE, -1)
-			attacked_mob.adjustBruteLoss(15)
+			attacked_mob.adjust_brute_loss(15)
 			user.cell.use(0.3 * STANDARD_CELL_CHARGE, force = TRUE)
 			COOLDOWN_START(src, crush_cooldown, HUG_CRUSH_COOLDOWN)
 
@@ -247,7 +247,7 @@
 				return
 
 			to_chat(user, span_notice("You connect to [target_machine]'s power line..."))
-			while(do_after(user, 1.5 SECONDS, target = target_machine, progress = FALSE))
+			while(do_after(user, 1.5 SECONDS, target = target_machine, show_progress = FALSE))
 				if(!user || !user.cell || mode != "draw")
 					return
 
@@ -278,7 +278,7 @@
 
 			to_chat(user, span_notice("You connect to [target]'s power port..."))
 
-			while(do_after(user, 1.5 SECONDS, target = target, progress = FALSE))
+			while(do_after(user, 1.5 SECONDS, target = target, show_progress = FALSE))
 				if(!user || !user.cell || mode != "draw")
 					return
 
@@ -316,7 +316,7 @@
 
 		to_chat(user, span_notice("You connect to [target]'s power port..."))
 
-		while(do_after(user, 1.5 SECONDS, target = target, progress = FALSE))
+		while(do_after(user, 1.5 SECONDS, target = target, show_progress = FALSE))
 			if(!user || !user.cell || mode != "charge")
 				return
 

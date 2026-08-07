@@ -12,6 +12,7 @@
 	toxification_probability = 0
 
 	COOLDOWN_DECLARE(survival_cooldown)
+	custom_materials = list(/datum/material/titanium = SHEET_MATERIAL_AMOUNT * 5, /datum/material/diamond = SHEET_MATERIAL_AMOUNT, /datum/material/iron = HALF_SHEET_MATERIAL_AMOUNT, /datum/material/glass = HALF_SHEET_MATERIAL_AMOUNT)
 	///Cooldown for the activation of the organ
 	var/survival_cooldown_time = 5 MINUTES
 	///The lightning effect on our mob when the implant is active
@@ -30,8 +31,16 @@
 	var/core_removable = TRUE
 
 /obj/item/organ/heart/cybernetic/anomalock/Destroy()
+	if(lightning_timer)
+		deltimer(lightning_timer)
+	if(lightning_overlay)
+		lightning_overlay = null
 	QDEL_NULL(core)
 	return ..()
+
+/obj/item/organ/heart/cybernetic/anomalock/examine(mob/user)
+	. = ..()
+	. += span_info("The voltaic boost will avoid healing toxin damage at all in slime-based humanoids, to prevent harmful side effects.")
 
 /obj/item/organ/heart/cybernetic/anomalock/on_mob_insert(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
@@ -40,17 +49,19 @@
 	add_lightning_overlay(30 SECONDS)
 	playsound(organ_owner, 'sound/items/eshield_recharge.ogg', 40)
 	organ_owner.AddElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS|EMP_NO_EXAMINE)
-	RegisterSignal(organ_owner, SIGNAL_ADDTRAIT(TRAIT_CRITICAL_CONDITION), PROC_REF(activate_survival))
+	RegisterSignal(organ_owner, COMSIG_MOB_STATCHANGE, PROC_REF(activate_survival_comsig))
 	RegisterSignal(organ_owner, COMSIG_ATOM_EMP_ACT, PROC_REF(on_emp_act))
 
 /obj/item/organ/heart/cybernetic/anomalock/on_mob_remove(mob/living/carbon/organ_owner, special, movement_flags)
 	. = ..()
 	if(!core)
 		return
-	UnregisterSignal(organ_owner, SIGNAL_ADDTRAIT(TRAIT_CRITICAL_CONDITION))
+	clear_lightning_overlay(organ_owner)
+	UnregisterSignal(organ_owner, COMSIG_MOB_STATCHANGE)
+	UnregisterSignal(organ_owner, COMSIG_ATOM_EMP_ACT)
 	organ_owner.RemoveElement(/datum/element/empprotection, EMP_PROTECT_SELF|EMP_PROTECT_CONTENTS|EMP_NO_EXAMINE)
 	tesla_zap(source = organ_owner, zap_range = 20, power = 2.5e5, cutoff = 1e3)
-	qdel(src)
+	QDEL_IN(src, 0)
 
 /obj/item/organ/heart/cybernetic/anomalock/attack(mob/living/target_mob, mob/living/user, list/modifiers, list/attack_modifiers)
 	if(target_mob != user || !istype(target_mob) || !core)
@@ -75,14 +86,16 @@
 
 /obj/item/organ/heart/cybernetic/anomalock/proc/add_lightning_overlay(time_to_last = 10 SECONDS)
 	if(lightning_overlay)
-		lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay)), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE))
+		lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay), owner), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE|TIMER_DELETE_ME))
 		return
 	lightning_overlay = mutable_appearance(icon = 'icons/effects/effects.dmi', icon_state = "lightning")
 	owner.add_overlay(lightning_overlay)
-	lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay)), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE))
+	lightning_timer = addtimer(CALLBACK(src, PROC_REF(clear_lightning_overlay), owner), time_to_last, (TIMER_UNIQUE|TIMER_OVERRIDE|TIMER_STOPPABLE|TIMER_DELETE_ME))
 
-/obj/item/organ/heart/cybernetic/anomalock/proc/clear_lightning_overlay()
-	owner.cut_overlay(lightning_overlay)
+/obj/item/organ/heart/cybernetic/anomalock/proc/clear_lightning_overlay(mob/organ_owner)
+	organ_owner?.cut_overlay(lightning_overlay)
+	if(lightning_timer)
+		deltimer(lightning_timer)
 	lightning_overlay = null
 
 /obj/item/organ/heart/cybernetic/anomalock/attack_self(mob/user, modifiers)
@@ -93,18 +106,15 @@
 	if(core)
 		return attack(user, user, modifiers)
 
-/obj/item/organ/heart/cybernetic/anomalock/on_life(seconds_per_tick, times_fired)
+/obj/item/organ/heart/cybernetic/anomalock/on_life(seconds_per_tick)
 	. = ..()
 	if(!core)
 		return
 
-	if(owner.blood_volume <= BLOOD_VOLUME_NORMAL)
-		owner.blood_volume += 5 * seconds_per_tick
-
 	if(owner.health <= owner.crit_threshold)
 		activate_survival(owner)
 
-	if(times_fired % (1 SECONDS))
+	if(SSmobs.times_fired % (1 SECONDS))
 		return
 
 	var/list/batteries = list()
@@ -118,15 +128,21 @@
 	var/obj/item/stock_parts/power_store/cell = pick(batteries)
 	cell.give(cell.max_charge() * 0.1)
 
-///Does a few things to try to help you live whatever you may be going through
+/obj/item/organ/heart/cybernetic/anomalock/proc/activate_survival_comsig(mob/living/carbon/organ_owner, new_stat, old_stat)
+	SIGNAL_HANDLER
+	if(new_stat == SOFT_CRIT || new_stat == HARD_CRIT)
+		activate_survival(organ_owner)
+
+/// Does a few things to try to help you live whatever you may be going through. Returns TRUE if it activated successfully.
 /obj/item/organ/heart/cybernetic/anomalock/proc/activate_survival(mob/living/carbon/organ_owner)
 	if(!COOLDOWN_FINISHED(src, survival_cooldown))
-		return
+		return FALSE
 
 	organ_owner.apply_status_effect(/datum/status_effect/voltaic_overdrive)
 	add_lightning_overlay(30 SECONDS)
 	COOLDOWN_START(src, survival_cooldown, survival_cooldown_time)
 	addtimer(CALLBACK(src, PROC_REF(notify_cooldown), organ_owner), COOLDOWN_TIMELEFT(src, survival_cooldown))
+	return TRUE
 
 ///Alerts our owner that the organ is ready to do its thing again
 /obj/item/organ/heart/cybernetic/anomalock/proc/notify_cooldown(mob/living/carbon/organ_owner)
@@ -145,6 +161,7 @@
 	balloon_alert(user, "core installed")
 	playsound(src, 'sound/machines/click.ogg', 30, TRUE)
 	add_organ_trait(TRAIT_SHOCKIMMUNE)
+	blood_regeneration_multiplier = 21
 	update_icon_state()
 	return ITEM_INTERACT_SUCCESS
 
@@ -176,6 +193,7 @@
 	. = ..()
 	core = new /obj/item/assembly/signaler/anomaly/flux(src)
 	add_organ_trait(TRAIT_SHOCKIMMUNE)
+	blood_regeneration_multiplier = 21
 	update_icon_state()
 
 /datum/status_effect/voltaic_overdrive
@@ -183,19 +201,24 @@
 	duration = 30 SECONDS
 	alert_type = /atom/movable/screen/alert/status_effect/anomalock_active
 	show_duration = TRUE
+	processing_speed = STATUS_EFFECT_PRIORITY
 
 /datum/status_effect/voltaic_overdrive/tick(seconds_between_ticks)
 	. = ..()
-
-	if(owner.health <= owner.crit_threshold)
-		owner.heal_overall_damage(5, 5)
-		owner.adjustOxyLoss(-5)
-		owner.adjustToxLoss(-5)
+	if(owner.health > owner.crit_threshold)
+		return
+	var/needs_update = FALSE
+	needs_update += owner.heal_overall_damage(brute = 5, burn = 5, updating_health = FALSE)
+	needs_update += owner.adjust_oxy_loss(-5, updating_health = FALSE)
+	if(!HAS_TRAIT(owner, TRAIT_TOXINLOVER))
+		needs_update += owner.adjust_tox_loss(-5, updating_health = FALSE)
+	if(needs_update)
+		owner.updatehealth()
 
 /datum/status_effect/voltaic_overdrive/on_apply()
 	. = ..()
+	RegisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN, PROC_REF(on_organ_lost))
 	owner.add_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
-	REMOVE_TRAIT(src, TRAIT_CRITICAL_CONDITION, STAT_TRAIT)
 	owner.reagents.add_reagent(/datum/reagent/medicine/coagulant, 5)
 	owner.add_filter("emp_shield", 2, outline_filter(1, "#639BFF"))
 	to_chat(owner, span_revendanger("You feel a burst of energy! It's do or die!"))
@@ -203,14 +226,21 @@
 
 /datum/status_effect/voltaic_overdrive/on_remove()
 	. = ..()
+	UnregisterSignal(owner, COMSIG_CARBON_LOSE_ORGAN)
 	owner.remove_movespeed_mod_immunities(type, /datum/movespeed_modifier/damage_slowdown)
 	owner.remove_filter("emp_shield")
 	owner.balloon_alert(owner, "your heart weakens")
 	owner.remove_traits(list(TRAIT_NOSOFTCRIT, TRAIT_NOHARDCRIT, TRAIT_ANALGESIA), REF(src))
 
+/// Called when an organ is lost in the owner. In the event the owner just lost their voltaic (presumably, the one giving this effect), ends the buff and clears the overlay.
+/datum/status_effect/voltaic_overdrive/proc/on_organ_lost(mob/living/carbon/source, obj/item/organ/organ, special)
+	SIGNAL_HANDLER
+	if(istype(organ, /obj/item/organ/heart/cybernetic/anomalock))
+		qdel(src)
+
 /atom/movable/screen/alert/status_effect/anomalock_active
 	name = "voltaic overdrive"
-	use_user_hud_icon = TRUE
+	use_user_hud_icon = USER_HUD_STYLE_INHERIT
 	overlay_state = "anomalock_heart"
 	desc = "Voltaic energy is flooding your muscles, keeping your body upright. You have 30 seconds before it falters!"
 

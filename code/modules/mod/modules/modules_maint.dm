@@ -67,7 +67,7 @@
 
 	var/turf/wearer_turf = get_turf(src)
 	var/datum/gas_mixture/air = wearer_turf.return_air()
-	if(!(air.gases[/datum/gas/water_vapor] && (air.gases[/datum/gas/water_vapor][MOLES]) >= 5))
+	if(air.moles[/datum/gas/water_vapor] < 5)
 		return //return if there aren't more than 5 Moles of Water Vapor in the air
 	snap_signal()
 
@@ -226,7 +226,7 @@
 /obj/item/mod/module/balloon/on_use(mob/activator)
 	if(!do_after(mod.wearer, blowing_time, target = mod))
 		return FALSE
-	mod.wearer.adjustOxyLoss(oxygen_damage)
+	mod.wearer.adjust_oxy_loss(oxygen_damage)
 	playsound(src, 'sound/items/modsuit/inflate_bloon.ogg', 50, TRUE)
 	var/obj/item/balloon = new balloon_path(get_turf(src))
 	mod.wearer.put_in_hands(balloon)
@@ -243,7 +243,7 @@
 	use_energy_cost = DEFAULT_CHARGE_DRAIN * 0.5
 	incompatible_modules = list(/obj/item/mod/module/paper_dispenser)
 	cooldown_time = 5 SECONDS
-	required_slots = list(ITEM_SLOT_GLOVES)
+	required_slots = list(ITEM_SLOT_GLOVES|ITEM_SLOT_NECK)
 	/// The total number of sheets created by this MOD. The more sheets, them more likely they set on fire.
 	var/num_sheets_dispensed = 0
 
@@ -278,7 +278,7 @@
 /obj/item/mod/module/stamp
 	name = "MOD stamper module"
 	desc = "A module installed into the wrist of the suit, this functions as a high-power stamp, \
-		able to switch between accept and deny modes."
+		able to switch between accept, deny, and void modes."
 	icon_state = "stamp"
 	module_type = MODULE_ACTIVE
 	complexity = 1
@@ -286,19 +286,32 @@
 	device = /obj/item/stamp/mod
 	incompatible_modules = list(/obj/item/mod/module/stamp)
 	cooldown_time = 0.5 SECONDS
-	required_slots = list(ITEM_SLOT_GLOVES)
+	required_slots = list(ITEM_SLOT_GLOVES|ITEM_SLOT_NECK)
 
 /obj/item/stamp/mod
 	name = "MOD electronic stamp"
-	desc = "A high-power stamp, able to switch between accept and deny mode when used."
+	desc = "A high-power stamp, able to switch between accept, deny, and void modes when used."
+	icon_state = "stamp-ok"
 
 /obj/item/stamp/mod/attack_self(mob/user, modifiers)
-	. = ..()
-	if(icon_state == "stamp-ok")
-		icon_state = "stamp-deny"
-	else
-		icon_state = "stamp-ok"
-	balloon_alert(user, "switched mode")
+
+	var/choices = list()
+	var/icon_states = list()
+	icon_states["Granted"] = "stamp-ok"
+	icon_states["Denied"] = "stamp-deny"
+	icon_states["Void"] = "stamp-void"
+	for(var/possible_icon_state in icon_states)
+		if(!(src.icon_state == icon_states[possible_icon_state]))
+			choices[possible_icon_state] = image(src.icon, icon_states[possible_icon_state])
+	var/chosen_icon_state = show_radial_menu(user, user, choices, custom_check = CALLBACK(src, PROC_REF(check_menu), src, user), require_near = TRUE)
+	if(chosen_icon_state)
+		playsound(src, 'sound/machines/click.ogg', 30, TRUE, -3)
+		src.icon_state = icon_states[chosen_icon_state]
+
+/obj/item/stamp/mod/proc/check_menu(datum/target, mob/user)
+	if(user.incapacitated || !user.is_holding(target))
+		return FALSE
+	return TRUE
 
 ///Atrocinator - Flips your gravity.
 /obj/item/mod/module/atrocinator
@@ -328,7 +341,7 @@
 	RegisterSignal(mod.wearer, COMSIG_MOB_SAY, PROC_REF(on_talk))
 	RegisterSignal(mod.wearer, COMSIG_MOVABLE_PREBUCKLE, PROC_REF(on_someone_buckled))
 	ADD_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, REF(src))
-	passtable_on(mod.wearer, REF(src))
+	ADD_TRAIT(mod.wearer, TRAIT_PASSTABLE, REF(src))
 	check_upstairs() //todo at some point flip your screen around
 
 /obj/item/mod/module/atrocinator/deactivate(mob/activator, display_message = TRUE, deleting = FALSE)
@@ -346,7 +359,7 @@
 	UnregisterSignal(mod.wearer, COMSIG_MOVABLE_PREBUCKLE)
 	step_count = 0
 	REMOVE_TRAIT(mod.wearer, TRAIT_SILENT_FOOTSTEPS, REF(src))
-	passtable_off(mod.wearer, REF(src))
+	REMOVE_TRAIT(mod.wearer, TRAIT_PASSTABLE, REF(src))
 	var/turf/open/openspace/current_turf = get_turf(mod.wearer)
 	if(istype(current_turf))
 		current_turf.zFall(mod.wearer, falling_from_move = TRUE)

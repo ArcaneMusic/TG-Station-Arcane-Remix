@@ -1,5 +1,4 @@
 /mob/living/silicon/pai
-	can_be_held = TRUE
 	can_buckle_to = FALSE
 	density = FALSE
 	desc = "A generic pAI hard-light holographics emitter."
@@ -25,7 +24,7 @@
 	move_resist = 0
 	name = "pAI"
 	pass_flags = PASSTABLE | PASSMOB
-	pull_force = 0
+	pull_force = MOVE_FORCE_NONE
 	radio = /obj/item/radio/headset/silicon/pai
 	worn_slot_flags = ITEM_SLOT_HEAD
 
@@ -132,6 +131,9 @@
 
 // See software.dm for Topic()
 /mob/living/silicon/pai/can_perform_action(atom/target, action_bitflags)
+	if(!(action_bitflags & ALLOW_PAI))
+		to_chat(src, span_warning("Your holochasis does not allow you to do this!"))
+		return FALSE
 	action_bitflags |= ALLOW_RESTING // Resting is just an aesthetic feature for them
 	action_bitflags &= ~ALLOW_SILICON_REACH // They don't get long reach like the rest of silicons
 	return ..(target, action_bitflags)
@@ -200,12 +202,12 @@
 /mob/living/silicon/pai/Initialize(mapload)
 	. = ..()
 	AddComponent(/datum/component/holographic_nature)
+	AddElement(/datum/element/can_be_held)
 	if(istype(loc, /obj/item/modular_computer))
 		give_messenger_ability()
 	START_PROCESSING(SSfastprocess, src)
 	make_laws()
-	for(var/law in laws.inherent)
-		lawcheck += law
+	law_ui.update_inherent_stated_laws(laws)
 	var/obj/item/pai_card/pai_card = loc
 	if(!istype(pai_card)) // when manually spawning a pai, we create a card to put it into.
 		var/newcardloc = pai_card
@@ -221,6 +223,7 @@
 	RegisterSignal(src, COMSIG_LIVING_CULT_SACRIFICED, PROC_REF(on_cult_sacrificed))
 	RegisterSignals(src, list(COMSIG_LIVING_ADJUST_BRUTE_DAMAGE, COMSIG_LIVING_ADJUST_BURN_DAMAGE), PROC_REF(on_shell_damaged))
 	RegisterSignal(src, COMSIG_LIVING_ADJUST_STAMINA_DAMAGE, PROC_REF(on_shell_weakened))
+	RegisterSignal(src, COMSIG_MOB_TRIED_ACCESS, PROC_REF(on_tried_access))
 
 /mob/living/silicon/pai/proc/toggle_leash()
 	if(isnull(card))
@@ -237,7 +240,7 @@
 
 /mob/living/silicon/pai/make_laws()
 	laws = new /datum/ai_laws/pai()
-	return TRUE
+	laws.name = "PAI Directives"
 
 /mob/living/silicon/pai/process(seconds_per_tick)
 	holochassis_health = clamp((holochassis_health + (HOLOCHASSIS_REGEN_PER_SECOND * seconds_per_tick)), -50, HOLOCHASSIS_MAX_HEALTH)
@@ -256,7 +259,7 @@
 /mob/living/silicon/pai/updatehealth()
 	if(HAS_TRAIT(src, TRAIT_GODMODE))
 		return
-	set_health(maxHealth - getBruteLoss() - getFireLoss())
+	set_health(maxHealth - get_brute_loss() - get_fire_loss())
 	update_stat()
 	SEND_SIGNAL(src, COMSIG_LIVING_HEALTH_UPDATE)
 
@@ -268,15 +271,6 @@
 	icon_state = resting ? "[chassis]_rest" : "[chassis]"
 	held_state = "[chassis]"
 	return ..()
-
-/mob/living/silicon/pai/set_stat(new_stat)
-	. = ..()
-	update_stat()
-
-/mob/living/silicon/pai/on_knockedout_trait_loss(datum/source)
-	. = ..()
-	set_stat(CONSCIOUS)
-	update_stat()
 
 /**
  * Resolves the weakref of the pai's master.
@@ -314,14 +308,11 @@
  * 	or FALSE if the pAI is not being carried.
  */
 /mob/living/silicon/pai/proc/get_holder()
-	var/mob/living/carbon/holder
-	if(!holoform && iscarbon(card.loc))
-		holder = card.loc
-	if(holoform && ispickedupmob(loc) && iscarbon(loc.loc))
-		holder = loc.loc
-	if(!holder || !iscarbon(holder))
+	var/mob/holder = recursive_loc_check(card, /mob/living/carbon)
+	if(isnull(holder))
 		return FALSE
 	return holder
+
 
 /**
  * Handles the pai card or the pai itself being hit with an emag.
@@ -341,7 +332,9 @@
 	master_name = "The Syndicate"
 	master_dna = "Untraceable Signature"
 	// Sets supplemental directive to this
-	add_supplied_law(0, "Do not interfere with the operations of the Syndicate.")
+	laws.clear_inherent_laws()
+	laws.add_inherent_law("Do not interfere with the operations of the Syndicate.")
+	log_law_change(attacker, "emagged pai [key_name(src)]")
 	to_chat(src, span_danger("ALERT: Foreign software detected."))
 	return TRUE
 
@@ -363,7 +356,7 @@
 	master_ref = null
 	master_name = null
 	master_dna = null
-	add_supplied_law(0, "None.")
+	laws.clear_inherent_laws()
 	leash = AddComponent(/datum/component/leash, card, HOLOFORM_DEFAULT_RANGE, force_teleport_out_effect = /obj/effect/temp_visual/guardian/phase/out)
 	balloon_alert(src, "software rebooted")
 	return TRUE
@@ -404,13 +397,14 @@
 		user,
 		"Enter any additional directives you would like your pAI personality to follow. Note that these directives will not override the personality's allegiance to its imprinted master. Conflicting directives will be ignored.",
 		"pAI Directive Configuration",
-		laws.supplied[1],
+		laws.inherent[1],
 		max_length = 300,
 	)
-	if(!new_laws || !master_ref)
+	if(!new_laws || !master_ref || QDELETED(laws))
 		return FALSE
-	add_supplied_law(0, new_laws)
+	laws.add_inherent_law(new_laws)
 	to_chat(src, span_notice(new_laws))
+	log_law_change(user, "added law for pai [key_name(src)] (text: [new_laws])")
 	return TRUE
 
 /**
@@ -488,3 +482,8 @@
 
 /mob/living/silicon/pai/get_access()
 	return list()
+
+///Called when a pAI tries opening something that requires access.
+/mob/living/silicon/pai/proc/on_tried_access(datum/source, obj/door_attempt, list/player_access)
+	SIGNAL_HANDLER
+	return ACCESS_DISALLOWED
