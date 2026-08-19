@@ -192,20 +192,25 @@
  * Arguments:
  * freebies - number of free items to vend
  */
-/obj/machinery/vending/proc/freebie(freebies)
+/obj/machinery/vending/proc/freebie(freebies, mob/living/user)
 	PRIVATE_PROC(TRUE)
 
 	visible_message(span_notice("[src] yields [freebies > 1 ? "several free goodies" : "a free goody"][credits_contained > 0 ? " and some [MONEY_NAME]" : ""]!"))
 
+	var/total_value = 0
 	for(var/i in 1 to freebies)
 		playsound(src, 'sound/machines/machine_vend.ogg', 50, TRUE, extrarange = -3)
-		for(var/datum/data/vending_product/record in shuffle(product_records))
+		var/list/freebie_options = unique_merge_list(product_records, coin_records)
+		for(var/datum/data/vending_product/record in shuffle(freebie_options))
 			if(record.amount <= 0) //Try to use a record that actually has something to dump.
 				continue
 			// Always give out new stuff that costs before free returned stuff, because of the risk getting gibbed involved
 			var/only_returned_left = (record.amount <= LAZYLEN(record.returned_products))
+			total_value += record.price
 			dispense(record, get_turf(src), silent = TRUE, dispense_returned = only_returned_left)
 			break
+
+	handle_theft(user, total_value)
 
 	if(credits_contained > 0)
 		var/credits_to_remove = min(CREDITS_DUMP_THRESHOLD, round(credits_contained))
@@ -224,11 +229,11 @@
 
 	switch(rand(1, 100))
 		if(1 to 5)
-			freebie(3)
+			freebie(3, user)
 		if(6 to 15)
-			freebie(2)
+			freebie(2, user)
 		if(16 to 25)
-			freebie(1)
+			freebie(1, user)
 		if(26 to 75)
 			pass()
 		if(76 to 100)
@@ -241,3 +246,30 @@
 	. = ..()
 	if (!Adjacent(user, src))
 		return SECONDARY_ATTACK_CANCEL_ATTACK_CHAIN
+
+/** Checks if a criminal action should be reported to the crime database, and if so, assigns the thief to either suspicion or arrest status as a result.*/
+/obj/machinery/vending/proc/handle_theft(mob/living/user, theft_value)
+	if(!ishuman(user) || prob(theft_value) || !scan_id) // Prob may go over 100% and that's intended,
+		return
+	var/mob/living/carbon/human/thief = user
+	var/perpname = thief.get_face_name(thief.get_id_name())
+	var/datum/record/crew/record = find_record(perpname)
+	if(!record)
+		return
+	var/area/theft_location = get_area(loc)
+	if(!record.wanted_status)
+		var/datum/crime/new_crime = new(name = "Petty Theft", details = "User was caught stealing from [src] in [theft_location.name]", author = src)
+		record.crimes += new_crime
+		investigate_log("New Crime: <strong>Petty Theft</strong> | Added to [thief.name] by [key_name(user)]. Their previous status was [record.wanted_status]", INVESTIGATE_RECORDS)
+		SSblackbox.ReportCitation(REF(new_crime), user.ckey, user.real_name, thief.name, "Petty Theft", new_crime.details)
+		record.wanted_status = WANTED_SUSPECT
+	else //repeat offenders or previous suspects get the boot
+		var/datum/crime/new_crime = new(name = "Grand Theft", details = "User was caught stealing from [src] in [theft_location.name]", author = src)
+		record.crimes += new_crime
+		investigate_log("New Crime: <strong>Grand Theft</strong> | Added to [thief.name] by [key_name(user)]. Their previous status was [record.wanted_status]", INVESTIGATE_RECORDS)
+		SSblackbox.ReportCitation(REF(new_crime), user.ckey, user.real_name, thief.name, "Grand Theft", new_crime.details)
+		record.wanted_status = WANTED_ARREST
+
+	playsound(src, 'sound/items/weeoo1.ogg', 40)
+	update_matching_security_huds(perpname)
+	SSblackbox.record_feedback("tally", "vending machine criminals", 1)
