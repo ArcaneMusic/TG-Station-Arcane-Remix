@@ -1066,3 +1066,61 @@ ADMIN_VERB(export_save_to_dev_preference, R_DEBUG, "Export Save as Dev Preferenc
 	dev_save.save()
 	tgui_alert(user, "Exported preferences to [DEV_PREFS_PATH]. \
 		Next time you localhost as a guest it will use this savefile as-is.", "Export Complete", list("OK thanks"))
+
+ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a large CSV-style text file, that details every which items can be generated from most player obtainable sources. Namely, cargo packs, goodies, vending machines, and the lathes", ADMIN_CATEGORY_DEBUG)
+	//supply packs
+	var/list/total_supply_packs
+	var/list/final_list
+	for(var/pack_id as anything in SSshuttle.supply_packs)
+		if(!pack.contains)
+			continue
+		for(var/obj/item/stuff as anything in pack.contains)
+			if(stuff.item_flags & ABSTRACT)
+				continue
+			LAZYOR(total_supply_packs, stuff)
+			LAZYOR(final_list, stuff)
+
+	var/list/total_vendables
+	for(var/vendy as anything in valid_subtypesof(/obj/machinery/vending))
+		var/obj/machinery/vending/true_vendy = new vendy()
+		for(var/atom/stuff as anything in true_vendy.products)
+			LAZYOR(total_vendables, stuff)
+			LAZYOR(final_list, stuff)
+		for(var/atom/stuff as anything in true_vendy.contraband)
+			LAZYOR(total_vendables, stuff)
+			LAZYOR(final_list, stuff)
+		for(var/atom/stuff as anything in true_vendy.premium)
+			LAZYOR(total_vendables, stuff)
+			LAZYOR(final_list, stuff)
+		qdel(true_vendy)
+
+	var/list/lathe_designs
+	for(var/datum/design/designy as anything in subtypesof(/datum/design))
+		if(!designy.build_path)
+			continue
+		var/atom/thing = designy.build_path
+		LAZYOR(lathe_designs, thing)
+		LAZYOR(final_list, thing)
+	if(!length(total_supply_packs) || !length(total_vendables) || !length(lathe_designs))
+		CRASH("One of our export lists returned null!")
+
+	var/csv_file = file("data/audit_file.csv")
+	//Now let's do a first pass across the supply items
+	for(var/atom/thing as anything in final_list)
+		final_list[thing] = "[thing],"
+		if(total_supply_packs[thing])
+			final_list[thing] += "CARGO,"
+		else
+			final_list[thing] += "0,"
+
+		if(total_vendables[thing])
+			final_list[thing] += "VENDING,"
+		else
+			final_list[thing] += "0,"
+
+		if(lathe_designs[thing])
+			final_list[thing] += "LATHE"
+		else
+			final_list[thing] += "0"
+
+	WRITE_FILE(csv_file, final_list)
