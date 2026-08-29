@@ -1079,24 +1079,32 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 			if(stuff.item_flags & ABSTRACT)
 				continue
 			total_supply_packs += stuff
+			total_supply_packs[stuff] =  TRUE
 			if(!total_supply_packs[stuff])
 				final_list += stuff
+				final_list[stuff] = TRUE
 
 	var/list/total_vendables = list()
 	for(var/vendy as anything in valid_subtypesof(/obj/machinery/vending))
 		var/obj/machinery/vending/true_vendy = new vendy()
 		for(var/atom/stuff as anything in true_vendy.products)
 			total_vendables += stuff
+			total_vendables[stuff] = TRUE
 			if(!final_list[stuff])
 				final_list += stuff
+				final_list[stuff] = TRUE
 		for(var/atom/stuff as anything in true_vendy.contraband)
 			total_vendables += stuff
+			total_vendables[stuff] = TRUE
 			if(!final_list[stuff])
 				final_list += stuff
+				final_list[stuff] = TRUE
 		for(var/atom/stuff as anything in true_vendy.premium)
 			total_vendables += stuff
+			total_vendables[stuff] = TRUE
 			if(!final_list[stuff])
 				final_list += stuff
+				final_list[stuff] = TRUE
 		qdel(true_vendy)
 
 	var/list/lathe_designs = list()
@@ -1105,12 +1113,17 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 			continue
 		var/atom/thing = designy.build_path
 		lathe_designs += thing
+		lathe_designs[thing] = TRUE
 		if(!final_list[thing])
 			final_list += thing
+			final_list[thing] = TRUE
 	if(!length(total_supply_packs) || !length(total_vendables) || !length(lathe_designs))
 		CRASH("One of our export lists returned null!")
 
-	var/csv_file = file("data/audit_file.csv")
+	var/file_suffix = GLOB.round_id
+	if(!file_suffix)
+		file_suffix = rand(1,1000)
+	var/csv_file = file("data/audit_file_[file_suffix].csv")
 	var/final_result = ""
 	//Now let's do a first pass across the supply items
 	for(var/atom/thing as anything in final_list)
