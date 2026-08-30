@@ -1068,9 +1068,10 @@ ADMIN_VERB(export_save_to_dev_preference, R_DEBUG, "Export Save as Dev Preferenc
 		Next time you localhost as a guest it will use this savefile as-is.", "Export Complete", list("OK thanks"))
 
 ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a large CSV-style text file, that details every which items can be generated from most player obtainable sources. Namely, cargo packs, goodies, vending machines, and the lathes", ADMIN_CATEGORY_DEBUG)
+	var/list/final_list = list()
 	//supply packs
 	var/list/total_supply_packs = list()
-	var/list/final_list = list()
+	var/list/total_supply_goodies = list()
 	for(var/pack_id as anything in SSshuttle.supply_packs)
 		var/datum/supply_pack/pack = SSshuttle.supply_packs[pack_id]
 		if(!pack.contains)
@@ -1078,13 +1079,20 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 		for(var/obj/item/stuff as anything in pack.contains)
 			if(stuff.item_flags & ABSTRACT)
 				continue
+			if(ispath(stuff, /obj/item/vending_refill))
+				to_chat(world, "FOUND")
 			total_supply_packs += stuff
-			total_supply_packs[stuff] =  TRUE
-			if(!total_supply_packs[stuff])
+			total_supply_packs[stuff] = TRUE
+			if(pack.order_flags & ORDER_GOODY)
+				total_supply_goodies += stuff
+				total_supply_goodies[stuff] = TRUE
+			if(!final_list[stuff])
 				final_list += stuff
 				final_list[stuff] = TRUE
 
 	var/list/total_vendables = list()
+	var/list/total_vendables_contraband = list()
+	var/list/total_vendables_premium = list()
 	for(var/vendy as anything in valid_subtypesof(/obj/machinery/vending))
 		var/obj/machinery/vending/true_vendy = new vendy()
 		for(var/atom/stuff as anything in true_vendy.products)
@@ -1094,14 +1102,14 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 				final_list += stuff
 				final_list[stuff] = TRUE
 		for(var/atom/stuff as anything in true_vendy.contraband)
-			total_vendables += stuff
-			total_vendables[stuff] = TRUE
+			total_vendables_contraband += stuff
+			total_vendables_contraband[stuff] = TRUE
 			if(!final_list[stuff])
 				final_list += stuff
 				final_list[stuff] = TRUE
 		for(var/atom/stuff as anything in true_vendy.premium)
-			total_vendables += stuff
-			total_vendables[stuff] = TRUE
+			total_vendables_premium += stuff
+			total_vendables_premium[stuff] = TRUE
 			if(!final_list[stuff])
 				final_list += stuff
 				final_list[stuff] = TRUE
@@ -1112,11 +1120,42 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 		if(!designy.build_path)
 			continue
 		var/atom/thing = designy.build_path
-		lathe_designs += thing
-		lathe_designs[thing] = TRUE
+
 		if(!final_list[thing])
 			final_list += thing
 			final_list[thing] = TRUE
+		if(!lathe_designs[thing])
+			lathe_designs += thing
+
+		if(designy.build_type & PROTOLATHE)
+			lathe_designs[thing] += "AUTOLATHE,"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_SECURITY)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_SECURITY],"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_SERVICE)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_SERVICE],"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_MEDICAL)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_MEDICAL],"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_SCIENCE)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_SCIENCE],"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_ENGINEERING)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_ENGINEERING],"
+		else
+			lathe_designs[thing] += "0,"
+		if(designy.departmental_flags & DEPARTMENT_BITFLAG_CARGO)
+			lathe_designs[thing] += "LATHE [DEPARTMENT_CARGO],"
+		else
+			lathe_designs[thing] += "0,"
+
 	if(!length(total_supply_packs) || !length(total_vendables) || !length(lathe_designs))
 		CRASH("One of our export lists returned null!")
 
@@ -1128,9 +1167,12 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 	//Now let's do a first pass across the supply items
 	for(var/atom/thing as anything in final_list)
 		final_result += "[thing.type],"
-		// final_list[thing] = "[thing],"
 		if(total_supply_packs[thing])
-			final_result += "CARGO,"
+			final_result += "CARGO_PACK,"
+		else
+			final_result += "0,"
+		if(total_supply_goodies[thing])
+			final_result += "CARGO_GOODY,"
 		else
 			final_result += "0,"
 
@@ -1138,11 +1180,22 @@ ADMIN_VERB(generate_audit_file, R_DEBUG, "Generate Audit File", "Generate a larg
 			final_result += "VENDING,"
 		else
 			final_result += "0,"
-
-		if(lathe_designs[thing])
-			final_result += "LATHE\n"
+		if(total_vendables_contraband[thing])
+			final_result += "VENDING_CONTRABAND,"
 		else
-			final_result += "0\n"
+			final_result += "0,"
+		if(total_vendables_premium[thing])
+			final_result += "VENDING_PREMIUM,"
+		else
+			final_result += "0,"
+
+		//Here I do more hacky bullshit to avoid exact mismatch bullshit
+		for()
+		if(lathe_designs[thing])
+			final_result += "[lathe_designs[thing]],"
+		else
+			final_result += "0,0,0,0,0,0,0"
+		final_result += "\n"
 
 	WRITE_FILE(csv_file, final_result)
 	to_chat(user, "Job's done!")
