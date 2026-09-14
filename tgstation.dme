@@ -4050,7 +4050,7 @@
 #include "code\modules\cargo\markets\market_item.dm"
 #include "code\modules\cargo\markets\market_telepad.dm"
 #include "code\modules\cargo\markets\market_uplink.dm"
-#include "code\modules\cargo\markets\auction\auction_ai.dm"
+#include "code\modules\cargo\markets\auction\auctioneers.dm"
 #include "code\modules\cargo\markets\market_items\clothing.dm"
 #include "code\modules\cargo\markets\market_items\consumables.dm"
 #include "code\modules\cargo\markets\market_items\hostages.dm"
