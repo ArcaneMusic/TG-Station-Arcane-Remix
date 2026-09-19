@@ -51,6 +51,8 @@
 	if(isnull(stock))
 		stock = rand(stock_min, stock_max)
 	identifier = "[type]"
+	if(auction_item)
+		SSauction.auction_items += src
 
 ///For 'dynamic' market items generated on runtime, this proc is to be used to properly sets the item, especially if it's a hardref.
 /datum/market_item/proc/set_item(path_or_ref)
