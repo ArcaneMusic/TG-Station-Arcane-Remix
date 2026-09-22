@@ -654,6 +654,13 @@
 		. = L[1]
 		L.Cut(1,2)
 
+/// Take a list, and removes the first item in that list [1], then adds it to the end of that list.
+/proc/pop_append(list/L)
+	if(L.len)
+		var/first = L[1]
+		L -= first
+		L += first
+
 /proc/sorted_insert(list/L, thing, comparator)
 	var/pos = L.len
 	while(pos > 0 && call(comparator)(thing, L[pos]) > 0)
