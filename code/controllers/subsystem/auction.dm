@@ -118,3 +118,16 @@ SUBSYSTEM_DEF(auction)
 	COOLDOWN_START(src, auction_break, 60 SECONDS)
 	to_chat(world, "[winner.name] has won the auction with a bid of [auctioneers[winner]], against a soft limit of [winner.soft_limit]")
 	reset_bids()
+
+/datum/controller/subsystem/auction/proc/auction_ui_data()
+	var/list/data = list()
+	data["auctioneers"] = list()
+	for(var/datum/auctioneer/bidder as anything in auctioneers)
+		data["items"] += list(list(
+			"name" = bidder.name,
+			"bid" = SSauction.auctioneers[bidder],
+		))
+	data["min_bid"] = minimum_bid
+	var/datum/market_item/auctioned_item = current_auction_item()
+	data["desc"] = auctioned_item.desc
+	return data

@@ -17,6 +17,8 @@
 	var/datum/bank_account/current_user
 	/// List of typepaths for "/datum/market"s that this uplink can access.
 	var/list/accessible_markets = list(/datum/market/blackmarket)
+	/// Does this uplink show the auction?
+	var/auction_enabled = FALSE
 
 /obj/item/market_uplink/Initialize(mapload)
 	. = ..()
@@ -83,6 +85,7 @@
 					"desc" = item.desc || item.name,
 					"html_icon" = item.html_icon,
 				))
+	data += SSauction.auction_ui_data() // Created in auction.dm
 	return data
 
 /obj/item/market_uplink/ui_static_data(mob/user)
@@ -96,6 +99,7 @@
 			"id" = M,
 			"name" = BM.name
 		))
+	data["auction_enabled"] = auction_enabled
 	return data
 
 /obj/item/market_uplink/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
@@ -157,6 +161,7 @@
 	//The original black market uplink
 	accessible_markets = list(/datum/market/blackmarket)
 	custom_premium_price = PAYCHECK_CREW * 2.5
+	auction_enabled = TRUE
 
 /obj/item/market_uplink/blackmarket/Initialize(mapload)
 	. = ..()

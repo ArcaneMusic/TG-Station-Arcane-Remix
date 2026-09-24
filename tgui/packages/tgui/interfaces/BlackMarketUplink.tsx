@@ -24,6 +24,8 @@ type Data = {
   ltsrbt_built: boolean;
   delivery_methods: DeliveryMethod[];
   delivery_method_description: Record<string, string>;
+  auction_enabled: boolean;
+  auctioneers: Auctioneer[];
 };
 
 type Market = {
@@ -45,6 +47,11 @@ type DeliveryMethod = {
   price: number;
 };
 
+type Auctioneer = {
+  name: string;
+  bid: number;
+};
+
 export const BlackMarketUplink = (props) => {
   const { act, data } = useBackend<Data>();
   const {
@@ -54,6 +61,7 @@ export const BlackMarketUplink = (props) => {
     money,
     viewing_market,
     viewing_category,
+    auction_enabled,
   } = data;
   return (
     <Window width={670} height={480} theme="hackerman">
@@ -84,6 +92,18 @@ export const BlackMarketUplink = (props) => {
               {market.name}
             </Tabs.Tab>
           ))}
+          {auction_enabled && (
+            <Tabs.Tab
+              selected={viewing_market === 'auction'}
+              onClick={() =>
+                act('set_market', {
+                  market: 'auction',
+                })
+              }
+            >
+              Auction
+            </Tabs.Tab>
+          )}
         </Tabs>
         <Stack>
           <Stack.Item>
@@ -193,3 +213,5 @@ const ShipmentSelector = (props) => {
     </Modal>
   );
 };
+
+
