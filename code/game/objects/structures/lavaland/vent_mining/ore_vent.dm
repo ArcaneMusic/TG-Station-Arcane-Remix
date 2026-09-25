@@ -328,7 +328,7 @@
 	if(get_turf(node) != get_turf(src))
 		initiate_wave_loss(loss_message = "The [node] detaches from the [src], and the vent closes back up!")
 		return //Start over!
-
+	UnregisterSignal(src, COMSIG_VENT_WAVE_CONCLUDED)
 	initiate_wave_win()
 
 /**
