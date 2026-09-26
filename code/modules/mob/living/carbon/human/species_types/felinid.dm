@@ -9,6 +9,7 @@
 	mutanteyes = /obj/item/organ/eyes/felinid
 	mutant_organs = list(
 		/obj/item/organ/tail/cat = "Cat",
+		/obj/item/organ/fangs/cat,
 	)
 	inherent_traits = list(
 		TRAIT_HATED_BY_DOGS,
@@ -34,9 +35,6 @@
 	if(human_who_gained_species.dna.features[FEATURE_EARS] == SPRITE_ACCESSORY_NONE)
 		mutantears = /obj/item/organ/ears
 	return ..()
-
-/datum/species/human/felinid/get_hiss_sound(mob/living/carbon/human/felinid)
-	return 'sound/mobs/humanoids/felinid/felinid_hiss.ogg'
 
 /proc/mass_purrbation()
 	for(var/mob in GLOB.human_list)

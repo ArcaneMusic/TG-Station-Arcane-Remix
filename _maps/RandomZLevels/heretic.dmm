@@ -1106,8 +1106,7 @@
 /obj/structure/transport/linear/tram,
 /obj/structure/thermoplastic/light,
 /obj/machinery/computer/tram_controls/heretic_tram_computer{
-	icon_state = "tram_alt_controls";
-	dir = 8
+	dir = 4
 	},
 /turf/open/floor/engine,
 /area/awaymission/caves/heretic_laboratory)
@@ -8177,7 +8176,7 @@
 "Qz" = (
 /obj/structure/table,
 /obj/machinery/light/floor,
-/obj/item/gun/energy/shrink_ray/one_shot,
+/obj/item/gun/energy/recharge/shrink_ray/one_shot,
 /turf/open/floor/iron/large,
 /area/awaymission/caves/heretic_laboratory_clean)
 "QA" = (
