@@ -1500,4 +1500,3 @@
 		affected_mob.adjust_drowsiness(6.5 SECONDS * metabolization_ratio)
 		affected_mob.emote("drool")
 
-

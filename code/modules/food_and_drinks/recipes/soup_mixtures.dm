@@ -306,7 +306,6 @@
 /datum/chemical_reaction/food/soup/proc/snowflake_ingredient_check(atom/ingredient)
 	return TRUE
 
-
 #ifdef TESTING
 
 /obj/item/soup_test_kit/Initialize(mapload)
@@ -2426,7 +2425,7 @@
 		/datum/reagent/consumable/nutriment/soup/rich_stock = 30,
 		/datum/reagent/consumable/nutriment/protein = 6,
 	)
-	var/stock_boost = 4
+	var/stock_boost = 2
 
 /datum/chemical_reaction/food/soup/rich_stock/snowflake_ingredient_check(ingredient)
 	if(!istype(ingredient, /obj/item/stock_block))
@@ -2436,15 +2435,16 @@
 		return FALSE
 	switch(block.export_value)
 		if(0 to 100)
-			stock_boost = 4
+			stock_boost = 2
 		if(101 to 1000)
-			stock_boost = 8
+			stock_boost = 4
 		if(1001 to 5000)
-			stock_boost = 15
+			stock_boost = 7.5
 		if(5001 to INFINITY)
-			stock_boost = 25
+			stock_boost = 12.5
 	return TRUE
 
 /datum/chemical_reaction/food/soup/rich_stock/reaction_finish(datum/reagents/holder, datum/equilibrium/reaction, react_vol)
 	. = ..()
 	holder.add_reagent(/datum/reagent/consumable/nutriment/vitamin, stock_boost)
+	holder.add_reagent(src, stock_boost)
