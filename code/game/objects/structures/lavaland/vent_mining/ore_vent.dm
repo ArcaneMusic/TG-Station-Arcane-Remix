@@ -60,6 +60,10 @@
 		/obj/item/t_scanner/adv_mining_scanner,
 		/obj/item/mining_scanner,
 	)
+	/// Snowflake var used to track if an ore vent needs to swap out bileworms to vileworms.
+	var/track_evolution = FALSE
+	/// Timer to track evolution point to swap evolving mobs.
+	var/evoulution_timer
 
 	/// Turf above us that we're currently tracking, stored in case of movement jank
 	var/turf/tracked_turf = null
@@ -97,6 +101,10 @@
 	if(tapped)
 		SSore_generation.processed_vents += src
 		become_tapped()
+	if(track_evolution)
+		var/sum = (world.time - SSticker.round_start_time)
+		var/mark = 3 MINUTES - sum
+		evoulution_timer = addtimer(CALLBACK(src, PROC_REF(handle_leap), FALSE), mark, TIMER_STOPPABLE)
 
 	RegisterSignal(src, COMSIG_SPAWNER_SPAWNED_DEFAULT, PROC_REF(anti_cheese))
 	RegisterSignal(src, COMSIG_SPAWNER_SPAWNED, PROC_REF(log_mob_spawned))
@@ -109,6 +117,8 @@
 	reset_drone(success = FALSE)
 	if(tapped)
 		SSore_generation.processed_vents -= src
+	if(evoulution_timer)
+		deltimer(evoulution_timer)
 	return ..()
 
 /obj/structure/ore_vent/item_interaction(mob/living/user, obj/item/tool, list/modifiers)
@@ -328,7 +338,7 @@
 	if(get_turf(node) != get_turf(src))
 		initiate_wave_loss(loss_message = "The [node] detaches from the [src], and the vent closes back up!")
 		return //Start over!
-	
+
 	initiate_wave_win()
 
 /**
@@ -670,6 +680,13 @@
 
 	boosted = !!(new_state & CANDELA_NETWORK_BOOSTED)
 
+/obj/structure/ore_vent/proc/handle_leap()
+	for(var/mob/evo_target as anything in defending_mobs)
+		if(!istype(evo_target, /mob/living/basic/mining/bileworm))
+			continue
+		evo_target = /mob/living/basic/mining/bileworm/vileworm
+		break
+
 //comes with the station, and is already tapped.
 /obj/structure/ore_vent/starter_resources
 	name = "active ore vent"
@@ -689,6 +706,7 @@
 	generate_description()
 
 /obj/structure/ore_vent/random
+	track_evolution = TRUE // We need to track when to swap bileworms to vileworms.
 	// Todo: determine if we need a boulder_size default thats unique from the override performed in vent_size_setup.
 
 /obj/structure/ore_vent/random/Initialize(mapload)
